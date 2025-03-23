@@ -12,21 +12,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
  *
  * @author jeffersonabarcap
  */
-public class PrimaryController implements Initializable {
+public class OptionsAdminController implements Initializable {
 
     @FXML
-    private Button btnInicioSecion;
+    private Button btnRegresar;
     @FXML
-    private TextField txtUsuario;
+    private Button btnEstadisticas;
     @FXML
-    private TextField txtContraseña;
+    private Button btnRegistro;
+    @FXML
+    private Button btnEditor;
 
     /**
      * Initializes the controller class.
@@ -37,8 +38,8 @@ public class PrimaryController implements Initializable {
     }    
 
     @FXML
-    private void switchToSecondary(ActionEvent event) throws IOException {
-        App.setRoot("optionsAdmin");
+    private void switchToPrimary() throws IOException {
+        App.setRoot("primary");
     }
     
 }
