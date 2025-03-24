@@ -37,8 +37,20 @@ public class PrimaryController implements Initializable {
     }    
 
     @FXML
-    private void switchToSecondary(ActionEvent event) throws IOException {
+private void switchToSecondary(ActionEvent event) throws IOException {
+    String usuario = txtUsuario.getText();  
+    String contraseña = txtContraseña.getText();  
+
+    if (usuario.equals("admin") && contraseña.equals("admin")) {
         App.setRoot("optionsAdmin");
+    } else {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Error de inicio de sesión");
+        alert.setHeaderText(null);
+        alert.setContentText("Usuario o contraseña incorrectos.");
+        alert.showAndWait();
     }
+}
+
     
 }

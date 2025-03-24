@@ -41,5 +41,10 @@ public class OptionsAdminController implements Initializable {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
+    @FXML
+private void switchToSecondary(ActionEvent event) throws IOException {
+    App.setRoot("primary");  // Aquí vuelves a la vista principal o la vista que desees
+}
+
     
 }
