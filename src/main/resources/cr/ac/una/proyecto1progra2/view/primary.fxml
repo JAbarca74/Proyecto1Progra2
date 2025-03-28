@@ -3,25 +3,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
    <children>
-      <Label layoutX="185.0" layoutY="100.0" text="Inicio de seción">
+      <Label layoutX="185.0" layoutY="100.0" text="Inicio de seción" textFill="WHITE">
          <font>
             <Font name="System Italic" size="36.0" />
          </font>
       </Label>
-      <Button fx:id="btnInicioSecion" layoutX="250.0" layoutY="305.0" onAction="#switchToSecondary" text="Inicio de secion" />
+      <Button fx:id="btnInicioSecion" layoutX="250.0" layoutY="305.0" onAction="#switchToOptions" text="Inicio de secion" />
       <TextField fx:id="txtUsuario" layoutX="220.0" layoutY="200.0" promptText="Usuario" />
       <TextField fx:id="txtContraseña" layoutX="220.0" layoutY="248.0" promptText="Contraseña" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="386.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../../../Downloads/LogoProyecto.png" />
-         </image>
-      </ImageView>
+      <Label layoutX="481.0" layoutY="14.0" text="tri" textFill="BLUE">
+         <font>
+            <Font name="System Italic" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="547.0" layoutY="14.0" text="go" textFill="RED">
+         <font>
+            <Font name="System Italic" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="511.0" layoutY="14.0" text="va" textFill="YELLOW">
+         <font>
+            <Font name="System Italic" size="36.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
