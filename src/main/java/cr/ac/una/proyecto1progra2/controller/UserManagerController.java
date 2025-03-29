@@ -1,3 +1,4 @@
+
 package cr.ac.una.proyecto1progra2.controller;
 
 import cr.ac.una.proyecto1progra2.App;
@@ -9,32 +10,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-public class OptionsAdminController implements Initializable {
+public class UserManagerController implements Initializable {
 
     @FXML
     private Button btnRegresar;
     @FXML
-    private Button btnEstadisticas;
+    private Button btnAdministradorUsuarios;
     @FXML
-    private Button btnRegistro;
+    private Button btnEditorEspacio;
     @FXML
-    private Button btnEditor;
+    private Button btnEstadisticasGenerales;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-    }    
-
-  
-    @FXML
-private void switchToPrimary(ActionEvent event) throws IOException {
-    App.setRoot("primary");  
+    }  
+    
+      @FXML
+private void switchToOptionsAdmin(ActionEvent event) throws IOException {
+    App.setRoot("optionsAdmin");  
 }
-
-  @FXML
-private void switchToUserManager(ActionEvent event) throws IOException {
-    App.setRoot("userManager");  
-}
-
     
 }

@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
    <children>
-      <Label layoutX="185.0" layoutY="100.0" text="Inicio de seción" textFill="WHITE">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <Button fx:id="btnInicioSecion" layoutX="250.0" layoutY="305.0" onAction="#switchToOptions" text="Inicio de secion" />
-      <TextField fx:id="txtUsuario" layoutX="220.0" layoutY="200.0" promptText="Usuario" />
-      <TextField fx:id="txtContraseña" layoutX="220.0" layoutY="248.0" promptText="Contraseña" />
-      <Label layoutX="481.0" layoutY="14.0" text="tri" textFill="BLUE">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <Label layoutX="547.0" layoutY="14.0" text="go" textFill="RED">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <Label layoutX="511.0" layoutY="14.0" text="va" textFill="YELLOW">
+      <VBox alignment="TOP_CENTER" layoutX="185.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="109.0" prefWidth="231.0" spacing="15.0">
+         <children>
+            <TextField fx:id="txtUsuario" promptText="Usuario" />
+            <TextField fx:id="txtContraseña" promptText="Contraseña" />
+            <Button fx:id="btnInicioSecion" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" onAction="#switchToOptions" text="Inicio de secion">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Button>
+         </children>
+      </VBox>
+      <HBox layoutX="442.0" layoutY="14.0" prefHeight="57.0" prefWidth="144.0">
+         <children>
+            <Label text="tri" textFill="BLUE">
+               <font>
+                  <Font name="System Italic" size="48.0" />
+               </font>
+            </Label>
+            <Label prefHeight="64.0" prefWidth="49.0" text="va" textFill="YELLOW">
+               <font>
+                  <Font name="System Italic" size="48.0" />
+               </font>
+            </Label>
+            <Label text="go" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Label layoutX="185.0" layoutY="74.0" text="Inicio de seción" textFill="WHITE">
          <font>
             <Font name="System Italic" size="36.0" />
          </font>
