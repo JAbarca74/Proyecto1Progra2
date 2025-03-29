@@ -12,22 +12,37 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
  *
  * @author jeffersonabarcap
  */
-public class UserManagerController implements Initializable {
+public class RegistrerNewAccountController implements Initializable {
 
     @FXML
     private Button btnRegresar;
     @FXML
-    private Button btnAdministradorUsuarios;
+    private TextField txtName;
     @FXML
-    private Button btnEditorEspacio;
+    private TextField txtId;
     @FXML
-    private Button btnEstadisticasGenerales;
+    private TextField txtAge;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private PasswordField txtPasswordConfirm;
+    @FXML
+    private CheckBox chkAdmin;
+    @FXML
+    private CheckBox chkUser;
+    @FXML
+    private Button btnCrearCuenta;
 
     /**
      * Initializes the controller class.
@@ -35,17 +50,9 @@ public class UserManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
-    
-     @FXML
-private void switchToOptionsAdmin(ActionEvent event) throws IOException {
-    App.setRoot("optionsAdmin");  
+    } 
+    @FXML
+    private void switchToUserManager(ActionEvent event) throws IOException {
+    App.setRoot("userManager");  
 }
-
-     @FXML
-private void switchToRegisterNewAccount(ActionEvent event) throws IOException {
-    App.setRoot("RegisterNewAccount");  
-}
-
 }

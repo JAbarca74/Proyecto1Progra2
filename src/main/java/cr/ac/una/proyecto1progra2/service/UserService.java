@@ -21,10 +21,24 @@ public class UserService {
         }
     }
     
-    public static boolean validateInToregister(){
+   public static boolean validateRegistration(String username, String password, String confirmPassword) {
         
-        return false;
-        
+       if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            showAlert("Error", "Por favor, complete todos los campos.");
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            showAlert("Error", "Las contraseñas no coinciden.");
+            return false;
+        }
+
+        if ("admin".equals(username) || "user".equals(username)) {
+            showAlert("Error", "El nombre de usuario ya está en uso.");
+            return false;
+        }
+
+        return true;
     }
    
     public static void showAlert(String title, String content) {

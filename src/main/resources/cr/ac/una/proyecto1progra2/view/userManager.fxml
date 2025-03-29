@@ -36,7 +36,7 @@
       </HBox>
       <VBox layoutX="219.0" layoutY="200.0" prefHeight="108.0" prefWidth="162.0" spacing="15.0">
          <children>
-            <Button fx:id="btnAdministradorUsuarios" prefHeight="26.0" prefWidth="163.0" text="Registrar nuevas cuentas " />
+            <Button fx:id="btnAdministradorUsuarios" onAction="#switchToRegisterNewAccount" prefHeight="26.0" prefWidth="163.0" text="Registrar nuevas cuentas " />
             <Button fx:id="btnEditorEspacio" prefHeight="26.0" prefWidth="201.0" text="Habilitacion de cuentas " />
             <Button fx:id="btnEstadisticasGenerales" prefHeight="26.0" prefWidth="166.0" text="Actualizar informacion" />
          </children>
