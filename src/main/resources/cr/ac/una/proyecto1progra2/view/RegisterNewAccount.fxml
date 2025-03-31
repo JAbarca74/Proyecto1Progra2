@@ -10,62 +10,67 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.RegistrerNewAccountController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.RegistrerNewAccountController">
    <children>
-      <Button fx:id="btnRegresar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToUserManager" text="Regresar" />
-      <Label layoutX="100.0" layoutY="84.0" text="Registro de Nueva Cuenta " textFill="WHITE">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <HBox layoutX="439.0" layoutY="14.0" prefHeight="57.0" prefWidth="144.0">
+      <VBox alignment="TOP_CENTER" layoutY="1.0" prefHeight="96.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="tri" textFill="BLUE">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label prefHeight="64.0" prefWidth="49.0" text="va" textFill="YELLOW">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label text="go" textFill="RED">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <Label layoutX="85.0" layoutY="128.0" text="Llene todos los espacios para poder completar el registro." textFill="WHITE">
-         <font>
-            <Font name="System Italic" size="18.0" />
-         </font>
-      </Label>
-      <HBox layoutX="148.0" layoutY="247.0" prefHeight="108.0" prefWidth="305.0" spacing="15.0">
-         <children>
-            <VBox prefHeight="80.0" prefWidth="144.0" spacing="15.0">
+            <HBox alignment="CENTER" maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TextField fx:id="txtName" promptText="Nombre" />
-                  <TextField fx:id="txtId" promptText="Identificacion " />
-                  <TextField fx:id="txtAge" promptText="Edad " />
+                  <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#switchToUserManager" prefHeight="30.0" prefWidth="93.0" text="Regresar" />
+                  <Label prefHeight="42.0" prefWidth="430.0" styleClass="title-label" text="Registrar Nueva Cuenta " textFill="WHITE">
+                     <font>
+                        <Font name="System Italic" size="36.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" maxHeight="100.0" prefHeight="57.0" prefWidth="0.0" />
+                  <Label styleClass="corner-label-blue" stylesheets="@styles.css" text="tri" textFill="BLUE">
+                     <font>
+                        <Font name="System Italic" size="48.0" />
+                     </font>
+                  </Label>
+                  <Label contentDisplay="CENTER" prefHeight="25.0" prefWidth="22.0" styleClass="corner-label-yellow" stylesheets="@styles.css" text="va" textFill="YELLOW">
+                     <font>
+                        <Font name="System Italic" size="48.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="23.0" prefWidth="24.0" styleClass="corner-label-red" stylesheets="@styles.css" text="go" textFill="RED">
+                     <font>
+                        <Font name="System Italic" size="48.0" />
+                     </font>
+                  </Label>
                </children>
-            </VBox>
-            <VBox prefHeight="80.0" prefWidth="144.0" spacing="15.0">
+            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Llene todos los espacios para poder completar el registro." textFill="WHITE">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="79.0" prefWidth="600.0" spacing="15.0">
                <children>
-                  <TextField fx:id="txtUsername" promptText="Usuario" />
-                  <PasswordField fx:id="txtPassword" promptText="Nueva Contraseña " />
-                  <PasswordField fx:id="txtPasswordConfirm" promptText="Confirme su contraseña " />
+                  <CheckBox fx:id="chkAdmin" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Administrador" textFill="WHITE" />
+                  <CheckBox fx:id="chkUser" mnemonicParsing="false" text="Usuario" textFill="WHITE" />
                </children>
-            </VBox>
+            </HBox>
+            <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="174.0" prefWidth="600.0" spacing="15.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="btnCrearCuenta" alignment="TOP_RIGHT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="30.0" prefWidth="73.0" text="Crear" />
+                  <VBox alignment="CENTER" prefHeight="222.0" prefWidth="145.0" spacing="15.0">
+                     <children>
+                        <TextField fx:id="txtName" promptText="Nombre" />
+                        <TextField fx:id="txtId" promptText="Identificacion " />
+                        <TextField fx:id="txtAge" promptText="Edad " />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="243.0" prefWidth="138.0" spacing="15.0">
+                     <children>
+                        <TextField fx:id="txtUsername" prefWidth="138.0" promptText="Usuario" />
+                        <PasswordField fx:id="txtPassword" promptText="Nueva Contraseña " />
+                        <PasswordField fx:id="txtPasswordConfirm" prefHeight="30.0" prefWidth="151.0" promptText="Confirme su contraseña " />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <HBox layoutX="193.0" layoutY="183.0" prefHeight="34.0" prefWidth="214.0" spacing="15.0">
-         <children>
-            <CheckBox fx:id="chkAdmin" mnemonicParsing="false" text="Administrador" textFill="WHITE" />
-            <CheckBox fx:id="chkUser" mnemonicParsing="false" text="Usuario" textFill="WHITE" />
-         </children>
-      </HBox>
-      <Button fx:id="btnCrearCuenta" layoutX="477.0" layoutY="329.0" mnemonicParsing="false" text="Crear" />
+      </VBox>
    </children>
 </AnchorPane>
