@@ -1,103 +1,59 @@
-.pane {
-    -fx-background-color: #241f23;
-    -fx-text-fill: #ffffff;
-    -fx-font-family: Arial, sans-serif;
-    -fx-border-radius: 15px;
+/* ---------------------------------------------------------
+   Hoja de estilo para la pantalla de inicio de sesión
+   --------------------------------------------------------- */
+
+/* Fuente y tamaño de letra por defecto para toda la escena */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #FFFFFF; /* color de fondo para el pane principal */
 }
 
-.label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 20;
+/* Estilo para los TextField de usuario y contraseña */
+#txtUsuario,
+#txtContraseña {
+    -fx-background-color: #F3F3F3;   /* color claro de fondo */
+    -fx-text-fill: #333333;         /* color del texto */
+    -fx-prompt-text-fill: #888888;  /* color del placeholder */
+    
+    -fx-border-color: #DDDDDD;      /* borde gris claro */
+    -fx-border-radius: 5;           /* esquinas redondeadas del borde */
+    -fx-background-radius: 5;       /* esquinas redondeadas del fondo */
+    
+    -fx-padding: 6 10 6 10;         /* espacio interno */
 }
 
-.title-label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 36;
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+/* Estilo para el botón de 'Iniciar sesión' */
+#btnInicioSecion {
+    -fx-background-color: #007BFF; /* azul principal */
+    -fx-text-fill: #FFFFFF;        /* texto en blanco */
+    
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;              /* cambia el cursor al pasar sobre el botón */
+    
+    -fx-font-weight: bold;         /* letra en negrita */
+    -fx-padding: 8 16 8 16;        /* espacio interno */
 }
 
-.button {
-    -fx-background-color: #ff6347;
-    -fx-text-fill: #ffffff;
-    -fx-font-family: Arial, sans-serif;
-    -fx-font-size: 16;
-    -fx-font-weight: bold;
-    -fx-padding: 10 20 0 0;
-    -fx-border-radius: 25px;
-    -fx-cursor: hand;
+/* Efecto hover (cuando el mouse está encima del botón) */
+#btnInicioSecion:hover {
+    -fx-background-color: #0056B3; /* azul más oscuro */
 }
 
-.button:hover {
-    -fx-background-color: #ff7f67;
-    -fx-text-fill: #ffffff;
+/* Efecto pressed (cuando se hace click en el botón) */
+#btnInicioSecion:pressed {
+    -fx-background-color: #003D80; /* aún más oscuro al presionar */
 }
 
-.text-field {
-    -fx-background-color: #252024;
-    -fx-text-fill: #ffffff;
-    -fx-border-color: #ff6347;
-    -fx-border-width: 2;
-    -fx-border-radius: 6px;
-    -fx-padding: 5px;
+/* Estilo para todos los HBox en la escena (opcional) */
+.hbox {
+    -fx-spacing: 10;   /* separación entre nodos hijos */
+    -fx-padding: 10;   /* margen interno para el HBox */
 }
 
-.text-field:focused {
-    -fx-border-color: #ff6347;
-    -fx-background-color: #282025;
-}
-
-.text-field:hover {
-    -fx-background-color: #3e2f31;
-}
-
-.card:hover {
-    -fx-background-color: #282025;
-}
-
-.navbar {
-    -fx-background-color: #231d21;
-    -fx-padding: 15;
-    -fx-border-radius: 10px;
-}
-
-.navbar .label {
-    -fx-text-fill: #ffffff;
-    -fx-margin: 0 10;
-}
-
-.navbar .label:hover {
-    -fx-text-fill: #ff6347;
-}
-
-.corner-label-blue {
-    -fx-text-fill: #1212c9;
-    -fx-font-size: 24;
-}
-
-.corner-label-yellow {
-    -fx-text-fill: yellow;
-    -fx-font-size: 24;
-}
-
-.corner-label-red {
-    -fx-text-fill: red;
-    -fx-font-size: 24;
-}
-
-body {
-    font-size: 16px;
-    max-width: 1200px;
-}
-
-.avatar {
-    -fx-background-radius: 50%;
-    -fx-border-radius: 50%;
-    -fx-border-color: #ff6347;
-    -fx-border-width: 2px;
-}
-
-.avatar:hover {
-    -fx-opacity: 0.8;
-    -fx-border-color: #ff9a8b;
+/* Estilo para todos los ImageView en la escena (opcional) */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);
+    /* Agrega un sutil efecto de sombra si quieres */
 }

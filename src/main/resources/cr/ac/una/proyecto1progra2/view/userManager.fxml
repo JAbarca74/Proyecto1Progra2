@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.UserManagerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="btnInicioSecion" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.UserManagerController">
    <children>
-      <Button fx:id="btnRegresar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToOptionsAdmin" text="Regresar" />
-      <Label layoutX="154.0" layoutY="74.0" text="¿Que decea hacer?" textFill="WHITE">
+      <Button fx:id="btnRegresar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToOptionsAdmin" styleClass="btnInicioSecion" text="Regresar" />
+      <Label layoutX="154.0" layoutY="74.0" text="¿Que decea hacer?">
          <font>
             <Font name="System Italic" size="36.0" />
          </font>

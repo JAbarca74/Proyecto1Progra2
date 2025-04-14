@@ -39,13 +39,13 @@ public class UserManagerController implements Initializable {
     
     
      @FXML
-private void switchToOptionsAdmin(ActionEvent event) throws IOException {
+    private void switchToOptionsAdmin(ActionEvent event) throws IOException {
     App.setRoot("optionsAdmin");  
-}
+    }
 
      @FXML
-private void switchToRegisterNewAccount(ActionEvent event) throws IOException {
+    private void switchToRegisterNewAccount(ActionEvent event) throws IOException {
     App.setRoot("RegisterNewAccount");  
-}
+    }
 
 }

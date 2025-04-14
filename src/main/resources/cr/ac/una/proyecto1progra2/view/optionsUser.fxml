@@ -1,44 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.OptionsUserController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.OptionsUserController">
    <children>
-      <Button fx:id="btnRegresar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToPrimary" text="Regresar" />
-      <Label layoutX="172.0" layoutY="74.0" text="Bienvenido Usuario" textFill="WHITE">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <HBox layoutX="442.0" layoutY="14.0" prefHeight="57.0" prefWidth="144.0">
+      <VBox layoutY="6.0" prefHeight="290.0" prefWidth="163.0">
          <children>
-            <Label text="tri" textFill="BLUE">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label prefHeight="64.0" prefWidth="49.0" text="va" textFill="YELLOW">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label text="go" textFill="RED">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox accessibleRole="COMBO_BOX" alignment="TOP_CENTER" cache="true" layoutX="263.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0">
-         <children>
-            <Button fx:id="btnBuscarEspacio" prefHeight="26.0" prefWidth="110.0" text="Buscar espacio" />
-            <Button fx:id="btnReservarEspacio" text="Reservar espacio" textAlignment="CENTER" />
+            <ImageView fitHeight="46.0" fitWidth="167.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Logo&amp;Nombre.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btnBuscarEspacio" onAction="#handleBuscarEspacio" prefHeight="69.0" prefWidth="194.0" text="Buscar espacio" />
+            <Button fx:id="btnReservarEspacio" contentDisplay="RIGHT" onAction="#handleReservarEspacio" prefHeight="69.0" prefWidth="198.0" text="Reservar espacio" />
+            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="54.0" prefWidth="163.0" text="Regresar" />
          </children>
       </VBox>
+      <AnchorPane fx:id="contentPane" layoutX="164.0" prefHeight="448.0" prefWidth="511.0" />
    </children>
 </AnchorPane>

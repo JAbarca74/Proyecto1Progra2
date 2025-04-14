@@ -23,21 +23,6 @@
                      </font>
                   </Label>
                   <HBox alignment="CENTER" maxHeight="100.0" prefHeight="57.0" prefWidth="0.0" />
-                  <Label styleClass="corner-label-blue" stylesheets="@styles.css" text="tri" textFill="BLUE">
-                     <font>
-                        <Font name="System Italic" size="48.0" />
-                     </font>
-                  </Label>
-                  <Label contentDisplay="CENTER" prefHeight="25.0" prefWidth="22.0" styleClass="corner-label-yellow" stylesheets="@styles.css" text="va" textFill="YELLOW">
-                     <font>
-                        <Font name="System Italic" size="48.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="23.0" prefWidth="24.0" styleClass="corner-label-red" stylesheets="@styles.css" text="go" textFill="RED">
-                     <font>
-                        <Font name="System Italic" size="48.0" />
-                     </font>
-                  </Label>
                </children>
             </HBox>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Llene todos los espacios para poder completar el registro." textFill="WHITE">
