@@ -1,59 +1,74 @@
-/* ---------------------------------------------------------
-   Hoja de estilo para la pantalla de inicio de sesión
-   --------------------------------------------------------- */
+/* styles.css */
 
-/* Fuente y tamaño de letra por defecto para toda la escena */
+/* Fuente global */
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-font-size: 14px;
-    -fx-background-color: #FFFFFF; /* color de fondo para el pane principal */
 }
 
-/* Estilo para los TextField de usuario y contraseña */
-#txtUsuario,
-#txtContraseña {
-    -fx-background-color: #F3F3F3;   /* color claro de fondo */
-    -fx-text-fill: #333333;         /* color del texto */
-    -fx-prompt-text-fill: #888888;  /* color del placeholder */
-    
-    -fx-border-color: #DDDDDD;      /* borde gris claro */
-    -fx-border-radius: 5;           /* esquinas redondeadas del borde */
-    -fx-background-radius: 5;       /* esquinas redondeadas del fondo */
-    
-    -fx-padding: 6 10 6 10;         /* espacio interno */
-}
-
-/* Estilo para el botón de 'Iniciar sesión' */
-#btnInicioSecion {
-    -fx-background-color: #007BFF; /* azul principal */
-    -fx-text-fill: #FFFFFF;        /* texto en blanco */
-    
-    -fx-border-radius: 5;
+/* Estilo de los TextField */
+.text-field {
+    -fx-background-color: white;
     -fx-background-radius: 5;
-    -fx-cursor: hand;              /* cambia el cursor al pasar sobre el botón */
-    
-    -fx-font-weight: bold;         /* letra en negrita */
-    -fx-padding: 8 16 8 16;        /* espacio interno */
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+-fx-padding: 6px 10px 6px 10px;
+    -fx-prompt-text-fill: #a9a9a9; /* color del texto de placeholder */
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
 }
 
-/* Efecto hover (cuando el mouse está encima del botón) */
-#btnInicioSecion:hover {
-    -fx-background-color: #0056B3; /* azul más oscuro */
+.text-field:focused {
+    -fx-border-color: #3f51b5;     /* azul al enfocar */
+    -fx-border-width: 2;
 }
 
-/* Efecto pressed (cuando se hace click en el botón) */
-#btnInicioSecion:pressed {
-    -fx-background-color: #003D80; /* aún más oscuro al presionar */
+/* Estilo del Button */
+.button {
+    -fx-background-color: 
+        linear-gradient(
+            to bottom, 
+            #f0f0f0 0%,
+            #dcdcdc 50%,
+            #c8c8c8 100%
+        );
+    -fx-background-radius: 5;
+    -fx-border-color: #999999;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+-fx-padding: 8px 15px 8px 15px;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
 }
 
-/* Estilo para todos los HBox en la escena (opcional) */
-.hbox {
-    -fx-spacing: 10;   /* separación entre nodos hijos */
-    -fx-padding: 10;   /* margen interno para el HBox */
+.button:hover {
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #e8e8e8 0%,
+            #cfcfcf 100%
+        );
 }
 
-/* Estilo para todos los ImageView en la escena (opcional) */
-.image-view {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);
-    /* Agrega un sutil efecto de sombra si quieres */
+.button:pressed {
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #c0c0c0 0%,
+            #a8a8a8 100%
+        );
+}
+/* Aplica a todo el AnchorPane raíz */
+/* Con selector de clase (.) */
+.imagen-fondo {
+    -fx-background-image: url("FondoIniSes.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+.imagenLogoYNombre-fondo {
+    -fx-background-image: url("Logo&Nombre.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
 }

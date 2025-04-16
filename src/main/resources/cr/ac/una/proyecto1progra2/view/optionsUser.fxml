@@ -4,22 +4,30 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.OptionsUserController">
    <children>
-      <VBox layoutY="6.0" prefHeight="290.0" prefWidth="163.0">
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="46.0" fitWidth="167.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Logo&amp;Nombre.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="btnBuscarEspacio" onAction="#handleBuscarEspacio" prefHeight="69.0" prefWidth="194.0" text="Buscar espacio" />
-            <Button fx:id="btnReservarEspacio" contentDisplay="RIGHT" onAction="#handleReservarEspacio" prefHeight="69.0" prefWidth="198.0" text="Reservar espacio" />
-            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="54.0" prefWidth="163.0" text="Regresar" />
+            <HBox prefHeight="406.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="290.0" prefWidth="163.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fitHeight="46.0" fitWidth="167.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                           <image>
+                              <Image url="@Logo&amp;Nombre.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="btnBuscarEspacio" onAction="#handleBuscarEspacio" prefHeight="66.0" prefWidth="180.0" text="Buscar espacio" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="66.0" prefWidth="180.0" text="Regresar" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btnReservarEspacio" contentDisplay="RIGHT" onAction="#handleReservarEspacio" prefHeight="66.0" prefWidth="180.0" text="Reservar espacio" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </VBox>
-      <AnchorPane fx:id="contentPane" layoutX="164.0" prefHeight="448.0" prefWidth="511.0" />
    </children>
 </AnchorPane>

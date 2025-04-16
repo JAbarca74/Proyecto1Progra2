@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
+<AnchorPane prefHeight="400" prefWidth="600" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
+
    <children>
-      <HBox layoutX="442.0" layoutY="14.0" prefHeight="57.0" prefWidth="144.0" />
-      <TextField fx:id="txtUsuario" layoutX="42.0" layoutY="178.0" prefHeight="26.0" prefWidth="208.0" promptText="Usuario" />
-      <TextField fx:id="txtContraseña" layoutX="42.0" layoutY="220.0" prefHeight="26.0" prefWidth="208.0" promptText="Contraseña" />
-      <Button fx:id="btnInicioSecion" layoutX="42.0" layoutY="269.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" onAction="#switchToOptions" text="Iniciar sesión" />
-      <ImageView fitHeight="400.0" fitWidth="277.0" layoutX="333.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@FondoIniSes.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="93.0" fitWidth="267.0" layoutX="-6.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Logo&amp;Nombre.png" />
-         </image>
-      </ImageView>
+      <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+         
+         <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+            
+            <!-- Panel izquierdo: Logo + login -->
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               
+               <ImageView fitHeight="93" fitWidth="267" preserveRatio="true">
+                  <image>
+                     <Image url="@Logo&amp;Nombre.png" />
+                  </image>
+                  <VBox.margin>
+                     <Insets bottom="100" top="30" />
+                  </VBox.margin>
+               </ImageView>
+
+               <TextField fx:id="txtUsuario" maxWidth="208" promptText="Usuario" />
+               
+               <TextField fx:id="txtContraseña" maxWidth="208" promptText="Contraseña" />
+
+               <Button fx:id="btnInicioSecion" maxWidth="208" onAction="#switchToOptions" text="Iniciar sesión" />
+            </VBox>
+            <AnchorPane maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="imagen-fondo" HBox.hgrow="ALWAYS" />
+
+         </HBox>
+      </VBox>
    </children>
-</Pane>
+</AnchorPane>
