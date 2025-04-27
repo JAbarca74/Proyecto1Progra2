@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <persistence-unit name="cr.ac.una_Proyecto1Progra2_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>cr.ac.una.proyecto1progra2.model.CoworkingSpaces</class>
-    <class>cr.ac.una.proyecto1progra2.model.SpaceTypes</class>
-    <class>cr.ac.una.proyecto1progra2.model.Usuarios</class>
-    <class>cr.ac.una.proyecto1progra2.model.Roles</class>
-    <class>cr.ac.una.proyecto1progra2.model.Spaces</class>
-    <class>cr.ac.una.proyecto1progra2.model.Reservations</class>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/FREEPDB1"/>
-      <property name="javax.persistence.jdbc.user" value="UNA"/>
-      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="javax.persistence.jdbc.password" value="Una2025"/>
-    </properties>
-  </persistence-unit>
+  <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+  <!-- Lista tus entidades aquí -->
+  <class>cr.ac.una.proyecto1progra2.model.Usuarios</class>
+  <class>cr.ac.una.proyecto1progra2.model.Roles</class>
+  <class>cr.ac.una.proyecto1progra2.model.SpaceTypes</class>
+  <class>cr.ac.una.proyecto1progra2.model.Spaces</class>
+  <class>cr.ac.una.proyecto1progra2.model.CoworkingSpaces</class>
+  <class>cr.ac.una.proyecto1progra2.model.Reservations</class>
+  <properties>
+    <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/FREEPDB1"/>
+    <property name="javax.persistence.jdbc.user" value="UNA"/>
+    <property name="javax.persistence.jdbc.password" value="Una2025"/>
+    <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+  </properties>
+</persistence-unit>
 </persistence>
