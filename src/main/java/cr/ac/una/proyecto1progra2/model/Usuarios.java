@@ -51,7 +51,7 @@ public class Usuarios implements Serializable {
     private Character isActive;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Reservations> reservationsCollection;
-
+    
     public Usuarios() {
     }
 
