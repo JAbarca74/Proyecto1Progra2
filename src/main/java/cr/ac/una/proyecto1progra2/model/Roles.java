@@ -1,61 +1,68 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.QueryHint;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
-/**
- *
- * @author jeffersonabarcap
- */
 @Entity
 @Table(name = "TB_ROLES")
 @NamedQueries({
     @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r"),
     @NamedQuery(name = "Roles.findById", query = "SELECT r FROM Roles r WHERE r.id = :id"),
-    @NamedQuery(name = "Roles.findByName", query = "SELECT r FROM Roles r WHERE r.name = :name")})
+    @NamedQuery(name = "Roles.findByName", query = "SELECT r FROM Roles r WHERE UPPER(r.name) = :name", hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
+})
 public class Roles implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private Long id;
+
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
 
+    @Version
+    @Basic(optional = false)
+    @Column(name = "VERSION")
+    private Long version;
+
     public Roles() {
     }
 
-    public Roles(BigDecimal id) {
+    public Roles(Long id) {
         this.id = id;
     }
 
-    public Roles(BigDecimal id, String name) {
-        this.id = id;
-        this.name = name;
+    public Roles(RolesDto rolesDto) {
+        this();
+        this.id = rolesDto.getId();
+        actualizar(rolesDto);
     }
 
-    public BigDecimal getId() {
+    public void actualizar(RolesDto rolesDto) {
+        this.name = rolesDto.getNombre();
+        this.version = rolesDto.getVersion();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,6 +74,14 @@ public class Roles implements Serializable {
         this.name = name;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -76,20 +91,15 @@ public class Roles implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Roles)) {
             return false;
         }
         Roles other = (Roles) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
         return "cr.ac.una.proyecto1progra2.model.Roles[ id=" + id + " ]";
     }
-    
 }

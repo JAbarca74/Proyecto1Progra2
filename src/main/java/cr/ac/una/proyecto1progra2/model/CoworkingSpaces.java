@@ -1,17 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,58 +16,74 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
-/**
- *
- * @author jeffersonabarcap
- */
 @Entity
 @Table(name = "TB_COWORKING_SPACES")
 @NamedQueries({
     @NamedQuery(name = "CoworkingSpaces.findAll", query = "SELECT c FROM CoworkingSpaces c"),
     @NamedQuery(name = "CoworkingSpaces.findById", query = "SELECT c FROM CoworkingSpaces c WHERE c.id = :id"),
-    @NamedQuery(name = "CoworkingSpaces.findByName", query = "SELECT c FROM CoworkingSpaces c WHERE c.name = :name"),
-    @NamedQuery(name = "CoworkingSpaces.findByCapacity", query = "SELECT c FROM CoworkingSpaces c WHERE c.capacity = :capacity")})
+    @NamedQuery(name = "CoworkingSpaces.findByName", query = "SELECT c FROM CoworkingSpaces c WHERE UPPER(c.name) = :name"),
+    @NamedQuery(name = "CoworkingSpaces.findByCapacity", query = "SELECT c FROM CoworkingSpaces c WHERE c.capacity = :capacity")
+})
 public class CoworkingSpaces implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private Long id;
+
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "CAPACITY")
-    private BigInteger capacity;
+    private Integer capacity;
+
+    @Version
+    @Basic(optional = false)
+    @Column(name = "VERSION")
+    private Long version;
+
     @JoinColumn(name = "SPACE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Spaces spaceId;
+
     @JoinColumn(name = "TYPE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SpaceTypes typeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coworkingSpaceId")
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coworkingSpaceId", fetch = FetchType.LAZY)
     private Collection<Reservations> reservationsCollection;
 
     public CoworkingSpaces() {
     }
 
-    public CoworkingSpaces(BigDecimal id) {
+    public CoworkingSpaces(Long id) {
         this.id = id;
     }
 
-    public CoworkingSpaces(BigDecimal id, String name) {
-        this.id = id;
-        this.name = name;
+    public CoworkingSpaces(CoworkingSpacesDto coworkingSpacesDto) {
+        this();
+        this.id = coworkingSpacesDto.getId();
+        actualizar(coworkingSpacesDto);
     }
 
-    public BigDecimal getId() {
+    public void actualizar(CoworkingSpacesDto coworkingSpacesDto) {
+        this.name = coworkingSpacesDto.getNombre();
+        this.capacity = coworkingSpacesDto.getCapacidad();
+        this.version = coworkingSpacesDto.getVersion();
+        // Nota: spaceId y typeId deben actualizarse en el Service si quieres cambiar las relaciones
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -84,11 +95,11 @@ public class CoworkingSpaces implements Serializable {
         this.name = name;
     }
 
-    public BigInteger getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(BigInteger capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
@@ -116,6 +127,14 @@ public class CoworkingSpaces implements Serializable {
         this.reservationsCollection = reservationsCollection;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -125,20 +144,15 @@ public class CoworkingSpaces implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof CoworkingSpaces)) {
             return false;
         }
         CoworkingSpaces other = (CoworkingSpaces) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
         return "cr.ac.una.proyecto1progra2.model.CoworkingSpaces[ id=" + id + " ]";
     }
-    
 }

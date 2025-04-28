@@ -32,7 +32,7 @@
                
                <TextField fx:id="txtContraseña" maxWidth="208" promptText="Contraseña" />
 
-               <Button fx:id="btnInicioSecion" maxWidth="208" onAction="#switchToOptions" text="Iniciar sesión" />
+             <Button fx:id="btnInicioSecion" maxWidth="208" onAction="#onActionBtnInicioSesion" text="Iniciar sesión" />
             </VBox>
             <AnchorPane maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="imagen-fondo" HBox.hgrow="ALWAYS" />
 

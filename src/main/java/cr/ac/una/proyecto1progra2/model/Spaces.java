@@ -1,70 +1,80 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.QueryHint;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
-/**
- *
- * @author jeffersonabarcap
- */
 @Entity
 @Table(name = "TB_SPACES")
 @NamedQueries({
     @NamedQuery(name = "Spaces.findAll", query = "SELECT s FROM Spaces s"),
     @NamedQuery(name = "Spaces.findById", query = "SELECT s FROM Spaces s WHERE s.id = :id"),
-    @NamedQuery(name = "Spaces.findByName", query = "SELECT s FROM Spaces s WHERE s.name = :name"),
-    @NamedQuery(name = "Spaces.findByCapacity", query = "SELECT s FROM Spaces s WHERE s.capacity = :capacity")})
+    @NamedQuery(name = "Spaces.findByName", query = "SELECT s FROM Spaces s WHERE UPPER(s.name) = :name", hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
+    @NamedQuery(name = "Spaces.findByCapacity", query = "SELECT s FROM Spaces s WHERE s.capacity = :capacity")
+})
 public class Spaces implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private Long id;
+
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "CAPACITY")
     private BigInteger capacity;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId")
+
+    @Version
+    @Basic(optional = false)
+    @Column(name = "VERSION")
+    private Long version;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId", fetch = FetchType.LAZY)
     private Collection<CoworkingSpaces> coworkingSpacesCollection;
 
     public Spaces() {
     }
 
-    public Spaces(BigDecimal id) {
+    public Spaces(Long id) {
         this.id = id;
     }
 
-    public Spaces(BigDecimal id, String name) {
-        this.id = id;
-        this.name = name;
+    public Spaces(SpacesDto spacesDto) {
+        this();
+        this.id = spacesDto.getId();
+        actualizar(spacesDto);
     }
 
-    public BigDecimal getId() {
+    public void actualizar(SpacesDto spacesDto) {
+        this.name = spacesDto.getNombre();
+        this.capacity = spacesDto.getCapacidad() != null ? BigInteger.valueOf(spacesDto.getCapacidad()) : null;
+        this.version = spacesDto.getVersion();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,6 +102,14 @@ public class Spaces implements Serializable {
         this.coworkingSpacesCollection = coworkingSpacesCollection;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -101,20 +119,15 @@ public class Spaces implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Spaces)) {
             return false;
         }
         Spaces other = (Spaces) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
         return "cr.ac.una.proyecto1progra2.model.Spaces[ id=" + id + " ]";
     }
-    
 }

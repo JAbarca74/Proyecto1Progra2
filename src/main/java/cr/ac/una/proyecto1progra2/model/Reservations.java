@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,14 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.QueryHint;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
-/**
- *
- * @author jeffersonabarcap
- */
 @Entity
 @Table(name = "TB_RESERVATIONS")
 @NamedQueries({
@@ -32,51 +26,71 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Reservations.findById", query = "SELECT r FROM Reservations r WHERE r.id = :id"),
     @NamedQuery(name = "Reservations.findByStartTime", query = "SELECT r FROM Reservations r WHERE r.startTime = :startTime"),
     @NamedQuery(name = "Reservations.findByEndTime", query = "SELECT r FROM Reservations r WHERE r.endTime = :endTime"),
-    @NamedQuery(name = "Reservations.findByIsCancelled", query = "SELECT r FROM Reservations r WHERE r.isCancelled = :isCancelled")})
+    @NamedQuery(name = "Reservations.findByIsCancelled", query = "SELECT r FROM Reservations r WHERE r.isCancelled = :isCancelled")
+})
 public class Reservations implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private Long id;
+
     @Basic(optional = false)
     @Column(name = "START_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+
     @Basic(optional = false)
     @Column(name = "END_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+
+    @Basic(optional = false)
     @Column(name = "IS_CANCELLED")
-    private Character isCancelled;
+    private String isCancelled; // "S" o "N"
+
+    @Version
+    @Basic(optional = false)
+    @Column(name = "VERSION")
+    private Long version;
+
     @JoinColumn(name = "COWORKING_SPACE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private CoworkingSpaces coworkingSpaceId;
+
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuarios userId;
 
     public Reservations() {
     }
 
-    public Reservations(BigDecimal id) {
+    public Reservations(Long id) {
         this.id = id;
     }
 
-    public Reservations(BigDecimal id, Date startTime, Date endTime) {
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public Reservations(ReservationsDto reservationsDto) {
+        this();
+        this.id = reservationsDto.getId();
+        actualizar(reservationsDto);
     }
 
-    public BigDecimal getId() {
+    public void actualizar(ReservationsDto reservationsDto) {
+        this.startTime = java.sql.Timestamp.valueOf(reservationsDto.getStartTime().atStartOfDay());
+        this.endTime = java.sql.Timestamp.valueOf(reservationsDto.getEndTime().atStartOfDay());
+        this.isCancelled = reservationsDto.getIsCancelled();
+        this.version = reservationsDto.getVersion();
+        // El coworkingSpaceId y userId se deberían setear aparte en el service, buscando sus entidades por ID
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -96,12 +110,20 @@ public class Reservations implements Serializable {
         this.endTime = endTime;
     }
 
-    public Character getIsCancelled() {
+    public String getIsCancelled() {
         return isCancelled;
     }
 
-    public void setIsCancelled(Character isCancelled) {
+    public void setIsCancelled(String isCancelled) {
         this.isCancelled = isCancelled;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public CoworkingSpaces getCoworkingSpaceId() {
@@ -129,20 +151,15 @@ public class Reservations implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Reservations)) {
             return false;
         }
         Reservations other = (Reservations) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
         return "cr.ac.una.proyecto1progra2.model.Reservations[ id=" + id + " ]";
     }
-    
 }

@@ -1,15 +1,11 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.App;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import cr.ac.una.proyecto1progra2.util.FlowController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-public class OptionsAdminController implements Initializable {
+public class OptionsAdminController extends Controller {
 
     @FXML
     private Button btnRegresar;
@@ -21,20 +17,29 @@ public class OptionsAdminController implements Initializable {
     private Button btnEditor;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-       
-    }    
+    public void initialize() {
+        // Puedes poner inicialización de botones o datos aquí si quieres
+    }
 
-  
     @FXML
-private void switchToPrimary(ActionEvent event) throws IOException {
-    App.setRoot("primary");  
-}
+    private void onActionBtnRegresar(ActionEvent event) {
+        FlowController.getInstance().goView("primary");
+    }
 
-  @FXML
-private void switchToUserManager(ActionEvent event) throws IOException {
-    App.setRoot("userManager");  
-}
+    @FXML
+    private void onActionBtnRegistro(ActionEvent event) {
+        FlowController.getInstance().goView("userManager");
+    }
 
-    
+    @FXML
+    private void onActionBtnEditor(ActionEvent event) {
+        // Aquí puedes navegar a otra pantalla si quieres
+        // FlowController.getInstance().goView("editorView");
+    }
+
+    @FXML
+    private void onActionBtnEstadisticas(ActionEvent event) {
+        // Aquí puedes navegar a una pantalla de estadísticas si quieres
+        // FlowController.getInstance().goView("estadisticasView");
+    }
 }

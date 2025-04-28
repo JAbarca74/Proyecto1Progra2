@@ -1,4 +1,4 @@
-package cr.ac.una.proyecto1progra2.utils;
+package cr.ac.una.proyecto1progra2.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

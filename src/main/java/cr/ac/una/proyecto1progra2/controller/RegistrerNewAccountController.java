@@ -1,27 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.App;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import cr.ac.una.proyecto1progra2.util.FlowController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-/**
- * FXML Controller class
- *
- * @author jeffersonabarcap
- */
-public class RegistrerNewAccountController implements Initializable {
+public class RegistrerNewAccountController extends Controller {
 
     @FXML
     private Button btnRegresar;
@@ -44,15 +31,13 @@ public class RegistrerNewAccountController implements Initializable {
     @FXML
     private Button btnCrearCuenta;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    } 
+    public void initialize() {
+        // Aquí podrías limpiar campos, setear defaults, etc.
+    }
+
     @FXML
-    private void switchToUserManager(ActionEvent event) throws IOException {
-    App.setRoot("userManager");  
-}
+    private void onActionBtnRegresar(ActionEvent event) {
+        FlowController.getInstance().goView("userManager");
+    }
 }

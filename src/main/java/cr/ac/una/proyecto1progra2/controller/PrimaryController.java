@@ -1,58 +1,63 @@
-// src/main/java/cr/ac/una/proyecto1progra2/controller/PrimaryController.java
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.App;
-import cr.ac.una.proyecto1progra2.service.UserService;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import cr.ac.una.proyecto1progra2.model.UsuariosDto;
+import cr.ac.una.proyecto1progra2.service.UsuariosService;
+import cr.ac.una.proyecto1progra2.util.FlowController;
+import cr.ac.una.proyecto1progra2.util.Respuesta;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class PrimaryController implements Initializable {
+public class PrimaryController extends Controller {
 
     @FXML
-    private Button btnInicioSecion;
+    private Button btnInicioSesion;
     @FXML
     private TextField txtUsuario;
     @FXML
     private TextField txtContraseña;
 
+    private final UsuariosService usuariosService = new UsuariosService();
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // No hay inicialización adicional
+    public void initialize() {
+        // Aquí podrías inicializar cosas si quieres, por ejemplo, limpiar campos, poner focus, etc.
     }
 
     @FXML
-    private void switchToOptions(ActionEvent event) throws IOException {
+    private void onActionBtnInicioSesion(ActionEvent event) {
         String usuario = txtUsuario.getText().trim();
         String contraseña = txtContraseña.getText().trim();
 
-        // 1) Intento de validación en BD
-        int role = UserService.validateLoginDB(usuario, contraseña);
+        if (usuario.isEmpty() || contraseña.isEmpty()) {
+            mostrarError("Debe ingresar usuario y contraseña.");
+            return;
+        }
 
-        if (role == 1) {
-            App.setRoot("optionsAdmin");
-        } else if (role == 2) {
-            App.setRoot("optionsUser");
-        } else {
-            // 2) Si falla, caemos al mock hard-code
-            if (UserService.validateAdimin(usuario, contraseña)) {
-                App.setRoot("optionsAdmin");
-            } else if (UserService.validateUser(usuario, contraseña)) {
-                App.setRoot("optionsUser");
+        Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
+
+        if (respuesta.getEstado()) {
+            UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
+
+            // Dependiendo del rol, cambia la vista
+            if (usuarioDto.getRolId() != null) {
+                if (usuarioDto.getRolId() == 1) { // Rol Administrador
+                    FlowController.getInstance().goView("optionsAdmin");
+                } else if (usuarioDto.getRolId() == 2) { // Rol Usuario
+                    FlowController.getInstance().goView("optionsUser");
+                } else {
+                    mostrarError("Rol de usuario desconocido.");
+                }
             } else {
-                // 3) Si todo falla, mostramos alerta
-                mostrarError("Usuario o contraseña incorrectos.");
+                mostrarError("No se pudo determinar el rol del usuario.");
             }
+        } else {
+            mostrarError(respuesta.getMensaje());
         }
     }
 
-    /** Muestra un Alert de tipo ERROR con mensaje dado */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error de inicio de sesión");

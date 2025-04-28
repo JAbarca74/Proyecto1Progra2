@@ -1,24 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.App;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import cr.ac.una.proyecto1progra2.util.FlowController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-/**
- * FXML Controller class
- *
- * @author jeffersonabarcap
- */
-public class UserManagerController implements Initializable {
+public class UserManagerController extends Controller {
 
     @FXML
     private Button btnRegresar;
@@ -29,23 +16,30 @@ public class UserManagerController implements Initializable {
     @FXML
     private Button btnEstadisticasGenerales;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
-    
-     @FXML
-    private void switchToOptionsAdmin(ActionEvent event) throws IOException {
-    App.setRoot("optionsAdmin");  
+    public void initialize() {
+        // Puedes hacer inicializaciones aquí si es necesario
     }
 
-     @FXML
-    private void switchToRegisterNewAccount(ActionEvent event) throws IOException {
-    App.setRoot("RegisterNewAccount");  
+    @FXML
+    private void onActionBtnRegresar(ActionEvent event) {
+        FlowController.getInstance().goView("optionsAdmin");
     }
 
+    @FXML
+    private void onActionBtnAdministradorUsuarios(ActionEvent event) {
+        FlowController.getInstance().goView("registerNewAccount");
+    }
+
+    @FXML
+    private void onActionBtnEditorEspacio(ActionEvent event) {
+        // Puedes programar aquí que abra otra pantalla, si existe
+        // FlowController.getInstance().goView("editorEspacio");
+    }
+
+    @FXML
+    private void onActionBtnEstadisticasGenerales(ActionEvent event) {
+        // Puedes programar aquí que abra otra pantalla, si existe
+        // FlowController.getInstance().goView("estadisticasGenerales");
+    }
 }

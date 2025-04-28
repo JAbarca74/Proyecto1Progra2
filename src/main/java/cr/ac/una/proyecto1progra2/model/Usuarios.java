@@ -1,76 +1,94 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.QueryHint;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
+/**
+ * Entidad Usuarios adaptada a estilo similar a Empleado de unaplanilla
+ */
 @Entity
 @Table(name = "TB_USUARIOS")
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
     @NamedQuery(name = "Usuarios.findById", query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
-    @NamedQuery(name = "Usuarios.findByUsername", query = "SELECT u FROM Usuarios u WHERE u.username = :username"),
-    @NamedQuery(name = "Usuarios.findByPassword", query = "SELECT u FROM Usuarios u WHERE u.password = :password"),
-    @NamedQuery(name = "Usuarios.findByRoleId", query = "SELECT u FROM Usuarios u WHERE u.roleId = :roleId"),
-    @NamedQuery(name = "Usuarios.findByIsActive", query = "SELECT u FROM Usuarios u WHERE u.isActive = :isActive")})
+    @NamedQuery(name = "Usuarios.findByUsername", query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username", hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
+    @NamedQuery(name = "Usuarios.findByCredentials", query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username AND u.password = :password", hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
+})
 public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private Long id;
+
     @Basic(optional = false)
     @Column(name = "USERNAME")
     private String username;
+
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
+
     @Basic(optional = false)
     @Column(name = "ROLE_ID")
     private BigInteger roleId;
+
+    @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
-    private Character isActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private String isActive; // Guardaremos como "A" o "I"
+
+    @Version
+    @Basic(optional = false)
+    @Column(name = "VERSION")
+    private Long version;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<Reservations> reservationsCollection;
-    
+
     public Usuarios() {
     }
 
-    public Usuarios(BigDecimal id) {
+    public Usuarios(Long id) {
         this.id = id;
     }
 
-    public Usuarios(BigDecimal id, String username, String password, BigInteger roleId) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.roleId = roleId;
+    public Usuarios(UsuariosDto usuariosDto) {
+        this();
+        this.id = usuariosDto.getId();
+        actualizar(usuariosDto);
     }
 
-    public BigDecimal getId() {
+    public void actualizar(UsuariosDto usuariosDto) {
+        this.username = usuariosDto.getNombre();
+        this.password = usuariosDto.getContraseña();
+        this.roleId = usuariosDto.getRolId() != null ? BigInteger.valueOf(usuariosDto.getRolId()) : null;
+        this.isActive = usuariosDto.getEstado();
+        this.version = usuariosDto.getVersion();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,12 +116,20 @@ public class Usuarios implements Serializable {
         this.roleId = roleId;
     }
 
-    public Character getIsActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Character isActive) {
+    public void setIsActive(String isActive) {
         this.isActive = isActive;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public Collection<Reservations> getReservationsCollection() {
@@ -123,20 +149,15 @@ public class Usuarios implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Usuarios)) {
             return false;
         }
         Usuarios other = (Usuarios) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
         return "cr.ac.una.proyecto1progra2.model.Usuarios[ id=" + id + " ]";
     }
-    
 }

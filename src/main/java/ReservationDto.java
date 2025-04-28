@@ -1,8 +1,8 @@
-package cr.ac.una.proyecto1progra2.dto;
+
 
 import java.time.LocalDateTime;
 
-public class ReservationDTO {
+public class ReservationDto {
     private Long id;
     private Long userId;
     private Long coworkingSpaceId;
