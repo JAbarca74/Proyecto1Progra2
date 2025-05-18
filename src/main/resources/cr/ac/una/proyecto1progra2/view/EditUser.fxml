@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.EditUserController"
+            prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css">
+    <children>
+        <VBox alignment="CENTER" spacing="20" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+            <children>
+
+                <Label text="Editar Persona" styleClass="titulo"/>
+
+                <!-- Campo de ID agregado -->
+                <TextField fx:id="txtId" promptText="ID" editable="false"/>
+
+                <TextField fx:id="txtName" promptText="Nombre"/>
+                <TextField fx:id="txtLastName" promptText="Apellido"/>
+                <TextField fx:id="txtEmail" promptText="Correo Electrónico"/>
+                <TextField fx:id="txtAddress" promptText="Dirección"/>
+
+                <HBox alignment="CENTER" spacing="10">
+                    <children>
+                        <Button text="Guardar Cambios" onAction="#onGuardarCambios"/>
+                       
+                    </children>
+                </HBox>
+
+            </children>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

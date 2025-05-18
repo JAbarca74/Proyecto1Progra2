@@ -39,7 +39,7 @@ public class RegistrerNewAccountController extends Controller {
 
     @Override
     public void initialize() {
-        // Asegura que solo un role esté seleccionado a la vez
+       
         chkAdmin.setOnAction(e -> {
             if (chkAdmin.isSelected()) chkUser.setSelected(false);
         });
@@ -87,7 +87,7 @@ public class RegistrerNewAccountController extends Controller {
         Respuesta resp = usuariosService.guardarUsuario(dto);
         if (resp.getEstado()) {
             mostrarInfo("Cuenta creada exitosamente.");
-            FlowController.getInstance().goView("userManager");
+          
         } else {
             mostrarError(resp.getMensaje());
         }

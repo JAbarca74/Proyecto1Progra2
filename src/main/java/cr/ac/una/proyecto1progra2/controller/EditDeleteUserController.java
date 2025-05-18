@@ -40,13 +40,16 @@ public class EditDeleteUserController extends Controller implements Initializabl
 
     private final UsuariosService usuariosService = new UsuariosService();
     private UsuariosDto usuarioSeleccionado;
+    @FXML
+    private Button btnBuscar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
-        colRole.setCellValueFactory(new PropertyValueFactory<>("roleId"));
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("isActive"));
+       colUsername.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
+colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+
 
         tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             usuarioSeleccionado = newVal;
@@ -91,19 +94,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
         }
     }
 
-    @FXML
-    private void onActionBtnEditar(ActionEvent event) {
-        if (usuarioSeleccionado == null) {
-            mostrarMensaje("Debe seleccionar un usuario para editar.");
-            return;
-        }
-
-        // Aquí puedes pasar el usuarioSeleccionado a otra pantalla
-        // Por ahora solo se muestra el cambio de pantalla
-        FlowController.getInstance().goViewInWindowModal("UserEditForm", getStage(), true);
-    }
-
-    @FXML
     private void onActionBtnEliminar(ActionEvent event) {
         if (usuarioSeleccionado == null) {
             mostrarMensaje("Debe seleccionar un usuario para eliminar.");
@@ -126,6 +116,18 @@ public class EditDeleteUserController extends Controller implements Initializabl
     private void mostrarMensaje(String mensaje) {
         System.out.println(mensaje); // Aquí puedes usar tu clase Utilities si la tienes
     }
+    
+@FXML
+private void onActionBtnEditar(ActionEvent event) {
+    if (usuarioSeleccionado == null) {
+        mostrarMensaje("Debe seleccionar un usuario para editar.");
+        return;
+    }
+    System.out.println("hola");
+    // Abrir la ventana modal
+    FlowController.getInstance().goViewInWindowModal("EditUser", getStage(), true); 
+    getStage().close();
+}
 
     @Override
     public void initialize() {

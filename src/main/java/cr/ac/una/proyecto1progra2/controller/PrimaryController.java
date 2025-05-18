@@ -67,4 +67,10 @@ public class PrimaryController extends Controller {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+    
+    @FXML
+private void onActionBtnRegistrarUsuario(ActionEvent event) {
+    FlowController.getInstance().goViewInWindow("RegisterNewAccount");
+}
+
 }
