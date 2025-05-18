@@ -4,58 +4,72 @@ import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.model.CoworkingSpacesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
-import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 public class CoworkingSpacesService {
 
-    EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private final EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
-    public Respuesta getCoworkingSpace(Long id) {
+    public Respuesta listarCoworkingSpaces() {
         try {
-            Query qry = em.createNamedQuery("CoworkingSpaces.findById", CoworkingSpaces.class);
-            qry.setParameter("id", id);
-            CoworkingSpacesDto coworkingSpacesDto = new CoworkingSpacesDto((CoworkingSpaces) qry.getSingleResult());
-            return new Respuesta(true, "", "", "CoworkingSpace", coworkingSpacesDto);
-        } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe el coworking space con el id ingresado.", "getCoworkingSpace NoResultException");
+            TypedQuery<CoworkingSpaces> qry = em.createNamedQuery("CoworkingSpaces.findAll", CoworkingSpaces.class);
+            List<CoworkingSpaces> list = qry.getResultList();
+            List<CoworkingSpacesDto> dto = new ArrayList<>();
+            for (CoworkingSpaces c : list) {
+                dto.add(new CoworkingSpacesDto(c));
+            }
+            return new Respuesta(true, "", "", "Coworkings", dto);
         } catch (Exception ex) {
-            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error obteniendo el coworking space [" + id + "]", ex);
-            return new Respuesta(false, "Error obteniendo el coworking space.", "getCoworkingSpace " + ex.getMessage());
+            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error listando coworkings.", ex);
+            return new Respuesta(false, "Error listando coworkings.", ex.getMessage());
         }
     }
 
-    public Respuesta guardarCoworkingSpace(CoworkingSpacesDto coworkingSpacesDto) {
+    public Respuesta getCoworkingSpace(Long id) {
+        try {
+            CoworkingSpaces e = em.find(CoworkingSpaces.class, id);
+            if (e == null) {
+                return new Respuesta(false, "No existe el coworking con ese id.", "");
+            }
+            return new Respuesta(true, "", "", "Coworking", new CoworkingSpacesDto(e));
+        } catch (Exception ex) {
+            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error obteniendo coworking [" + id + "]", ex);
+            return new Respuesta(false, "Error obteniendo coworking.", ex.getMessage());
+        }
+    }
+
+    public Respuesta guardarCoworkingSpace(CoworkingSpacesDto dto) {
         try {
             et = em.getTransaction();
             et.begin();
-            CoworkingSpaces coworkingSpace;
-            if (coworkingSpacesDto.getId() != null && coworkingSpacesDto.getId() > 0) {
-                coworkingSpace = em.find(CoworkingSpaces.class, coworkingSpacesDto.getId());
-                if (coworkingSpace == null) {
+            CoworkingSpaces e;
+            if (dto.getId() != null && dto.getId() > 0) {
+                e = em.find(CoworkingSpaces.class, dto.getId());
+                if (e == null) {
                     et.rollback();
-                    return new Respuesta(false, "No se encontró el coworking space a modificar.", "guardarCoworkingSpace NoResultException");
+                    return new Respuesta(false, "No se encontró el coworking a modificar.", "");
                 }
-                coworkingSpace.actualizar(coworkingSpacesDto);
-                coworkingSpace = em.merge(coworkingSpace);
+                e.actualizar(dto);
+                e = em.merge(e);
             } else {
-                coworkingSpace = new CoworkingSpaces(coworkingSpacesDto);
-                em.persist(coworkingSpace);
+                e = new CoworkingSpaces(dto);
+                em.persist(e);
             }
             et.commit();
-            return new Respuesta(true, "", "", "CoworkingSpace", new CoworkingSpacesDto(coworkingSpace));
+            return new Respuesta(true, "", "", "Coworking", new CoworkingSpacesDto(e));
         } catch (Exception ex) {
-            et.rollback();
-            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Ocurrió un error al guardar el coworking space.", ex);
-            return new Respuesta(false, "Ocurrió un error al guardar el coworking space.", "guardarCoworkingSpace " + ex.getMessage());
+            if (et.isActive()) et.rollback();
+            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error guardando coworking.", ex);
+            return new Respuesta(false, "Error guardando coworking.", ex.getMessage());
         }
     }
 
@@ -63,42 +77,18 @@ public class CoworkingSpacesService {
         try {
             et = em.getTransaction();
             et.begin();
-            CoworkingSpaces coworkingSpace;
-            if (id != null && id > 0) {
-                coworkingSpace = em.find(CoworkingSpaces.class, id);
-                if (coworkingSpace == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No se encontró el coworking space a eliminar.", "eliminarCoworkingSpace NoResultException");
-                }
-                em.remove(coworkingSpace);
-            } else {
+            CoworkingSpaces e = em.find(CoworkingSpaces.class, id);
+            if (e == null) {
                 et.rollback();
-                return new Respuesta(false, "Debe cargar el coworking space a eliminar.", "eliminarCoworkingSpace NoResultException");
+                return new Respuesta(false, "No se encontró el coworking a eliminar.", "");
             }
+            em.remove(e);
             et.commit();
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
-            et.rollback();
-            if (ex.getCause() != null && ex.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-                return new Respuesta(false, "No se puede eliminar el coworking space porque tiene relaciones con otros registros.", "eliminarCoworkingSpace " + ex.getMessage());
-            }
-            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error eliminando el coworking space.", ex);
-            return new Respuesta(false, "Error eliminando el coworking space.", "eliminarCoworkingSpace " + ex.getMessage());
-        }
-    }
-
-    public Respuesta listarCoworkingSpaces() {
-        try {
-            Query qry = em.createNamedQuery("CoworkingSpaces.findAll", CoworkingSpaces.class);
-            List<CoworkingSpaces> coworkingSpaces = qry.getResultList();
-            List<CoworkingSpacesDto> coworkingSpacesDto = new ArrayList<>();
-            for (CoworkingSpaces coworking : coworkingSpaces) {
-                coworkingSpacesDto.add(new CoworkingSpacesDto(coworking));
-            }
-            return new Respuesta(true, "", "", "CoworkingSpaces", coworkingSpacesDto);
-        } catch (Exception ex) {
-            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error listando coworking spaces.", ex);
-            return new Respuesta(false, "Error listando coworking spaces.", "listarCoworkingSpaces " + ex.getMessage());
+            if (et.isActive()) et.rollback();
+            Logger.getLogger(CoworkingSpacesService.class.getName()).log(Level.SEVERE, "Error eliminando coworking.", ex);
+            return new Respuesta(false, "Error eliminando coworking.", ex.getMessage());
         }
     }
 }

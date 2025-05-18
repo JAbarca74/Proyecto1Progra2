@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.UserManagerController"
+            prefWidth="600" prefHeight="400">
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="btnInicioSecion" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.UserManagerController">
-   <children>
-      <Button fx:id="btnRegresar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToOptionsAdmin" styleClass="btnInicioSecion" text="Regresar" />
-      <Label layoutX="154.0" layoutY="74.0" text="¿Que decea hacer?">
-         <font>
-            <Font name="System Italic" size="36.0" />
-         </font>
-      </Label>
-      <HBox layoutX="442.0" layoutY="14.0" prefHeight="57.0" prefWidth="144.0">
-         <children>
-            <Label text="tri" textFill="BLUE">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label prefHeight="64.0" prefWidth="49.0" text="va" textFill="YELLOW">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-            <Label text="go" textFill="RED">
-               <font>
-                  <Font name="System Italic" size="48.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox layoutX="219.0" layoutY="200.0" prefHeight="108.0" prefWidth="162.0" spacing="15.0">
-         <children>
-            <Button fx:id="btnAdministradorUsuarios" onAction="#switchToRegisterNewAccount" prefHeight="26.0" prefWidth="163.0" text="Registrar nuevas cuentas " />
-            <Button fx:id="btnEditorEspacio" prefHeight="26.0" prefWidth="201.0" text="Habilitacion de cuentas " />
-            <Button fx:id="btnEstadisticasGenerales" prefHeight="26.0" prefWidth="166.0" text="Actualizar informacion" />
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+  <!-- Barra de herramientas -->
+  <top>
+    <ToolBar>
+      <Button text="Nuevo"    onAction="#onNuevo"/>
+      <Button text="Guardar"  onAction="#onGuardar"/>
+      <Button text="Eliminar" onAction="#onEliminar"/>
+    </ToolBar>
+  </top>
+
+  <!-- Tabla + formulario -->
+  <center>
+    <SplitPane orientation="VERTICAL">
+      <!-- Tabla de usuarios -->
+      <TableView fx:id="tblUsuarios" prefHeight="200">
+        <columns>
+          <TableColumn fx:id="colId"     text="ID"      prefWidth="50"/>
+          <TableColumn fx:id="colNombre" text="Nombre"  prefWidth="150"/>
+          <TableColumn fx:id="colCorreo" text="Correo"  prefWidth="150"/>
+          <TableColumn fx:id="colRol"    text="Rol"     prefWidth="75"/>
+          <TableColumn fx:id="colEstado" text="Activo?" prefWidth="75"/>
+        </columns>
+      </TableView>
+
+      <!-- Formulario de edición -->
+      <GridPane hgap="10" vgap="10" padding="10">
+        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Correo:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtCorreo" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Rol:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <ChoiceBox fx:id="cbRol" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Activo:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="chkActivo" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+      </GridPane>
+    </SplitPane>
+  </center>
+</BorderPane>

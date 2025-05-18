@@ -1,81 +1,37 @@
 package cr.ac.una.proyecto1progra2.model;
 
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class SpaceTypesDto {
 
-    public SimpleStringProperty id;
-    public SimpleStringProperty nombre;
-    public SimpleObjectProperty<Boolean> estado;
-    public Long version;
-    private Boolean modificado;
+    private final SimpleLongProperty   id        = new SimpleLongProperty();
+    private final SimpleStringProperty typeName  = new SimpleStringProperty();
+    private Long                       version;
+    private boolean                    modificado = false;
 
-    public SpaceTypesDto() {
-        this.modificado = false;
-        this.id = new SimpleStringProperty();
-        this.nombre = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty<>(true);
+    public SpaceTypesDto() {}
+
+    /** Mapea desde la entidad */
+    public SpaceTypesDto(SpaceTypes e) {
+        setId(e.getId());
+        setTypeName(e.getTypeName());
+        this.version = e.getVersion();
     }
 
-    // 🚀 Constructor bien hecho que mapea la entidad SpaceTypes
-    public SpaceTypesDto(SpaceTypes type) {
-        this();
-        this.id.set(type.getId() != null ? type.getId().toString() : null);
-        this.nombre.set(type.getTypeName());
-        this.version = type.getVersion();
-    }
+    // id
+    public Long getId() { return id.get(); }
+    public void setId(Long id) { this.id.set(id != null ? id : 0L); }
+    public SimpleLongProperty idProperty() { return id; }
 
-    public Long getId() {
-        if (id.get() != null && !id.get().isEmpty()) {
-            return Long.valueOf(id.get());
-        } else {
-            return null;
-        }
-    }
+    // typeName
+    public String getTypeName() { return typeName.get(); }
+    public void setTypeName(String name) { this.typeName.set(name); }
+    public SimpleStringProperty typeNameProperty() { return typeName; }
 
-    public void setId(Long id) {
-        this.id.set(id != null ? id.toString() : null);
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 
-    public String getNombre() {
-        return nombre.get();
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre.set(nombre);
-    }
-
-    public Boolean getEstado() {
-        return estado.get();
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado.set(estado);
-    }
-
-    public Boolean getModificado() {
-        return modificado;
-    }
-
-    public void setModificado(Boolean modificado) {
-        this.modificado = modificado;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "SpaceTypesDto{" +
-                "id=" + id.get() +
-                ", nombre=" + nombre.get() +
-                ", estado=" + estado.get() +
-                '}';
-    }
+    public boolean isModificado() { return modificado; }
+    public void setModificado(boolean m) { this.modificado = m; }
 }

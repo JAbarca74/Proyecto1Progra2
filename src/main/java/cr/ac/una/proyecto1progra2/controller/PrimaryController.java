@@ -8,37 +8,48 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class PrimaryController extends Controller {
 
-    @FXML private TextField txtUsuario;
-    @FXML private TextField txtContraseña;
-    @FXML private Button btnInicioSesion;
+    @FXML private TextField      txtUsuario;
+    @FXML private PasswordField  txtContraseña;
+    @FXML private Button         btnInicioSesion;
 
     private final UsuariosService usuariosService = new UsuariosService();
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        // Aquí podrías inicializar cosas si hiciera falta
+    }
 
     @FXML
     private void onActionBtnInicioSesion(ActionEvent event) {
-        String usuario = txtUsuario.getText().trim();
+        String usuario    = txtUsuario.getText().trim();
         String contraseña = txtContraseña.getText().trim();
+
+        // 1) Validar que no estén vacíos
         if (usuario.isEmpty() || contraseña.isEmpty()) {
             mostrarError("Debe ingresar usuario y contraseña.");
             return;
         }
+
+        // 2) Llamar al servicio de login
         Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
         if (!respuesta.getEstado()) {
+            // Si el servicio devolvió error, mostrarlo
             mostrarError(respuesta.getMensaje());
             return;
         }
+
+        // 3) Obtener DTO y verificar rol
         UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
-        if (usuarioDto.getRolId() != null) {
-            if (usuarioDto.getRolId() == 1L) {
+        Long rolId = usuarioDto.getRolId();
+        if (rolId != null) {
+            if (rolId.equals(1L)) {
                 FlowController.getInstance().goView("optionsAdmin");
-            } else if (usuarioDto.getRolId() == 2L) {
+            } else if (rolId.equals(2L)) {
                 FlowController.getInstance().goView("optionsUser");
             } else {
                 mostrarError("Rol de usuario desconocido.");
@@ -48,6 +59,7 @@ public class PrimaryController extends Controller {
         }
     }
 
+    /** Muestra una alerta de error con el mensaje dado */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error de inicio de sesión");

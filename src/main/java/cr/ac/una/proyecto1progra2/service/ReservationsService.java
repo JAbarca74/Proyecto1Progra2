@@ -4,101 +4,91 @@ import cr.ac.una.proyecto1progra2.model.Reservations;
 import cr.ac.una.proyecto1progra2.model.ReservationsDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
-import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 public class ReservationsService {
 
-    EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private final EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
-    public Respuesta getReservation(Long id) {
+    public Respuesta listarReservas() {
         try {
-            Query qry = em.createNamedQuery("Reservations.findById", Reservations.class);
-            qry.setParameter("id", id);
-            ReservationsDto reservationDto = new ReservationsDto((Reservations) qry.getSingleResult());
-            return new Respuesta(true, "", "", "Reservation", reservationDto);
-        } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe la reservación con el id ingresado.", "getReservation NoResultException");
+            TypedQuery<Reservations> qry = em.createNamedQuery("Reservations.findAll", Reservations.class);
+            List<Reservations> list = qry.getResultList();
+            List<ReservationsDto> dto = new ArrayList<>();
+            for (Reservations r : list) {
+                dto.add(new ReservationsDto(r));
+            }
+            return new Respuesta(true, "", "", "Reservas", dto);
         } catch (Exception ex) {
-            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error obteniendo la reservación [" + id + "]", ex);
-            return new Respuesta(false, "Error obteniendo la reservación.", "getReservation " + ex.getMessage());
+            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error listando reservas.", ex);
+            return new Respuesta(false, "Error listando reservas.", ex.getMessage());
         }
     }
 
-    public Respuesta guardarReservation(ReservationsDto reservationDto) {
+    public Respuesta getReserva(Long id) {
+        try {
+            Reservations r = em.find(Reservations.class, id);
+            if (r == null) {
+                return new Respuesta(false, "No existe la reserva con ese id.", "");
+            }
+            return new Respuesta(true, "", "", "Reserva", new ReservationsDto(r));
+        } catch (Exception ex) {
+            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error obteniendo reserva [" + id + "]", ex);
+            return new Respuesta(false, "Error obteniendo reserva.", ex.getMessage());
+        }
+    }
+
+    public Respuesta guardarReserva(ReservationsDto dto) {
         try {
             et = em.getTransaction();
             et.begin();
-            Reservations reservation;
-            if (reservationDto.getId() != null && reservationDto.getId() > 0) {
-                reservation = em.find(Reservations.class, reservationDto.getId());
-                if (reservation == null) {
+            Reservations r;
+            if (dto.getId() != null && dto.getId() > 0) {
+                r = em.find(Reservations.class, dto.getId());
+                if (r == null) {
                     et.rollback();
-                    return new Respuesta(false, "No se encontró la reservación a modificar.", "guardarReservation NoResultException");
+                    return new Respuesta(false, "No se encontró la reserva a modificar.", "");
                 }
-                reservation.actualizar(reservationDto);
-                reservation = em.merge(reservation);
+                r.actualizar(dto);
+                r = em.merge(r);
             } else {
-                reservation = new Reservations(reservationDto);
-                em.persist(reservation);
+                r = new Reservations(dto);
+                em.persist(r);
             }
             et.commit();
-            return new Respuesta(true, "", "", "Reservation", new ReservationsDto(reservation));
+            return new Respuesta(true, "", "", "Reserva", new ReservationsDto(r));
         } catch (Exception ex) {
-            et.rollback();
-            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Ocurrió un error al guardar la reservación.", ex);
-            return new Respuesta(false, "Ocurrió un error al guardar la reservación.", "guardarReservation " + ex.getMessage());
+            if (et.isActive()) et.rollback();
+            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error guardando reserva.", ex);
+            return new Respuesta(false, "Error guardando reserva.", ex.getMessage());
         }
     }
 
-    public Respuesta eliminarReservation(Long id) {
+    public Respuesta eliminarReserva(Long id) {
         try {
             et = em.getTransaction();
             et.begin();
-            Reservations reservation;
-            if (id != null && id > 0) {
-                reservation = em.find(Reservations.class, id);
-                if (reservation == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No se encontró la reservación a eliminar.", "eliminarReservation NoResultException");
-                }
-                em.remove(reservation);
-            } else {
+            Reservations r = em.find(Reservations.class, id);
+            if (r == null) {
                 et.rollback();
-                return new Respuesta(false, "Debe cargar la reservación a eliminar.", "eliminarReservation NoResultException");
+                return new Respuesta(false, "No se encontró la reserva a eliminar.", "");
             }
+            em.remove(r);
             et.commit();
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
-            et.rollback();
-            if (ex.getCause() != null && ex.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-                return new Respuesta(false, "No se puede eliminar la reservación porque tiene relaciones con otros registros.", "eliminarReservation " + ex.getMessage());
-            }
-            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error eliminando la reservación.", ex);
-            return new Respuesta(false, "Error eliminando la reservación.", "eliminarReservation " + ex.getMessage());
-        }
-    }
-
-    public Respuesta listarReservations() {
-        try {
-            Query qry = em.createNamedQuery("Reservations.findAll", Reservations.class);
-            List<Reservations> reservations = qry.getResultList();
-            List<ReservationsDto> reservationsDto = new ArrayList<>();
-            for (Reservations reservation : reservations) {
-                reservationsDto.add(new ReservationsDto(reservation));
-            }
-            return new Respuesta(true, "", "", "Reservations", reservationsDto);
-        } catch (Exception ex) {
-            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error listando reservaciones.", ex);
-            return new Respuesta(false, "Error listando reservaciones.", "listarReservations " + ex.getMessage());
+            if (et.isActive()) et.rollback();
+            Logger.getLogger(ReservationsService.class.getName()).log(Level.SEVERE, "Error eliminando reserva.", ex);
+            return new Respuesta(false, "Error eliminando reserva.", ex.getMessage());
         }
     }
 }

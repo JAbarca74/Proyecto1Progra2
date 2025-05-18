@@ -1,81 +1,37 @@
 package cr.ac.una.proyecto1progra2.model;
 
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class RolesDto {
 
-    public SimpleStringProperty id;
-    public SimpleStringProperty nombre;
-    public SimpleObjectProperty<Boolean> estado;
-    public Long version;
-    private Boolean modificado;
+    private final SimpleLongProperty id     = new SimpleLongProperty();
+    private final SimpleStringProperty nombre = new SimpleStringProperty();
+    private Long version;
+    private boolean modificado = false;
 
-    public RolesDto() {
-        this.modificado = false;
-        this.id = new SimpleStringProperty();
-        this.nombre = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty<>(true);
-    }
+    public RolesDto() {}
 
-    // 🚀 Constructor que mapea desde la entidad Roles
     public RolesDto(Roles rol) {
-        this();
-        this.id.set(rol.getId() != null ? rol.getId().toString() : null);
-        this.nombre.set(rol.getName());
-        this.version = rol.getVersion();
+        setId(rol.getId());
+        setNombre(rol.getName());
+        setVersion(rol.getVersion());
     }
 
-    public Long getId() {
-        if (id.get() != null && !id.get().isEmpty()) {
-            return Long.valueOf(id.get());
-        } else {
-            return null;
-        }
-    }
+    public Long getId() { return id.get(); }
+    public void setId(Long v) { id.set(v); }
 
-    public void setId(Long id) {
-        this.id.set(id != null ? id.toString() : null);
-    }
+    public String getNombre() { return nombre.get(); }
+    public void setNombre(String s) { nombre.set(s); }
 
-    public String getNombre() {
-        return nombre.get();
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long v) { version = v; }
 
-    public void setNombre(String nombre) {
-        this.nombre.set(nombre);
-    }
-
-    public Boolean getEstado() {
-        return estado.get();
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado.set(estado);
-    }
-
-    public Boolean getModificado() {
-        return modificado;
-    }
-
-    public void setModificado(Boolean modificado) {
-        this.modificado = modificado;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
+    public boolean isModificado() { return modificado; }
+    public void setModificado(boolean m) { modificado = m; }
 
     @Override
     public String toString() {
-        return "RolesDto{" +
-                "id=" + id.get() +
-                ", nombre=" + nombre.get() +
-                ", estado=" + estado.get() +
-                '}';
+        return nombre.get();  // para que ChoiceBox muestre el nombre
     }
 }

@@ -4,19 +4,20 @@ import cr.ac.una.proyecto1progra2.model.Roles;
 import cr.ac.una.proyecto1progra2.model.RolesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 public class RolesService {
 
-    EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private final EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
     public Respuesta getRol(Long id) {
@@ -30,6 +31,21 @@ public class RolesService {
         } catch (Exception ex) {
             Logger.getLogger(RolesService.class.getName()).log(Level.SEVERE, "Error obteniendo el rol [" + id + "]", ex);
             return new Respuesta(false, "Error obteniendo el rol.", "getRol " + ex.getMessage());
+        }
+    }
+
+    public Respuesta listarRoles() {
+        try {
+            Query qry = em.createNamedQuery("Roles.findAll", Roles.class);
+            List<Roles> roles = qry.getResultList();
+            List<RolesDto> rolesDto = new ArrayList<>();
+            for (Roles rol : roles) {
+                rolesDto.add(new RolesDto(rol));
+            }
+            return new Respuesta(true, "", "", "Roles", rolesDto);
+        } catch (Exception ex) {
+            Logger.getLogger(RolesService.class.getName()).log(Level.SEVERE, "Error listando roles.", ex);
+            return new Respuesta(false, "Error listando roles.", "listarRoles " + ex.getMessage());
         }
     }
 
@@ -53,7 +69,7 @@ public class RolesService {
             et.commit();
             return new Respuesta(true, "", "", "Rol", new RolesDto(rol));
         } catch (Exception ex) {
-            et.rollback();
+            if (et.isActive()) et.rollback();
             Logger.getLogger(RolesService.class.getName()).log(Level.SEVERE, "Ocurrió un error al guardar el rol.", ex);
             return new Respuesta(false, "Ocurrió un error al guardar el rol.", "guardarRol " + ex.getMessage());
         }
@@ -63,42 +79,21 @@ public class RolesService {
         try {
             et = em.getTransaction();
             et.begin();
-            Roles rol;
-            if (id != null && id > 0) {
-                rol = em.find(Roles.class, id);
-                if (rol == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No se encontró el rol a eliminar.", "eliminarRol NoResultException");
-                }
-                em.remove(rol);
-            } else {
+            Roles rol = em.find(Roles.class, id);
+            if (rol == null) {
                 et.rollback();
-                return new Respuesta(false, "Debe cargar el rol a eliminar.", "eliminarRol NoResultException");
+                return new Respuesta(false, "No se encontró el rol a eliminar.", "eliminarRol NoResultException");
             }
+            em.remove(rol);
             et.commit();
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
-            et.rollback();
+            if (et.isActive()) et.rollback();
             if (ex.getCause() != null && ex.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
                 return new Respuesta(false, "No se puede eliminar el rol porque tiene relaciones con otros registros.", "eliminarRol " + ex.getMessage());
             }
             Logger.getLogger(RolesService.class.getName()).log(Level.SEVERE, "Error eliminando el rol.", ex);
             return new Respuesta(false, "Error eliminando el rol.", "eliminarRol " + ex.getMessage());
-        }
-    }
-
-    public Respuesta listarRoles() {
-        try {
-            Query qry = em.createNamedQuery("Roles.findAll", Roles.class);
-            List<Roles> roles = qry.getResultList();
-            List<RolesDto> rolesDto = new ArrayList<>();
-            for (Roles rol : roles) {
-                rolesDto.add(new RolesDto(rol));
-            }
-            return new Respuesta(true, "", "", "Roles", rolesDto);
-        } catch (Exception ex) {
-            Logger.getLogger(RolesService.class.getName()).log(Level.SEVERE, "Error listando roles.", ex);
-            return new Respuesta(false, "Error listando roles.", "listarRoles " + ex.getMessage());
         }
     }
 }

@@ -4,101 +4,87 @@ import cr.ac.una.proyecto1progra2.model.SpaceTypes;
 import cr.ac.una.proyecto1progra2.model.SpaceTypesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
-import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 public class SpaceTypesService {
 
-    EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
+    private final EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction tx;
 
-    public Respuesta getSpaceType(Long id) {
+    @SuppressWarnings("unchecked")
+    public Respuesta listarTipos() {
         try {
-            Query qry = em.createNamedQuery("SpaceTypes.findById", SpaceTypes.class);
-            qry.setParameter("id", id);
-            SpaceTypesDto spaceTypeDto = new SpaceTypesDto((SpaceTypes) qry.getSingleResult());
-            return new Respuesta(true, "", "", "SpaceType", spaceTypeDto);
-        } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe el tipo de espacio con el id ingresado.", "getSpaceType NoResultException");
+            Query q = em.createNamedQuery("SpaceTypes.findAll", SpaceTypes.class);
+            List<SpaceTypes> list = q.getResultList();
+            List<SpaceTypesDto> dto = new ArrayList<>();
+            for (SpaceTypes e : list) dto.add(new SpaceTypesDto(e));
+            return new Respuesta(true, "", "", "Tipos", dto);
         } catch (Exception ex) {
-            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, "Error obteniendo el tipo de espacio [" + id + "]", ex);
-            return new Respuesta(false, "Error obteniendo el tipo de espacio.", "getSpaceType " + ex.getMessage());
+            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, "Error listando tipos.", "listarTipos " + ex.getMessage());
         }
     }
 
-    public Respuesta guardarSpaceType(SpaceTypesDto spaceTypeDto) {
+    public Respuesta getTipo(Long id) {
         try {
-            et = em.getTransaction();
-            et.begin();
-            SpaceTypes spaceType;
-            if (spaceTypeDto.getId() != null && spaceTypeDto.getId() > 0) {
-                spaceType = em.find(SpaceTypes.class, spaceTypeDto.getId());
-                if (spaceType == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No se encontró el tipo de espacio a modificar.", "guardarSpaceType NoResultException");
-                }
-                spaceType.actualizar(spaceTypeDto);
-                spaceType = em.merge(spaceType);
-            } else {
-                spaceType = new SpaceTypes(spaceTypeDto);
-                em.persist(spaceType);
-            }
-            et.commit();
-            return new Respuesta(true, "", "", "SpaceType", new SpaceTypesDto(spaceType));
+            SpaceTypes e = em.find(SpaceTypes.class, id);
+            if (e == null)
+                return new Respuesta(false, "No existe tipo con ese id.", "getTipo NoResult");
+            return new Respuesta(true, "", "", "Tipo", new SpaceTypesDto(e));
         } catch (Exception ex) {
-            et.rollback();
-            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, "Ocurrió un error al guardar el tipo de espacio.", ex);
-            return new Respuesta(false, "Ocurrió un error al guardar el tipo de espacio.", "guardarSpaceType " + ex.getMessage());
+            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, "Error obteniendo tipo.", "getTipo " + ex.getMessage());
         }
     }
 
-    public Respuesta eliminarSpaceType(Long id) {
+    public Respuesta guardarTipo(SpaceTypesDto dto) {
         try {
-            et = em.getTransaction();
-            et.begin();
-            SpaceTypes spaceType;
-            if (id != null && id > 0) {
-                spaceType = em.find(SpaceTypes.class, id);
-                if (spaceType == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No se encontró el tipo de espacio a eliminar.", "eliminarSpaceType NoResultException");
+            tx = em.getTransaction(); tx.begin();
+            SpaceTypes e;
+            if (dto.getId() != null && dto.getId() > 0) {
+                e = em.find(SpaceTypes.class, dto.getId());
+                if (e == null) {
+                    tx.rollback();
+                    return new Respuesta(false, "Tipo no encontrado.", "guardarTipo");
                 }
-                em.remove(spaceType);
+                e.setTypeName(dto.getTypeName());
+                e.setVersion(dto.getVersion());
+                e = em.merge(e);
             } else {
-                et.rollback();
-                return new Respuesta(false, "Debe cargar el tipo de espacio a eliminar.", "eliminarSpaceType NoResultException");
+                e = new SpaceTypes(dto);
+                em.persist(e);
             }
-            et.commit();
+            tx.commit();
+            return new Respuesta(true, "", "", "Tipo", new SpaceTypesDto(e));
+        } catch (Exception ex) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, "Error guardando tipo.", "guardarTipo " + ex.getMessage());
+        }
+    }
+
+    public Respuesta eliminarTipo(Long id) {
+        try {
+            tx = em.getTransaction(); tx.begin();
+            SpaceTypes e = em.find(SpaceTypes.class, id);
+            if (e == null) {
+                tx.rollback();
+                return new Respuesta(false, "Tipo no encontrado.", "eliminarTipo");
+            }
+            em.remove(e);
+            tx.commit();
             return new Respuesta(true, "", "");
         } catch (Exception ex) {
-            et.rollback();
-            if (ex.getCause() != null && ex.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-                return new Respuesta(false, "No se puede eliminar el tipo de espacio porque tiene relaciones con otros registros.", "eliminarSpaceType " + ex.getMessage());
-            }
-            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, "Error eliminando el tipo de espacio.", ex);
-            return new Respuesta(false, "Error eliminando el tipo de espacio.", "eliminarSpaceType " + ex.getMessage());
-        }
-    }
-
-    public Respuesta listarSpaceTypes() {
-        try {
-            Query qry = em.createNamedQuery("SpaceTypes.findAll", SpaceTypes.class);
-            List<SpaceTypes> spaceTypes = qry.getResultList();
-            List<SpaceTypesDto> spaceTypesDto = new ArrayList<>();
-            for (SpaceTypes type : spaceTypes) {
-                spaceTypesDto.add(new SpaceTypesDto(type));
-            }
-            return new Respuesta(true, "", "", "SpaceTypes", spaceTypesDto);
-        } catch (Exception ex) {
-            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, "Error listando tipos de espacio.", ex);
-            return new Respuesta(false, "Error listando tipos de espacio.", "listarSpaceTypes " + ex.getMessage());
+            if (tx != null && tx.isActive()) tx.rollback();
+            Logger.getLogger(SpaceTypesService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, "Error eliminando tipo.", "eliminarTipo " + ex.getMessage());
         }
     }
 }

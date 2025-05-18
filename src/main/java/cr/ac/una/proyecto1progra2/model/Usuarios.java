@@ -18,14 +18,22 @@ import javax.persistence.QueryHint;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+
 @Entity
 @Table(name = "TB_USUARIOS")
 @NamedQueries({
-    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
-    @NamedQuery(name = "Usuarios.findById", query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
-    @NamedQuery(name = "Usuarios.findByUsername", query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username", hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
-    @NamedQuery(name = "Usuarios.findByCredentials", query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username AND u.password = :password", hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
+  @NamedQuery(name = "Usuarios.findAll",
+              query = "SELECT u FROM Usuarios u"),
+  @NamedQuery(name = "Usuarios.findById",
+              query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
+  @NamedQuery(name = "Usuarios.findByUsername",
+              query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username",
+              hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
+  @NamedQuery(name = "Usuarios.findByCredentials",
+              query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username AND u.password = :password",
+              hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
 })
+
 public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
