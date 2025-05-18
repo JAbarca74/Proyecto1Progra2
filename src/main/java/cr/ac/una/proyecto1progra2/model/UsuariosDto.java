@@ -116,9 +116,10 @@ public class UsuariosDto {
                 ", estado=" + estado.get() + '}';
     }
 
-    public boolean getIsActive() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   public Boolean getIsActive() {
+    return estado.get();
+}
+
 
 
 }
