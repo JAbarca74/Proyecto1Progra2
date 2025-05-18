@@ -23,9 +23,9 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/FREEPDB1"/>
-      <property name="javax.persistence.jdbc.user" value="UNA"/>
-      <property name="javax.persistence.jdbc.password" value="Una2025"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/xepdb1"/>
+      <property name="javax.persistence.jdbc.user" value="una"/>
+      <property name="javax.persistence.jdbc.password" value="una"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
 
       <!-- Configuración para Oracle -->
