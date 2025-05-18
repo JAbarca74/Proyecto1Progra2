@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
   <persistence-unit name="ProyectoPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+    <!-- Registro de TODAS las entidades -->
+    <class>cr.ac.una.proyecto1progra2.model.Usuarios</class>
+    <class>cr.ac.una.proyecto1progra2.model.Roles</class>
+    <class>cr.ac.una.proyecto1progra2.model.Reservations</class>
+    <class>cr.ac.una.proyecto1progra2.model.CoworkingSpaces</class>
+    <class>cr.ac.una.proyecto1progra2.model.Spaces</class>
+    <class>cr.ac.una.proyecto1progra2.model.SpaceTypes</class>
+
+    <!-- Si aún usás las anteriores, también déjalas -->
     <class>cr.ac.una.tareaprogra2.model.Persona</class>
     <class>cr.ac.una.tareaprogra2.model.TelefonoPersona</class>
+
+    <!-- Permite detectar entidades no listadas -->
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/xepdb1"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/FREEPDB1"/>
       <property name="javax.persistence.jdbc.user" value="UNA"/>
-      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
       <property name="javax.persistence.jdbc.password" value="Una2025"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+
+      <!-- Configuración para Oracle -->
       <property name="eclipselink.target-database" value="Oracle"/>
-      <property name="eclipselink.platform.class.name" value="org.eclipse.persistence.platform.database.OraclePlatform"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.ddl-generation" value="none"/>
     </properties>
   </persistence-unit>
+
 </persistence>

@@ -18,9 +18,6 @@ import javax.persistence.QueryHint;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * Entidad Usuarios adaptada a estilo similar a Empleado de unaplanilla
- */
 @Entity
 @Table(name = "TB_USUARIOS")
 @NamedQueries({

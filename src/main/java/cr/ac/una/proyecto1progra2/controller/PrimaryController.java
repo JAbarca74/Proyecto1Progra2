@@ -12,49 +12,39 @@ import javafx.scene.control.TextField;
 
 public class PrimaryController extends Controller {
 
-    @FXML
-    private Button btnInicioSesion;
-    @FXML
-    private TextField txtUsuario;
-    @FXML
-    private TextField txtContraseña;
+    @FXML private TextField txtUsuario;
+    @FXML private TextField txtContraseña;
+    @FXML private Button btnInicioSesion;
 
     private final UsuariosService usuariosService = new UsuariosService();
 
     @Override
-    public void initialize() {
-        // Aquí podrías inicializar cosas si quieres, por ejemplo, limpiar campos, poner focus, etc.
-    }
+    public void initialize() {}
 
     @FXML
     private void onActionBtnInicioSesion(ActionEvent event) {
         String usuario = txtUsuario.getText().trim();
         String contraseña = txtContraseña.getText().trim();
-
         if (usuario.isEmpty() || contraseña.isEmpty()) {
             mostrarError("Debe ingresar usuario y contraseña.");
             return;
         }
-
         Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
-
-        if (respuesta.getEstado()) {
-            UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
-
-            // Dependiendo del rol, cambia la vista
-            if (usuarioDto.getRolId() != null) {
-                if (usuarioDto.getRolId() == 1) { // Rol Administrador
-                    FlowController.getInstance().goView("optionsAdmin");
-                } else if (usuarioDto.getRolId() == 2) { // Rol Usuario
-                    FlowController.getInstance().goView("optionsUser");
-                } else {
-                    mostrarError("Rol de usuario desconocido.");
-                }
+        if (!respuesta.getEstado()) {
+            mostrarError(respuesta.getMensaje());
+            return;
+        }
+        UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
+        if (usuarioDto.getRolId() != null) {
+            if (usuarioDto.getRolId() == 1L) {
+                FlowController.getInstance().goView("optionsAdmin");
+            } else if (usuarioDto.getRolId() == 2L) {
+                FlowController.getInstance().goView("optionsUser");
             } else {
-                mostrarError("No se pudo determinar el rol del usuario.");
+                mostrarError("Rol de usuario desconocido.");
             }
         } else {
-            mostrarError(respuesta.getMensaje());
+            mostrarError("No se pudo determinar el rol del usuario.");
         }
     }
 
