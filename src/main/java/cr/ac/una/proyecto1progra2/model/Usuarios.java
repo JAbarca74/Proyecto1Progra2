@@ -31,7 +31,8 @@ public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
     @Basic(optional = false)
     @Column(name = "ID")
     private Long id;
@@ -68,10 +69,10 @@ public class Usuarios implements Serializable {
     }
 
     public Usuarios(UsuariosDto usuariosDto) {
-        this();
-        this.id = usuariosDto.getId();
-        actualizar(usuariosDto);
-    }
+    this();
+    actualizar(usuariosDto); // No asignar ID aquí
+}
+
 
     public void actualizar(UsuariosDto usuariosDto) {
         this.username = usuariosDto.getNombre();
