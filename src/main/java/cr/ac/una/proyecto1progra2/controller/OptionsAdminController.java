@@ -10,11 +10,11 @@ public class OptionsAdminController extends Controller {
     @FXML
     private Button btnRegresar;
     @FXML
-    private Button btnEstadisticas;
+    private Button btnAdministradorUsuarios;
     @FXML
-    private Button btnRegistro;
+    private Button btnEditorEspacio;
     @FXML
-    private Button btnEditor;
+    private Button btnEstadisticasGenerales;
 
     @Override
     public void initialize() {
@@ -25,12 +25,7 @@ public class OptionsAdminController extends Controller {
     private void onActionBtnRegresar(ActionEvent event) {
         FlowController.getInstance().goView("primary");
     }
-
-    @FXML
-    private void onActionBtnRegistro(ActionEvent event) {
-        FlowController.getInstance().goView("userManager");
-    }
-
+   
     @FXML
     private void onActionBtnEditor(ActionEvent event) {
         // Aquí puedes navegar a otra pantalla si quieres
@@ -42,4 +37,8 @@ public class OptionsAdminController extends Controller {
         // Aquí puedes navegar a una pantalla de estadísticas si quieres
         // FlowController.getInstance().goView("estadisticasView");
     }
+    @FXML
+    private void onActionBtnRegistro(ActionEvent event) {
+    FlowController.getInstance().goView("EditDeleteUser");
+}
 }

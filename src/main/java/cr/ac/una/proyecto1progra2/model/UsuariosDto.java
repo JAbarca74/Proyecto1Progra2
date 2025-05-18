@@ -115,4 +115,10 @@ public class UsuariosDto {
                 ", rolId=" + rolId.get() + 
                 ", estado=" + estado.get() + '}';
     }
+
+    public boolean getIsActive() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+
 }
