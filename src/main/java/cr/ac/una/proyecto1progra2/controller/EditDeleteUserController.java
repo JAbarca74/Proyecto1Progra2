@@ -5,100 +5,130 @@ import cr.ac.una.proyecto1progra2.service.UsuariosService;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EditDeleteUserController extends Controller implements Initializable {
 
     @FXML
     private TextField txtBuscarUsuario;
     @FXML
-    private VBox infoUsuarioBox;
+    private TableView<UsuariosDto> tblUsuarios;
     @FXML
-    private Label lblId;
+    private TableColumn<UsuariosDto, Long> colId;
     @FXML
-    private Label lblUsername;
+    private TableColumn<UsuariosDto, String> colUsername;
     @FXML
-    private Label lblRole;
+    private TableColumn<UsuariosDto, String> colRole;
     @FXML
-    private Label lblEstado;
+    private TableColumn<UsuariosDto, Boolean> colEstado;
     @FXML
-    private Button btnEditar;
+    private Button btnEditUser;
     @FXML
-    private Button btnEliminar;
+    private Button btnDeleteUser;
 
     private final UsuariosService usuariosService = new UsuariosService();
-    private UsuariosDto usuarioActual;
+    private UsuariosDto usuarioSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        infoUsuarioBox.setVisible(false);
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("roleId"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("isActive"));
+
+        tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            usuarioSeleccionado = newVal;
+            boolean habilitar = usuarioSeleccionado != null;
+            btnEditUser.setDisable(!habilitar);
+            btnDeleteUser.setDisable(!habilitar);
+        });
+
+        btnEditUser.setDisable(true);
+        btnDeleteUser.setDisable(true);
     }
 
     @FXML
     private void onActionBtnBuscar(ActionEvent event) {
-        String username = txtBuscarUsuario.getText().trim();
-        if (username.isEmpty()) {
+        String nombre = txtBuscarUsuario.getText().trim();
+        if (nombre.isEmpty()) {
             mostrarMensaje("Debe ingresar un nombre de usuario.");
             return;
         }
 
-        Respuesta respuesta = usuariosService.getUsuario(username, ""); // contraseña vacía porque solo busca por username
-
-        if (respuesta.getEstado()) {
-            usuarioActual = (UsuariosDto) respuesta.getResultado("Usuario");
-            lblId.setText("ID: " + usuarioActual.getId());
-            lblUsername.setText("Usuario: " + usuarioActual.getNombre());
-            lblRole.setText("Rol: " + usuarioActual.getRolId());
-            lblEstado.setText("Estado: " + (usuarioActual.getIsActive() ? "Activo" : "Inactivo"));
-            infoUsuarioBox.setVisible(true);
-        } else {
+        Respuesta respuesta = usuariosService.listarUsuarios(); // usamos todos para filtrar por nombre
+        if (!respuesta.getEstado()) {
             mostrarMensaje(respuesta.getMensaje());
-            infoUsuarioBox.setVisible(false);
+            return;
+        }
+
+        List<UsuariosDto> todos = (List<UsuariosDto>) respuesta.getResultado("Usuarios");
+        List<UsuariosDto> filtrados = new ArrayList<>();
+        for (UsuariosDto u : todos) {
+            if (u.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                filtrados.add(u);
+            }
+        }
+
+        ObservableList<UsuariosDto> data = FXCollections.observableArrayList(filtrados);
+        tblUsuarios.setItems(data);
+        btnEditUser.setDisable(true);
+        btnDeleteUser.setDisable(true);
+
+        if (data.isEmpty()) {
+            mostrarMensaje("No se encontraron usuarios.");
         }
     }
 
     @FXML
     private void onActionBtnEditar(ActionEvent event) {
-        if (usuarioActual == null) {
-            mostrarMensaje("No hay usuario seleccionado.");
+        if (usuarioSeleccionado == null) {
+            mostrarMensaje("Debe seleccionar un usuario para editar.");
             return;
         }
 
-        // Aquí podrías guardar el usuario actual en un controlador compartido si lo necesitas
+        // Aquí puedes pasar el usuarioSeleccionado a otra pantalla
+        // Por ahora solo se muestra el cambio de pantalla
         FlowController.getInstance().goViewInWindowModal("UserEditForm", getStage(), true);
     }
 
     @FXML
     private void onActionBtnEliminar(ActionEvent event) {
-        if (usuarioActual == null) {
-            mostrarMensaje("No hay usuario seleccionado.");
+        if (usuarioSeleccionado == null) {
+            mostrarMensaje("Debe seleccionar un usuario para eliminar.");
             return;
         }
 
-        Respuesta respuesta = usuariosService.eliminarUsuario(usuarioActual.getId());
+        Respuesta respuesta = usuariosService.eliminarUsuario(usuarioSeleccionado.getId());
         if (respuesta.getEstado()) {
             mostrarMensaje("Usuario eliminado correctamente.");
-            usuarioActual = null;
-            infoUsuarioBox.setVisible(false);
+            tblUsuarios.getItems().remove(usuarioSeleccionado);
+            tblUsuarios.getSelectionModel().clearSelection();
+            usuarioSeleccionado = null;
+            btnEditUser.setDisable(true);
+            btnDeleteUser.setDisable(true);
         } else {
             mostrarMensaje(respuesta.getMensaje());
         }
     }
 
     private void mostrarMensaje(String mensaje) {
-        // Puedes usar Utilities o Alert como prefieras
-        System.out.println(mensaje); // Temporal: puedes cambiar esto por tu clase Utilities
+        System.out.println(mensaje); // Aquí puedes usar tu clase Utilities si la tienes
     }
 
     @Override
     public void initialize() {
-        // Esto es llamado por FlowController
+        // llamado por FlowController si es necesario
     }
 }

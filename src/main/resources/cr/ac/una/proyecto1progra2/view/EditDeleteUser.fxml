@@ -3,42 +3,51 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cr.ac.una.proyecto1progra2.controller.EditDeleteUserController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="cr.ac.una.proyecto1progra2.controller.EditDeleteUserController">
 
     <children>
-        <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             
-            <Label text="Buscar Usuario" styleClass="titulo-principal"/>
+            <Label styleClass="titulo-principal" text="Buscar Usuario" />
 
             <HBox alignment="CENTER" spacing="10">
-                <TextField fx:id="txtBuscarUsuario" promptText="Ingrese el nombre de usuario" prefWidth="300"/>
-                <Button fx:id="btnBuscar" text="Buscar" onAction="#onActionBtnBuscar"/>
+                <TextField fx:id="txtBuscarUsuario" prefWidth="300" promptText="Ingrese el nombre de usuario" />
+                <Button fx:id="btnBuscar" onAction="#onActionBtnBuscar" text="Buscar" />
             </HBox>
+         <TableView fx:id="tblUsuarios" prefHeight="223.0" prefWidth="560.0">
+  <columns>
+    <TableColumn fx:id="colId" prefWidth="138.4" text="ID" />
+    <TableColumn fx:id="colUsername" prefWidth="124.0" text="Usuario" />
+    <TableColumn fx:id="colRole" prefWidth="131.2" text="Rol" />
+    <TableColumn fx:id="colEstado" prefWidth="165.6" text="Estado" />
+  </columns>
+</TableView>
 
-            <VBox spacing="10" visible="false" fx:id="infoUsuarioBox">
-                <Label text="Información del Usuario:" styleClass="subtitulo"/>
-                <Label fx:id="lblId" text="ID: "/>
-                <Label fx:id="lblUsername" text="Usuario: "/>
-                <Label fx:id="lblRole" text="Rol: "/>
-                <Label fx:id="lblEstado" text="Estado: "/>
-
-                <!-- Botones Editar y Eliminar -->
-                <HBox alignment="CENTER" spacing="20">
-                    <Button fx:id="btnEditar" text="Editar" onAction="#onActionBtnEditar"/>
-                    <Button fx:id="btnEliminar" text="Eliminar" onAction="#onActionBtnEliminar"/>
-                </HBox>
-            </VBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Button fx:id="btnEditUser" mnemonicParsing="false" text="Editar Usuario">
+                  <HBox.margin>
+                     <Insets left="50.0" />
+                  </HBox.margin>
+               </Button>
+               <Button fx:id="btnDeleteUser" mnemonicParsing="false" text="Eliminar Usuario">
+                  <HBox.margin>
+                     <Insets left="250.0" />
+                  </HBox.margin>
+               </Button>
+            </children>
+         </HBox>
         </VBox>
     </children>
 </AnchorPane>
