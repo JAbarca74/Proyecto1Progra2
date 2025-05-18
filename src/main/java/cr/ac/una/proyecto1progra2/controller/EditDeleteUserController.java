@@ -123,11 +123,19 @@ private void onActionBtnEditar(ActionEvent event) {
         mostrarMensaje("Debe seleccionar un usuario para editar.");
         return;
     }
-    System.out.println("hola");
-    // Abrir la ventana modal
-    FlowController.getInstance().goViewInWindowModal("EditUser", getStage(), true); 
+
+    // Limpiar cualquier controlador anterior
+    FlowController.getInstance().limpiarLoader("EditUser");
+
+    // Obtener instancia del controlador y pasarle el usuario
+    EditUserController editUserController = (EditUserController) FlowController.getInstance().getController("EditUser");
+    editUserController.setUsuario(usuarioSeleccionado);
+
+    // Abrir la nueva ventana
+    FlowController.getInstance().goViewInWindow("EditUser");
     getStage().close();
 }
+
 
     @Override
     public void initialize() {
