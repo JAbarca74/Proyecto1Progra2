@@ -1,108 +1,64 @@
 package cr.ac.una.proyecto1progra2.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.time.LocalTime;
 
 public class ReservationsDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private Long   spaceId;
+    private Integer quantity;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private BigDecimal price;
+    private Long version;
 
-    public SimpleStringProperty id;
-    public SimpleObjectProperty<LocalDate> startTime;
-    public SimpleObjectProperty<LocalDate> endTime;
-    public SimpleObjectProperty<Boolean> cancelled;
-    public SimpleStringProperty coworkingSpaceId;
-    public SimpleStringProperty userId;
-    public Long version;
-    private Boolean modificado;
+    public ReservationsDto() {}
 
-    public ReservationsDto() {
-        this.modificado = false;
-        this.id = new SimpleStringProperty();
-        this.startTime = new SimpleObjectProperty<>();
-        this.endTime = new SimpleObjectProperty<>();
-        this.cancelled = new SimpleObjectProperty<>(false);
-        this.coworkingSpaceId = new SimpleStringProperty();
-        this.userId = new SimpleStringProperty();
+    public ReservationsDto(Reservations r) {
+        this.id         = r.getId();
+        this.firstName  = r.getFirstName();
+        this.lastName   = r.getLastName();
+        this.spaceId    = r.getSpaceId();
+        this.quantity   = r.getQuantity();
+        this.date       = r.getDate();
+        this.startTime  = r.getStartTime();
+        this.endTime    = r.getEndTime();
+        this.price      = r.getPrice();
+        this.version    = r.getVersion();
     }
 
-    public ReservationsDto(Reservations reservations) {
-    }
+    // --- getters & setters ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        if (id.get() != null && !id.get().isEmpty())
-            return Long.valueOf(id.get());
-        else
-            return null;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String fn) { this.firstName = fn; }
 
-    public void setId(Long id) {
-        this.id.set(id != null ? id.toString() : null);
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String ln) { this.lastName = ln; }
 
-    public LocalDate getStartTime() {
-        return startTime.get();
-    }
+    public Long getSpaceId() { return spaceId; }
+    public void setSpaceId(Long sid) { this.spaceId = sid; }
 
-    public void setStartTime(LocalDate startTime) {
-        this.startTime.set(startTime);
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer q) { this.quantity = q; }
 
-    public LocalDate getEndTime() {
-        return endTime.get();
-    }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate d) { this.date = d; }
 
-    public void setEndTime(LocalDate endTime) {
-        this.endTime.set(endTime);
-    }
+    public LocalTime getStartTime() { return startTime; }
+    public void setStartTime(LocalTime st) { this.startTime = st; }
 
-    public String getIsCancelled() {
-        return cancelled.get() ? "S" : "N";
-    }
+    public LocalTime getEndTime() { return endTime; }
+    public void setEndTime(LocalTime et) { this.endTime = et; }
 
-    public void setIsCancelled(String cancelled) {
-        this.cancelled.set(cancelled != null && cancelled.equalsIgnoreCase("S"));
-    }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal p) { this.price = p; }
 
-    public Long getCoworkingSpaceId() {
-        if (coworkingSpaceId.get() != null && !coworkingSpaceId.get().isEmpty())
-            return Long.valueOf(coworkingSpaceId.get());
-        else
-            return null;
-    }
-
-    public void setCoworkingSpaceId(Long id) {
-        this.coworkingSpaceId.set(id != null ? id.toString() : null);
-    }
-
-    public Long getUserId() {
-        if (userId.get() != null && !userId.get().isEmpty())
-            return Long.valueOf(userId.get());
-        else
-            return null;
-    }
-
-    public void setUserId(Long id) {
-        this.userId.set(id != null ? id.toString() : null);
-    }
-
-    public Boolean getModificado() {
-        return modificado;
-    }
-
-    public void setModificado(Boolean modificado) {
-        this.modificado = modificado;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "ReservationsDto{" + "id=" + id.get() + ", startTime=" + startTime.get() + ", endTime=" + endTime.get() + ", cancelled=" + cancelled.get() + '}';
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long v) { this.version = v; }
 }

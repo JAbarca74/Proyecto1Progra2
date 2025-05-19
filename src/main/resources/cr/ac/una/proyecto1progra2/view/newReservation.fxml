@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TimePicker?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,99 +16,107 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController">
-   <children>
-      <BorderPane layoutX="80.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <left>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" text="Regersar" />
-                  <Button mnemonicParsing="false" text="apartar" />
-                  <Button mnemonicParsing="false" text="reservaccion" />
-                  <Button mnemonicParsing="false" text="Pago " />
-               </children>
-            </VBox>
-         </left>
-         <center>
-            <GridPane BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-11.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="26.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-43.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-25.0" layoutY="-44.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-51.0" layoutY="-47.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-38.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-12.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-42.0" layoutY="-47.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-32.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-40.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-65.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </GridPane>
-         </center>
-         <top>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </top>
-      </BorderPane>
-   </children>
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController"
+            prefWidth="800" prefHeight="600">
+
+    <children>
+        <BorderPane AnchorPane.topAnchor="0.0"
+                    AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0">
+
+            <!-- Menú lateral -->
+            <left>
+                <VBox spacing="10" prefWidth="150" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="btnRegresar" text="Regresar" onAction="#onRegresar"/>
+                        <Button fx:id="btnApartar"  text="Apartar"   onAction="#onApartar"/>
+                        <Button fx:id="btnReservar" text="Reservar"  onAction="#onReservar"/>
+                        <Button fx:id="btnPago"      text="Pago"      onAction="#onPago"/>
+                    </children>
+                </VBox>
+            </left>
+
+            <!-- Centro: imagen de plano y formulario -->
+            <center>
+                <GridPane hgap="20" vgap="20" padding="20" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="400" hgrow="ALWAYS"/>
+                        <ColumnConstraints prefWidth="300" hgrow="ALWAYS"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints prefHeight="300" vgrow="ALWAYS"/>
+                    </rowConstraints>
+
+                    <!-- Imagen del plano -->
+                    <children>
+                        <AnchorPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <children>
+                                <ImageView fx:id="imgPlano"
+                                           fitWidth="400"
+                                           fitHeight="300"
+                                           preserveRatio="true"
+                                           pickOnBounds="true"
+                                           onMouseClicked="#onPlanoClick"/>
+                            </children>
+                        </AnchorPane>
+
+                        <!-- Formulario de datos -->
+                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0" hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="100"/>
+                                <ColumnConstraints prefWidth="180"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints prefHeight="30"/>
+                                <RowConstraints prefHeight="30"/>
+                                <RowConstraints prefHeight="30"/>
+                                <RowConstraints prefHeight="30"/>
+                                <RowConstraints prefHeight="30"/>
+                                <RowConstraints prefHeight="30"/>
+                            </rowConstraints>
+
+                            <children>
+                                <Label text="Nombre:"   GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtFirstName" promptText="Nombre" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Apellido:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtLastName"  promptText="Apellido" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Espacio ID:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtSpaceId"   promptText="ID espacio" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Cantidad:"  GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <Spinner fx:id="spnQuantity" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                                    <valueFactory>
+                                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="1"/>
+                                    </valueFactory>
+                                </Spinner>
+
+                                <Label text="Fecha:"     GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                <DatePicker fx:id="dpDate" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                                <Label text="Hora inicio:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                                <TimePicker fx:id="tpStartTime" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                                <Label text="Duración (hrs):" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                                <Spinner fx:id="spnDuration" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                                    <valueFactory>
+                                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="24" initialValue="1"/>
+                                    </valueFactory>
+                                </Spinner>
+
+                                <Label text="Precio:"    GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPrice" promptText="Precio total" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+                            </children>
+                        </GridPane>
+                    </children>
+                </GridPane>
+            </center>
+
+        </BorderPane>
+    </children>
 </AnchorPane>

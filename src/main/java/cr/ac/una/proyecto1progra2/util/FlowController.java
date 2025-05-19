@@ -177,4 +177,8 @@ public class FlowController {
     public void salir() {
         mainStage.close();
     }
+
+    public void goBack() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

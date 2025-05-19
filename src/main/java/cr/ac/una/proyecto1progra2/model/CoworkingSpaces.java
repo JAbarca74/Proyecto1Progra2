@@ -54,10 +54,8 @@ public class CoworkingSpaces implements Serializable {
 
     @JoinColumn(name = "TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private SpaceTypes typeId;
+    private SpaceTypes typeId;    
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coworkingSpaceId", fetch = FetchType.LAZY)
-    private Collection<Reservations> reservationsCollection;
 
     public CoworkingSpaces() {
     }
@@ -117,14 +115,6 @@ public class CoworkingSpaces implements Serializable {
 
     public void setTypeId(SpaceTypes typeId) {
         this.typeId = typeId;
-    }
-
-    public Collection<Reservations> getReservationsCollection() {
-        return reservationsCollection;
-    }
-
-    public void setReservationsCollection(Collection<Reservations> reservationsCollection) {
-        this.reservationsCollection = reservationsCollection;
     }
 
     public Long getVersion() {

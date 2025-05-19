@@ -1,165 +1,97 @@
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.QueryHint;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TB_RESERVATIONS")
 @NamedQueries({
-    @NamedQuery(name = "Reservations.findAll", query = "SELECT r FROM Reservations r"),
-    @NamedQuery(name = "Reservations.findById", query = "SELECT r FROM Reservations r WHERE r.id = :id"),
-    @NamedQuery(name = "Reservations.findByStartTime", query = "SELECT r FROM Reservations r WHERE r.startTime = :startTime"),
-    @NamedQuery(name = "Reservations.findByEndTime", query = "SELECT r FROM Reservations r WHERE r.endTime = :endTime"),
-    @NamedQuery(name = "Reservations.findByIsCancelled", query = "SELECT r FROM Reservations r WHERE r.isCancelled = :isCancelled")
+  @NamedQuery(
+    name="Reservations.findAll",
+    query="SELECT r FROM Reservations r"
+  ),
+  @NamedQuery(
+    name="Reservations.findByOverlap",
+    query="SELECT r FROM Reservations r " +
+          "WHERE r.spaceId = :spaceId " +
+            "AND r.date = :date " +
+            "AND r.startTime < :endTime " +
+            "AND r.endTime > :startTime"
+  )
 })
 public class Reservations implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name="ID")
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "START_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
+    @Column(name="FIRST_NAME")
+    private String firstName;
 
-    @Basic(optional = false)
-    @Column(name = "END_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endTime;
+    @Column(name="LAST_NAME")
+    private String lastName;
 
-    @Basic(optional = false)
-    @Column(name = "IS_CANCELLED")
-    private String isCancelled; // "S" o "N"
+    @Column(name="SPACE_ID")
+    private Long spaceId;
+
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name="USER_ID")
+private Usuarios userId;
+
+    @Column(name="QUANTITY")
+    private Integer quantity;
+
+    @Column(name="DATE")
+    private LocalDate date;
+
+    @Column(name="START_TIME")
+    private LocalTime startTime;
+
+    @Column(name="END_TIME")
+    private LocalTime endTime;
+
+    @Column(name="PRICE")
+    private BigDecimal price;
 
     @Version
-    @Basic(optional = false)
-    @Column(name = "VERSION")
+    @Column(name="VERSION")
     private Long version;
 
-    @JoinColumn(name = "COWORKING_SPACE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private CoworkingSpaces coworkingSpaceId;
+    // --- getters & setters ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Usuarios userId;
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String fn) { this.firstName = fn; }
 
-    public Reservations() {
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String ln) { this.lastName = ln; }
 
-    public Reservations(Long id) {
-        this.id = id;
-    }
+    public Long getSpaceId() { return spaceId; }
+    public void setSpaceId(Long sid) { this.spaceId = sid; }
 
-    public Reservations(ReservationsDto reservationsDto) {
-        this();
-        this.id = reservationsDto.getId();
-        actualizar(reservationsDto);
-    }
+    public Usuarios getUserId() { return userId; }
+    public void setUserId(Usuarios u) { this.userId = u; }
 
-    public void actualizar(ReservationsDto reservationsDto) {
-        this.startTime = java.sql.Timestamp.valueOf(reservationsDto.getStartTime().atStartOfDay());
-        this.endTime = java.sql.Timestamp.valueOf(reservationsDto.getEndTime().atStartOfDay());
-        this.isCancelled = reservationsDto.getIsCancelled();
-        this.version = reservationsDto.getVersion();
-        // El coworkingSpaceId y userId se deberían setear aparte en el service, buscando sus entidades por ID
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer q) { this.quantity = q; }
 
-    public Long getId() {
-        return id;
-    }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate d) { this.date = d; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public LocalTime getStartTime() { return startTime; }
+    public void setStartTime(LocalTime st) { this.startTime = st; }
 
-    public Date getStartTime() {
-        return startTime;
-    }
+    public LocalTime getEndTime() { return endTime; }
+    public void setEndTime(LocalTime et) { this.endTime = et; }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal p) { this.price = p; }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getIsCancelled() {
-        return isCancelled;
-    }
-
-    public void setIsCancelled(String isCancelled) {
-        this.isCancelled = isCancelled;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public CoworkingSpaces getCoworkingSpaceId() {
-        return coworkingSpaceId;
-    }
-
-    public void setCoworkingSpaceId(CoworkingSpaces coworkingSpaceId) {
-        this.coworkingSpaceId = coworkingSpaceId;
-    }
-
-    public Usuarios getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Usuarios userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Reservations)) {
-            return false;
-        }
-        Reservations other = (Reservations) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
-    }
-
-    @Override
-    public String toString() {
-        return "cr.ac.una.proyecto1progra2.model.Reservations[ id=" + id + " ]";
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long v) { this.version = v; }
 }
