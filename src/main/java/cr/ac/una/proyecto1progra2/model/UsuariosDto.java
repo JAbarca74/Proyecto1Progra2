@@ -7,10 +7,13 @@ public class UsuariosDto {
 
     public final SimpleStringProperty id;
     public final SimpleStringProperty nombre;
+    public final SimpleStringProperty apellido; // ✅ NUEVO
     public final SimpleStringProperty correo;
     public final SimpleStringProperty contraseña;
     public final SimpleStringProperty rolId;
     public final SimpleBooleanProperty estado;
+    public final SimpleStringProperty username;
+
     private Long version;
     private Boolean modificado;
 
@@ -18,31 +21,27 @@ public class UsuariosDto {
         this.modificado = false;
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
+        this.apellido = new SimpleStringProperty(); // ✅ NUEVO
         this.correo = new SimpleStringProperty();
         this.contraseña = new SimpleStringProperty();
         this.rolId = new SimpleStringProperty();
         this.estado = new SimpleBooleanProperty(true);
+        this.username = new SimpleStringProperty();
     }
 
-    /** Constructor a partir de la entidad Usuarios */
+    /** Constructor desde la entidad Usuarios */
     public UsuariosDto(Usuarios usuario) {
         this();
-        this.id.set(usuario.getId() != null
-                ? usuario.getId().toString()
-                : null);
-        this.nombre.set(usuario.getUsername());
-        // ← Aquí cambiamos getEmail() por getUsername()
-        this.correo.set(usuario.getUsername());
+        this.id.set(usuario.getId() != null ? usuario.getId().toString() : null);
+        this.nombre.set(usuario.getNombre());
+        this.apellido.set(usuario.getApellido()); // ✅ NUEVO
+        this.correo.set(usuario.getCorreoElectronico());
         this.contraseña.set(usuario.getPassword());
-        this.rolId.set(usuario.getRoleId() != null
-                ? usuario.getRoleId().toString()
-                : null);
-        this.estado.set(usuario.getIsActive() != null
-                && usuario.getIsActive().equals('S'));
+        this.rolId.set(usuario.getRoleId() != null ? usuario.getRoleId().toString() : null);
+        this.estado.set(usuario.getIsActive() != null && usuario.getIsActive().equals("A"));
         this.version = usuario.getVersion();
     }
 
-    // getters y setters que usan las propiedades internas para TableView y lógica
     public Long getId() {
         String v = id.get();
         return (v != null && !v.isEmpty()) ? Long.valueOf(v) : null;
@@ -55,9 +54,25 @@ public class UsuariosDto {
     public String getNombre() {
         return nombre.get();
     }
+    
+    public String getUsername() {
+    return username.get();
+}
+public void setUsername(String username) {
+    this.username.set(username);
+}
+
 
     public void setNombre(String nombre) {
         this.nombre.set(nombre);
+    }
+
+    public String getApellido() {
+        return apellido.get();
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido.set(apellido);
     }
 
     public String getCorreo() {
@@ -85,7 +100,6 @@ public class UsuariosDto {
         this.rolId.set(rolId != null ? rolId.toString() : null);
     }
 
-    /** Para la columna “Activo” en la tabla mostramos “A” o “I” */
     public String getEstado() {
         return estado.get() ? "A" : "I";
     }
@@ -110,16 +124,15 @@ public class UsuariosDto {
         this.version = version;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "UsuariosDto{id=%s, nombre=%s, correo=%s, rolId=%s, estado=%s}",
-                id.get(), nombre.get(), correo.get(),
-                rolId.get(), estado.get());
-    }
-
     public Boolean getIsActive() {
         return estado.get();
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "UsuariosDto{id=%s, nombre=%s, apellido=%s, correo=%s, rolId=%s, estado=%s}",
+            id.get(), nombre.get(), apellido.get(), correo.get(), rolId.get(), estado.get()
+        );
+    }
 }
