@@ -77,7 +77,7 @@ public class Usuarios implements Serializable {
     }
 
     public void actualizar(UsuariosDto usuariosDto) {
-        this.username = usuariosDto.getNombre(); // Si tienes username por separado, ajusta aquí
+        this.username = usuariosDto.getUsername(); // ✅ correcto
         this.nombre = usuariosDto.getNombre();
         this.apellido = usuariosDto.getApellido();
         this.correoElectronico = usuariosDto.getCorreo();

@@ -86,13 +86,14 @@ private void onActionBtnCrearCuenta(ActionEvent event) {
 
     // Construir DTO y guardar
     UsuariosDto dto = new UsuariosDto();
+    dto.setUsername(username); // ← ESTA LÍNEA FALTA
     dto.setNombre(name);                    // ✅ Nombre
     dto.setCorreo(email);                   // ✅ Correo electrónico
     dto.setContraseña(pass);               // Contraseña
     dto.setRolId(chkAdmin.isSelected() ? 1L : 2L); // Rol
     dto.setEstado("A");
     dto.setApellido(lastName);
-
+    
     Respuesta resp = usuariosService.guardarUsuario(dto);
     if (resp.getEstado()) {
         mostrarInfo("Cuenta creada exitosamente.");

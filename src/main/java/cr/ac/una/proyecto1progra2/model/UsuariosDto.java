@@ -12,6 +12,8 @@ public class UsuariosDto {
     public final SimpleStringProperty contraseña;
     public final SimpleStringProperty rolId;
     public final SimpleBooleanProperty estado;
+    public final SimpleStringProperty username;
+
     private Long version;
     private Boolean modificado;
 
@@ -24,6 +26,7 @@ public class UsuariosDto {
         this.contraseña = new SimpleStringProperty();
         this.rolId = new SimpleStringProperty();
         this.estado = new SimpleBooleanProperty(true);
+        this.username = new SimpleStringProperty();
     }
 
     /** Constructor desde la entidad Usuarios */
@@ -51,6 +54,14 @@ public class UsuariosDto {
     public String getNombre() {
         return nombre.get();
     }
+    
+    public String getUsername() {
+    return username.get();
+}
+public void setUsername(String username) {
+    this.username.set(username);
+}
+
 
     public void setNombre(String nombre) {
         this.nombre.set(nombre);
