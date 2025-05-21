@@ -79,7 +79,8 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         List<UsuariosDto> todos = (List<UsuariosDto>) respuesta.getResultado("Usuarios");
         List<UsuariosDto> filtrados = new ArrayList<>();
         for (UsuariosDto u : todos) {
-            if (u.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+           if (u.getUsername() != null && u.getUsername().toLowerCase().contains(nombre.toLowerCase()))
+ {
                 filtrados.add(u);
             }
         }
@@ -93,7 +94,7 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
             mostrarMensaje("No se encontraron usuarios.");
         }
     }
-
+@FXML
     private void onActionBtnEliminar(ActionEvent event) {
         if (usuarioSeleccionado == null) {
             mostrarMensaje("Debe seleccionar un usuario para eliminar.");
@@ -135,6 +136,12 @@ private void onActionBtnEditar(ActionEvent event) {
     FlowController.getInstance().goViewInWindow("EditUser");
     getStage().close();
 }
+    @FXML
+    private void volver() {
+        FlowController.getInstance().limpiarLoader("OptionsAdmin");
+        FlowController.getInstance().goView("OptionsAdmin");
+        
+    }
 
 
     @Override

@@ -30,17 +30,18 @@ public class UsuariosDto {
     }
 
     /** Constructor desde la entidad Usuarios */
-    public UsuariosDto(Usuarios usuario) {
-        this();
-        this.id.set(usuario.getId() != null ? usuario.getId().toString() : null);
-        this.nombre.set(usuario.getNombre());
-        this.apellido.set(usuario.getApellido()); // ✅ NUEVO
-        this.correo.set(usuario.getCorreoElectronico());
-        this.contraseña.set(usuario.getPassword());
-        this.rolId.set(usuario.getRoleId() != null ? usuario.getRoleId().toString() : null);
-        this.estado.set(usuario.getIsActive() != null && usuario.getIsActive().equals("A"));
-        this.version = usuario.getVersion();
-    }
+  public UsuariosDto(Usuarios usuario) {
+    this();
+    this.id.set(usuario.getId() != null ? usuario.getId().toString() : null);
+    this.nombre.set(usuario.getNombre());
+    this.apellido.set(usuario.getApellido());
+    this.correo.set(usuario.getCorreoElectronico());
+    this.contraseña.set(usuario.getPassword());
+    this.rolId.set(usuario.getRoleId() != null ? usuario.getRoleId().toString() : null);
+    this.estado.set(usuario.getIsActive() != null && usuario.getIsActive().equals("A"));
+    this.username.set(usuario.getUsername()); // ✅ Agrega esta línea
+    this.version = usuario.getVersion();
+}
 
     public Long getId() {
         String v = id.get();
