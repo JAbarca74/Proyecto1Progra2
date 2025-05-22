@@ -60,8 +60,22 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
         btnEditUser.setDisable(true);
         btnDeleteUser.setDisable(true);
+        cargarUsuarios();
+    }
+   
+      private void cargarUsuarios() {
+        Respuesta resp = usuariosService.listarUsuarios();
+        if (resp.getEstado()) {
+            @SuppressWarnings("unchecked")
+            List<UsuariosDto> lista = (List<UsuariosDto>) resp.getResultado("Usuarios");
+            ObservableList<UsuariosDto> data = FXCollections.observableArrayList(lista);
+            tblUsuarios.setItems(data);
+        } else {
+            mostrarMensaje("Error al cargar usuarios: " + resp.getMensaje());
+        }
     }
 
+    
     @FXML
     private void onActionBtnBuscar(ActionEvent event) {
         String nombre = txtBuscarUsuario.getText().trim();
@@ -109,6 +123,7 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
             usuarioSeleccionado = null;
             btnEditUser.setDisable(true);
             btnDeleteUser.setDisable(true);
+            volver();
         } else {
             mostrarMensaje(respuesta.getMensaje());
         }

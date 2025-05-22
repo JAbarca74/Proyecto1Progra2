@@ -51,8 +51,8 @@ public class Usuarios implements Serializable {
     @Column(name = "VERSION")
     private Long version;
 
-@OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
-private Collection<Reservations> reservationsCollection;
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private Collection<Reservations> reservationsCollection;
     @Column(name = "NOMBRE")
     private String nombre;
 
