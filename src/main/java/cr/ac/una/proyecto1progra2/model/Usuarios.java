@@ -16,7 +16,7 @@ import javax.persistence.*;
               query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username",
               hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
   @NamedQuery(name = "Usuarios.findByCredentials",
-              query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username AND u.password = :password",
+              query = "SELECT u FROM Usuarios u WHERE u.username = :username AND u.password = :password",
               hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
 })
 public class Usuarios implements Serializable {

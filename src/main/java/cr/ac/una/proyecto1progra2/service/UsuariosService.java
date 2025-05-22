@@ -22,16 +22,10 @@ public class UsuariosService {
     public Respuesta getUsuario(String username, String password) {
         try {
             // 1) Buscar por nombre (mayúsculas)
-            Query qry = em.createNamedQuery("Usuarios.findByUsername", Usuarios.class);
-            qry.setParameter("username", username.toUpperCase());
+            Query qry = em.createNamedQuery("Usuarios.findByCredentials", Usuarios.class);
+            qry.setParameter("username", username.toLowerCase());
+             qry.setParameter("password", password.toLowerCase());
             Usuarios usuario = (Usuarios) qry.getSingleResult();
-
-            // 2) Validar contraseña
-            if (!usuario.getPassword().equals(password)) {
-                return new Respuesta(false,
-                    "Credenciales inválidas.",
-                    "getUsuario InvalidCredentials");
-            }
 
             // 3) Verificar estado “A”ctivo
             if (!"A".equalsIgnoreCase(usuario.getIsActive())) {

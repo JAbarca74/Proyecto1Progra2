@@ -50,7 +50,7 @@ public class EditUserController extends Controller {
         }
 
         usuario.setNombre(txtNombre.getText());
-        usuario.setContraseña(txtPassword.getText());
+        usuario.setContraseña(txtPassword.getText().toLowerCase());
 
         Respuesta respuesta = usuariosService.guardarUsuario(usuario);
         if (respuesta.getEstado()) {
