@@ -55,10 +55,9 @@ public class EditUserController extends Controller {
         Respuesta respuesta = usuariosService.guardarUsuario(usuario);
         if (respuesta.getEstado()) {
             new Alert(Alert.AlertType.INFORMATION, "Usuario actualizado correctamente.").showAndWait();
+            EditDeleteUserController editDeleteUserController = (EditDeleteUserController) FlowController.getInstance().getController("EditDeleteUser");
+            editDeleteUserController.cargarUsuarios();
 
-            // Volver a la tabla de usuarios
-            FlowController.getInstance().limpiarLoader("EditDeleteUser");
-            FlowController.getInstance().goViewInWindow("EditDeleteUser");
             getStage().close();
         } else {
             new Alert(Alert.AlertType.ERROR, "Error al actualizar el usuario.").showAndWait();
@@ -67,8 +66,6 @@ public class EditUserController extends Controller {
 
     @FXML
     private void volver() {
-        FlowController.getInstance().limpiarLoader("EditDeleteUser");
-        FlowController.getInstance().goViewInWindow("EditDeleteUser");
         getStage().close();
     }
 

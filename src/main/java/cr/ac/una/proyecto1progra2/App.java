@@ -7,9 +7,9 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        FlowController.getInstance().initializeFlow(primaryStage, null);
-        FlowController.getInstance().goMain();
+    public void start(Stage stage) throws Exception {
+        FlowController.getInstance().initializeFlow(stage, null);
+        FlowController.getInstance().goViewInWindow("primary");
     }
 
     public static void main(String[] args) {

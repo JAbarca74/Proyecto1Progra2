@@ -8,21 +8,33 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
-public class NewReservationController extends Controller {
+public class NewReservationController extends Controller implements Initializable {
 
     // ——— CONTROLES DE UI ———
-    @FXML private TextField txtFirstName;    // antes usabas txtPiso
-    @FXML private TextField txtLastName;     // nuevo: apellido
-    @FXML private TextField txtSpaceId;      // antes quizás no lo tenías
-    @FXML private TextField txtQuantity;     // antes txtDuracion?
-    @FXML private DatePicker dpDate;         // antes txtFecha
-    @FXML private TextField txtStartTime;    // antes txtHora
-    @FXML private TextField txtEndTime;      // antes txtDuracion
-    @FXML private TextField txtPrice;        // antes txtPrecio
-    @FXML private Button    btnSave;
+    @FXML
+    private TextField txtFirstName;    // antes usabas txtPiso
+    @FXML
+    private TextField txtLastName;     // nuevo: apellido
+    @FXML
+    private TextField txtSpaceId;      // antes quizás no lo tenías
+    @FXML
+    private TextField txtQuantity;     // antes txtDuracion?
+    @FXML
+    private DatePicker dpDate;         // antes txtFecha
+    @FXML
+    private TextField txtStartTime;    // antes txtHora
+    @FXML
+    private TextField txtEndTime;      // antes txtDuracion
+    @FXML
+    private TextField txtPrice;        // antes txtPrecio
+    @FXML
+    private Button btnSave;
 
     private final ReservationsService service = new ReservationsService();
 
@@ -31,11 +43,11 @@ public class NewReservationController extends Controller {
         // si necesitas cargar algo al inicio, hazlo aquí
     }
 
-     @FXML
-private void onNewReservation(ActionEvent event) {
-    FlowController.getInstance().goView("newReservation");
-}
-    
+    @FXML
+    private void onNewReservation(ActionEvent event) {
+        FlowController.getInstance().goView("newReservation");
+    }
+
     @FXML
     private void onSave(ActionEvent event) {
         // 1) Construyes tu DTO con los datos de la UI:
@@ -85,6 +97,9 @@ private void onNewReservation(ActionEvent event) {
         a.setHeaderText(null);
         a.showAndWait();
     }
-    
-   
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
+
 }

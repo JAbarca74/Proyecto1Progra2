@@ -22,11 +22,6 @@
             <Label styleClass="titulo-principal" text="Buscar Usuario" />
 
             <HBox alignment="CENTER" spacing="10">
-            <Button fx:id="BtnReturn" onAction="#volver"  mnemonicParsing="false" text="Volver">
-               <HBox.margin>
-                  <Insets right="40.0" />
-               </HBox.margin>
-            </Button>
                 <TextField fx:id="txtBuscarUsuario" prefWidth="300" promptText="Ingrese el nombre de usuario" />
                 <Button fx:id="btnBuscar" onAction="#onActionBtnBuscar" text="Buscar">
                <HBox.margin>
@@ -49,7 +44,7 @@
                      <Insets left="50.0" />
                   </HBox.margin>
                </Button>
-               <Button fx:id="btnDeleteUser" mnemonicParsing="false" onAction="#onActionBtnEliminar"  text="Eliminar Usuario">
+               <Button fx:id="btnDeleteUser" mnemonicParsing="false" onAction="#onActionBtnEliminar" text="Eliminar Usuario">
                   <HBox.margin>
                      <Insets left="250.0" />
                   </HBox.margin>

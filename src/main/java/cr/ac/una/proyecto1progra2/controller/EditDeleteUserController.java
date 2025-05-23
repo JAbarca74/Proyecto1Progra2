@@ -37,19 +37,18 @@ public class EditDeleteUserController extends Controller implements Initializabl
     private Button btnEditUser;
     @FXML
     private Button btnDeleteUser;
+    @FXML
+    private Button btnBuscar;
 
     private final UsuariosService usuariosService = new UsuariosService();
     private UsuariosDto usuarioSeleccionado;
-    @FXML
-    private Button btnBuscar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-       colUsername.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
-colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-
+        colUsername.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
         tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             usuarioSeleccionado = newVal;
@@ -62,8 +61,13 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         btnDeleteUser.setDisable(true);
         cargarUsuarios();
     }
-   
-      private void cargarUsuarios() {
+
+    @Override
+    public void initialize() {
+        // llamado por FlowController si es necesario
+    }
+
+    public void cargarUsuarios() {
         Respuesta resp = usuariosService.listarUsuarios();
         if (resp.getEstado()) {
             @SuppressWarnings("unchecked")
@@ -75,7 +79,6 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         }
     }
 
-    
     @FXML
     private void onActionBtnBuscar(ActionEvent event) {
         String nombre = txtBuscarUsuario.getText().trim();
@@ -93,8 +96,7 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         List<UsuariosDto> todos = (List<UsuariosDto>) respuesta.getResultado("Usuarios");
         List<UsuariosDto> filtrados = new ArrayList<>();
         for (UsuariosDto u : todos) {
-           if (u.getUsername() != null && u.getUsername().toLowerCase().contains(nombre.toLowerCase()))
- {
+            if (u.getUsername() != null && u.getUsername().toLowerCase().contains(nombre.toLowerCase())) {
                 filtrados.add(u);
             }
         }
@@ -108,7 +110,8 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
             mostrarMensaje("No se encontraron usuarios.");
         }
     }
-@FXML
+
+    @FXML
     private void onActionBtnEliminar(ActionEvent event) {
         if (usuarioSeleccionado == null) {
             mostrarMensaje("Debe seleccionar un usuario para eliminar.");
@@ -123,7 +126,6 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
             usuarioSeleccionado = null;
             btnEditUser.setDisable(true);
             btnDeleteUser.setDisable(true);
-            volver();
         } else {
             mostrarMensaje(respuesta.getMensaje());
         }
@@ -132,35 +134,18 @@ colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
     private void mostrarMensaje(String mensaje) {
         System.out.println(mensaje); // Aquí puedes usar tu clase Utilities si la tienes
     }
-    
-@FXML
-private void onActionBtnEditar(ActionEvent event) {
-    if (usuarioSeleccionado == null) {
-        mostrarMensaje("Debe seleccionar un usuario para editar.");
-        return;
-    }
 
-    // Limpiar cualquier controlador anterior
-    FlowController.getInstance().limpiarLoader("EditUser");
-
-    // Obtener instancia del controlador y pasarle el usuario
-    EditUserController editUserController = (EditUserController) FlowController.getInstance().getController("EditUser");
-    editUserController.setUsuario(usuarioSeleccionado);
-
-    // Abrir la nueva ventana
-    FlowController.getInstance().goViewInWindow("EditUser");
-    getStage().close();
-}
     @FXML
-    private void volver() {
-        FlowController.getInstance().limpiarLoader("OptionsAdmin");
-        FlowController.getInstance().goView("OptionsAdmin");
-        
+    private void onActionBtnEditar(ActionEvent event) {
+        if (usuarioSeleccionado == null) {
+            mostrarMensaje("Debe seleccionar un usuario para editar.");
+            return;
+        }
+
+        EditUserController editUserController = (EditUserController) FlowController.getInstance().getController("EditUser");
+        editUserController.setUsuario(usuarioSeleccionado);
+
+        FlowController.getInstance().goViewInWindowModal("EditUser", getStage(), true);
     }
 
-
-    @Override
-    public void initialize() {
-        // llamado por FlowController si es necesario
-    }
 }

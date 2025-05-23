@@ -43,65 +43,68 @@ public class RegistrerNewAccountController extends Controller {
 
     @Override
     public void initialize() {
-       
+
         chkAdmin.setOnAction(e -> {
-            if (chkAdmin.isSelected()) chkUser.setSelected(false);
+            if (chkAdmin.isSelected()) {
+                chkUser.setSelected(false);
+            }
         });
         chkUser.setOnAction(e -> {
-            if (chkUser.isSelected()) chkAdmin.setSelected(false);
+            if (chkUser.isSelected()) {
+                chkAdmin.setSelected(false);
+            }
         });
     }
 
     @FXML
     private void onActionBtnRegresar(ActionEvent event) {
-        FlowController.getInstance().goView("userManager");
+        getStage().close();
     }
 
     @FXML
-private void onActionBtnCrearCuenta(ActionEvent event) {
-    String name     = txtName.getText().trim();
-    String lastName = txtLastName.getText().trim();
-    String email    = txtEmail.getText().trim();
-    String id       = txtId.getText().trim();
-    String age      = txtAge.getText().trim();
-    String username = txtUsername.getText().trim();
-    String pass     = txtPassword.getText();
-    String confirm  = txtPasswordConfirm.getText();
+    private void onActionBtnCrearCuenta(ActionEvent event) {
+        String name = txtName.getText().trim();
+        String lastName = txtLastName.getText().trim();
+        String email = txtEmail.getText().trim();
+        String id = txtId.getText().trim();
+        String age = txtAge.getText().trim();
+        String username = txtUsername.getText().trim();
+        String pass = txtPassword.getText();
+        String confirm = txtPasswordConfirm.getText();
 
-    // Validaciones básicas
-    if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
-        id.isEmpty() || age.isEmpty() ||
-        username.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
-        mostrarError("Debe completar todos los campos.");
-        return;
-    }
-    if (!pass.equals(confirm)) {
-        mostrarError("Las contraseñas no coinciden.");
-        return;
-    }
-    if (!chkAdmin.isSelected() && !chkUser.isSelected()) {
-        mostrarError("Debe seleccionar un rol.");
-        return;
-    }
+        // Validaciones básicas
+        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty()
+                || id.isEmpty() || age.isEmpty()
+                || username.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+            mostrarError("Debe completar todos los campos.");
+            return;
+        }
+        if (!pass.equals(confirm)) {
+            mostrarError("Las contraseñas no coinciden.");
+            return;
+        }
+        if (!chkAdmin.isSelected() && !chkUser.isSelected()) {
+            mostrarError("Debe seleccionar un rol.");
+            return;
+        }
 
-    // Construir DTO y guardar
-    UsuariosDto dto = new UsuariosDto();
-    dto.setUsername(username.toLowerCase()); // ← ESTA LÍNEA FALTA
-    dto.setNombre(name);                    // ✅ Nombre
-    dto.setCorreo(email);                   // ✅ Correo electrónico
-    dto.setContraseña(pass.toLowerCase());               // Contraseña
-    dto.setRolId(chkAdmin.isSelected() ? 1L : 2L); // Rol
-    dto.setEstado("A");
-    dto.setApellido(lastName);
-    
-    Respuesta resp = usuariosService.guardarUsuario(dto);
-    if (resp.getEstado()) {
-        mostrarInfo("Cuenta creada exitosamente.");
-    } else {
-        mostrarError(resp.getMensaje());
-    }
-}
+        // Construir DTO y guardar
+        UsuariosDto dto = new UsuariosDto();
+        dto.setUsername(username.toLowerCase()); // ← ESTA LÍNEA FALTA
+        dto.setNombre(name);                    // ✅ Nombre
+        dto.setCorreo(email);                   // ✅ Correo electrónico
+        dto.setContraseña(pass.toLowerCase());               // Contraseña
+        dto.setRolId(chkAdmin.isSelected() ? 1L : 2L); // Rol
+        dto.setEstado("A");
+        dto.setApellido(lastName);
 
+        Respuesta resp = usuariosService.guardarUsuario(dto);
+        if (resp.getEstado()) {
+            mostrarInfo("Cuenta creada exitosamente.");
+        } else {
+            mostrarError(resp.getMensaje());
+        }
+    }
 
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

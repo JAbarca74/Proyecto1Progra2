@@ -13,9 +13,12 @@ import javafx.scene.control.TextField;
 
 public class PrimaryController extends Controller {
 
-    @FXML private TextField      txtUsuario;
-    @FXML private PasswordField  txtContraseña;
-    @FXML private Button         btnInicioSesion;
+    @FXML
+    private TextField txtUsuario;
+    @FXML
+    private PasswordField txtContraseña;
+    @FXML
+    private Button btnInicioSesion;
 
     private final UsuariosService usuariosService = new UsuariosService();
 
@@ -26,7 +29,7 @@ public class PrimaryController extends Controller {
 
     @FXML
     private void onActionBtnInicioSesion(ActionEvent event) {
-        String usuario    = txtUsuario.getText().trim();
+        String usuario = txtUsuario.getText().trim();
         String contraseña = txtContraseña.getText().trim();
 
         // 1) Validar que no estén vacíos
@@ -47,19 +50,16 @@ public class PrimaryController extends Controller {
         UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
         Long rolId = usuarioDto.getRolId();
         if (rolId != null) {
-            if (rolId.equals(1L)) {
-                FlowController.getInstance().goView("optionsAdmin");
-            } else if (rolId.equals(2L)) {
-                FlowController.getInstance().goView("optionsUser");
-            } else {
-                mostrarError("Rol de usuario desconocido.");
-            }
+            FlowController.getInstance().goMain();
+            getStage().close();
         } else {
             mostrarError("No se pudo determinar el rol del usuario.");
         }
     }
 
-    /** Muestra una alerta de error con el mensaje dado */
+    /**
+     * Muestra una alerta de error con el mensaje dado
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error de inicio de sesión");
@@ -67,10 +67,10 @@ public class PrimaryController extends Controller {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    
+
     @FXML
-private void onActionBtnRegistrarUsuario(ActionEvent event) {
-    FlowController.getInstance().goViewInWindow("RegisterNewAccount");
-}
+    private void onActionBtnRegistrarUsuario(ActionEvent event) {
+        FlowController.getInstance().goViewInWindowModal("RegisterNewAccount", getStage(), true);
+    }
 
 }
