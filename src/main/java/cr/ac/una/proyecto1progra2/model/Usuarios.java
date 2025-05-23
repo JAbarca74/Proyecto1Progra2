@@ -8,25 +8,22 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TB_USUARIOS")
 @NamedQueries({
-  @NamedQuery(name = "Usuarios.findAll",
-              query = "SELECT u FROM Usuarios u"),
-  @NamedQuery(name = "Usuarios.findById",
-              query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
-  @NamedQuery(name = "Usuarios.findByUsername",
-              query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username",
-              hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
-  @NamedQuery(name = "Usuarios.findByCredentials",
-              query = "SELECT u FROM Usuarios u WHERE u.username = :username AND u.password = :password",
-              hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
+    @NamedQuery(name = "Usuarios.findAll",
+            query = "SELECT u FROM Usuarios u"),
+    @NamedQuery(name = "Usuarios.findById",
+            query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuarios.findByUsername",
+            query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username",
+            hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
+    @NamedQuery(name = "Usuarios.findByCredentials",
+            query = "SELECT u FROM Usuarios u WHERE u.username = :username AND u.password = :password",
+            hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
 })
 public class Usuarios implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Basic(optional = false)
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_seq_gen")
+    @SequenceGenerator(name = "usuarios_seq_gen", sequenceName = "USUARIOS_SEQ", allocationSize = 1)
     private Long id;
 
     @Basic(optional = false)
@@ -43,7 +40,7 @@ public class Usuarios implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
-    
+
     private String isActive;
 
     @Version
@@ -53,6 +50,7 @@ public class Usuarios implements Serializable {
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<Reservations> reservationsCollection;
+
     @Column(name = "NOMBRE")
     private String nombre;
 
@@ -62,7 +60,8 @@ public class Usuarios implements Serializable {
     @Column(name = "CORREO_ELECTRONICO")
     private String correoElectronico;
 
-    public Usuarios() {}
+    public Usuarios() {
+    }
 
     public Usuarios(Long id) {
         this.id = id;
@@ -85,36 +84,85 @@ public class Usuarios implements Serializable {
     }
 
     // Getters y Setters
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public BigInteger getRoleId() { return roleId; }
-    public void setRoleId(BigInteger roleId) { this.roleId = roleId; }
+    public String getPassword() {
+        return password;
+    }
 
-    public String getIsActive() { return isActive; }
-    public void setIsActive(String isActive) { this.isActive = isActive; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public Long getVersion() { return version; }
-    public void setVersion(Long version) { this.version = version; }
+    public BigInteger getRoleId() {
+        return roleId;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setRoleId(BigInteger roleId) {
+        this.roleId = roleId;
+    }
 
-    public String getApellido() { return apellido; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
+    public String getIsActive() {
+        return isActive;
+    }
 
-    public String getCorreoElectronico() { return correoElectronico; }
-    public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
+    }
 
-    public Collection<Reservations> getReservationsCollection() { return reservationsCollection; }
-    public void setReservationsCollection(Collection<Reservations> reservationsCollection) { this.reservationsCollection = reservationsCollection; }
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
+    public Collection<Reservations> getReservationsCollection() {
+        return reservationsCollection;
+    }
+
+    public void setReservationsCollection(Collection<Reservations> reservationsCollection) {
+        this.reservationsCollection = reservationsCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -123,7 +171,9 @@ public class Usuarios implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Usuarios)) return false;
+        if (!(object instanceof Usuarios)) {
+            return false;
+        }
         Usuarios other = (Usuarios) object;
         return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
