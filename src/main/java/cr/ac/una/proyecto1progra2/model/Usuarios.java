@@ -1,3 +1,6 @@
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 1) Entidad JPA: Usuarios.java
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 package cr.ac.una.proyecto1progra2.model;
 
 import java.io.Serializable;
@@ -9,47 +12,33 @@ import javax.persistence.*;
 @Table(name = "TB_USUARIOS")
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll",
-            query = "SELECT u FROM Usuarios u"),
+                query = "SELECT u FROM Usuarios u"),
     @NamedQuery(name = "Usuarios.findById",
-            query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
+                query = "SELECT u FROM Usuarios u WHERE u.id = :id"),
     @NamedQuery(name = "Usuarios.findByUsername",
-            query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username",
-            hints = @QueryHint(name = "eclipselink.refresh", value = "true")),
+                query = "SELECT u FROM Usuarios u WHERE UPPER(u.username) = :username"),
     @NamedQuery(name = "Usuarios.findByCredentials",
-            query = "SELECT u FROM Usuarios u WHERE u.username = :username AND u.password = :password",
-            hints = @QueryHint(name = "eclipselink.refresh", value = "true"))
+                query = "SELECT u FROM Usuarios u WHERE u.username = :username AND u.password = :password")
 })
 public class Usuarios implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_seq_gen")
     @SequenceGenerator(name = "usuarios_seq_gen", sequenceName = "USUARIOS_SEQ", allocationSize = 1)
+    @Column(name = "ID")
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
-    @Basic(optional = false)
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Basic(optional = false)
-    @Column(name = "ROLE_ID")
+    @Column(name = "ROLE_ID", nullable = false)
     private BigInteger roleId;
 
-    @Basic(optional = false)
-    @Column(name = "IS_ACTIVE")
-
-    private String isActive;
-
-    @Version
-    @Basic(optional = false)
-    @Column(name = "VERSION")
-    private Long version;
-
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<Reservations> reservationsCollection;
+    @Column(name = "IS_ACTIVE", nullable = false, length = 1)
+    private String isActive;  // 'A' / 'I'
 
     @Column(name = "NOMBRE")
     private String nombre;
@@ -60,126 +49,62 @@ public class Usuarios implements Serializable {
     @Column(name = "CORREO_ELECTRONICO")
     private String correoElectronico;
 
-    public Usuarios() {
+    @Version
+    @Column(name = "VERSION", nullable = false)
+    private Long version;
+
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private Collection<Reservations> reservationsCollection;
+
+    public Usuarios() {}
+
+    /** Copia todos los datos desde el DTO */
+    public void actualizar(UsuariosDto dto) {
+        this.username          = dto.getUsername();
+        this.password          = dto.getContraseña();
+        this.roleId            = dto.getRolId() != null
+                                 ? BigInteger.valueOf(dto.getRolId())
+                                 : null;
+        this.isActive          = dto.getEstado() ? "A" : "I";
+        this.nombre            = dto.getNombre();
+        this.apellido          = dto.getApellido();
+        this.correoElectronico = dto.getCorreo();
+        this.version           = dto.getVersion();
     }
 
-    public Usuarios(Long id) {
-        this.id = id;
-    }
+    // getters & setters...
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Usuarios(UsuariosDto usuariosDto) {
-        this();
-        actualizar(usuariosDto);
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String u) { username = u; }
 
-    public void actualizar(UsuariosDto usuariosDto) {
-        this.username = usuariosDto.getUsername(); // ✅ correcto
-        this.nombre = usuariosDto.getNombre();
-        this.apellido = usuariosDto.getApellido();
-        this.correoElectronico = usuariosDto.getCorreo();
-        this.password = usuariosDto.getContraseña();
-        this.roleId = usuariosDto.getRolId() != null ? BigInteger.valueOf(usuariosDto.getRolId()) : null;
-        this.isActive = usuariosDto.getEstado();
-        this.version = usuariosDto.getVersion();
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String p) { password = p; }
 
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
+    public BigInteger getRoleId() { return roleId; }
+    public void setRoleId(BigInteger r) { roleId = r; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /** true si IS_ACTIVE = 'A' */
+    public boolean getIsActive() { return "A".equalsIgnoreCase(isActive); }
+    public void setIsActive(String a) { isActive = a; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String n) { nombre = n; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public String getApellido() { return apellido; }
+    public void setApellido(String a) { apellido = a; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getCorreoElectronico() { return correoElectronico; }
+    public void setCorreoElectronico(String c) { correoElectronico = c; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public BigInteger getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(BigInteger roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long v) { version = v; }
 
     public Collection<Reservations> getReservationsCollection() {
         return reservationsCollection;
     }
-
-    public void setReservationsCollection(Collection<Reservations> reservationsCollection) {
-        this.reservationsCollection = reservationsCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Usuarios)) {
-            return false;
-        }
-        Usuarios other = (Usuarios) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
-    }
-
-    @Override
-    public String toString() {
-        return "Usuarios[id=" + id + ", username=" + username + "]";
+    public void setReservationsCollection(Collection<Reservations> c) {
+        reservationsCollection = c;
     }
 }

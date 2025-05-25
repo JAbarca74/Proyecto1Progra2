@@ -32,7 +32,7 @@ public class EditDeleteUserController extends Controller implements Initializabl
     @FXML
     private TableColumn<UsuariosDto, String> colRole;
     @FXML
-    private TableColumn<UsuariosDto, Boolean> colEstado;
+   private TableColumn<UsuariosDto, String> colEstado;
     @FXML
     private Button btnEditUser;
     @FXML
@@ -48,7 +48,10 @@ public class EditDeleteUserController extends Controller implements Initializabl
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colUsername.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+colEstado.setCellValueFactory(cellData -> {
+    String estado = cellData.getValue().getEstado() ? "A" : "I";
+    return new javafx.beans.property.SimpleStringProperty(estado);
+});
 
         tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             usuarioSeleccionado = newVal;

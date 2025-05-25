@@ -28,38 +28,38 @@ public class PrimaryController extends Controller {
     }
 
     @FXML
-    private void onActionBtnInicioSesion(ActionEvent event) {
-        String usuario = txtUsuario.getText().trim();
-        String contraseña = txtContraseña.getText().trim();
+private void onActionBtnInicioSesion(ActionEvent event) {
+    String usuario = txtUsuario.getText().trim();
+    String contraseña = txtContraseña.getText().trim();
 
-        // 1) Validar que no estén vacíos
-        if (usuario.isEmpty() || contraseña.isEmpty()) {
-            mostrarError("Debe ingresar usuario y contraseña.");
-            return;
-        }
-
-        // 2) Llamar al servicio de login
-        Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
-        if (!respuesta.getEstado()) {
-            // Si el servicio devolvió error, mostrarlo
-            mostrarError(respuesta.getMensaje());
-            return;
-        }
-
-        // 3) Obtener DTO y verificar rol
-        UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
-        Long rolId = usuarioDto.getRolId();
-        if (rolId != null) {
-            FlowController.getInstance().goMain();
-            getStage().close();
-        } else {
-            mostrarError("No se pudo determinar el rol del usuario.");
-        }
+    if (usuario.isEmpty() || contraseña.isEmpty()) {
+        mostrarError("Debe ingresar usuario y contraseña.");
+        return;
     }
 
-    /**
-     * Muestra una alerta de error con el mensaje dado
-     */
+    Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
+    if (!respuesta.getEstado()) {
+        mostrarError(respuesta.getMensaje());
+        return;
+    }
+
+    UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
+
+    // ✅ Verifica si el usuario está activo (true = activo)
+    if (!usuarioDto.getEstado()) {
+        mostrarError("El usuario está inactivo. Contacte al administrador.");
+        return;
+    }
+
+    Long rolId = usuarioDto.getRolId();
+    if (rolId != null) {
+        FlowController.getInstance().goMain();
+        getStage().close();
+    } else {
+        mostrarError("No se pudo determinar el rol del usuario.");
+    }
+}
+
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error de inicio de sesión");
@@ -72,5 +72,4 @@ public class PrimaryController extends Controller {
     private void onActionBtnRegistrarUsuario(ActionEvent event) {
         FlowController.getInstance().goViewInWindowModal("RegisterNewAccount", getStage(), true);
     }
-
 }
