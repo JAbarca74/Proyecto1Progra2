@@ -1,6 +1,6 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.model.ReservationsDto;
+import cr.ac.una.proyecto1progra2.DTO.ReservationsDto;
 import cr.ac.una.proyecto1progra2.service.ReservationsService;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.Respuesta;

@@ -3,19 +3,37 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
-   <center>
-      <VBox prefHeight="500.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
-   </center>
+<BorderPane prefHeight="500.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
+
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox spacing="10">
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+         </padding>
          <children>
-            <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onAcrionBtnEditarUsuario" text="Editar Usuario" />
-            <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" />
-            <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#onActionBtnSalir" text="Salir" />
+            <Button fx:id="btnEditarUsuario"
+                    text="Editar Usuario"
+                    onAction="#onActionBtnEditarUsuario"/>
+            <Button fx:id="btnAgregarUsuario"
+                    text="Agregar Usuario"
+                    onAction="#onRegisterNewAccount"/>
+            <Button fx:id="btnRegisterAdminAccount"
+                    text="Agregar Admin"
+                    onAction="#onRegisterAdminAccount"/>
+            <Button fx:id="btnSalir"
+                    text="Salir"
+                    onAction="#onActionBtnSalir"/>
          </children>
       </VBox>
    </left>
+
+   <center>
+      <VBox/>
+   </center>
+
 </BorderPane>

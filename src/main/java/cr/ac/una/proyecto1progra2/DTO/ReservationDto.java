@@ -1,3 +1,5 @@
+package cr.ac.una.proyecto1progra2.DTO;
+
 
 
 import java.time.LocalDateTime;

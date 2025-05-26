@@ -1,7 +1,7 @@
 package cr.ac.una.proyecto1progra2.service;
 
 import cr.ac.una.proyecto1progra2.model.Reservations;
-import cr.ac.una.proyecto1progra2.model.ReservationsDto;
+import cr.ac.una.proyecto1progra2.DTO.ReservationsDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 

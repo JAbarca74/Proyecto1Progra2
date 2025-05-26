@@ -1,5 +1,6 @@
-package cr.ac.una.proyecto1progra2.model;
+package cr.ac.una.proyecto1progra2.DTO;
 
+import cr.ac.una.proyecto1progra2.model.Reservations;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;

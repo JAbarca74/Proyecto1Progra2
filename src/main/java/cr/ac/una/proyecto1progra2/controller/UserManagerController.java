@@ -1,7 +1,7 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.model.RolesDto;
-import cr.ac.una.proyecto1progra2.model.UsuariosDto;
+import cr.ac.una.proyecto1progra2.DTO.RolesDto;
+import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 import cr.ac.una.proyecto1progra2.service.RolesService;
 import cr.ac.una.proyecto1progra2.service.UsuariosService;
 import cr.ac.una.proyecto1progra2.util.Respuesta;

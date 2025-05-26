@@ -1,7 +1,7 @@
 package cr.ac.una.proyecto1progra2.service;
 
 import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
-import cr.ac.una.proyecto1progra2.model.CoworkingSpacesDto;
+import cr.ac.una.proyecto1progra2.DTO.CoworkingSpacesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 

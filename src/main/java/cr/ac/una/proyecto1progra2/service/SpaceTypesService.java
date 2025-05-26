@@ -1,7 +1,7 @@
 package cr.ac.una.proyecto1progra2.service;
 
 import cr.ac.una.proyecto1progra2.model.SpaceTypes;
-import cr.ac.una.proyecto1progra2.model.SpaceTypesDto;
+import cr.ac.una.proyecto1progra2.DTO.SpaceTypesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 

@@ -1,6 +1,6 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.model.UsuariosDto;
+import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 import cr.ac.una.proyecto1progra2.service.UsuariosService;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
@@ -70,6 +70,7 @@ private void onActionBtnInicioSesion(ActionEvent event) {
 
     @FXML
     private void onActionBtnRegistrarUsuario(ActionEvent event) {
+        
         FlowController.getInstance().goViewInWindowModal("RegisterNewAccount", getStage(), true);
     }
 }

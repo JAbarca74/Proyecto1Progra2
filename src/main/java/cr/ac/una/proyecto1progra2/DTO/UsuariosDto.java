@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/main/java/cr/ac/una/proyecto1progra2/model/UsuariosDto.java
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 2) DTO: UsuariosDto.java
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -15,8 +16,28 @@ public class UsuariosDto {
     private final StringProperty contraseña = new SimpleStringProperty();
     private final StringProperty rolId      = new SimpleStringProperty();
     private final BooleanProperty estado    = new SimpleBooleanProperty();
+=======
+package cr.ac.una.proyecto1progra2.DTO;
+
+import cr.ac.una.proyecto1progra2.model.Usuarios;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class UsuariosDto {
+
+    public final SimpleStringProperty id;
+    public final SimpleStringProperty nombre;
+    public final SimpleStringProperty apellido;
+    public final SimpleStringProperty correo;
+    public final SimpleStringProperty contraseña;
+    public final SimpleStringProperty rolId;
+    public final SimpleBooleanProperty estado;
+    public final SimpleStringProperty username;
+
+>>>>>>> Stashed changes:src/main/java/cr/ac/una/proyecto1progra2/DTO/UsuariosDto.java
     private Long version;
 
+<<<<<<< Updated upstream:src/main/java/cr/ac/una/proyecto1progra2/model/UsuariosDto.java
     public UsuariosDto() {}
 
     public UsuariosDto(Usuarios u) {
@@ -29,6 +50,18 @@ public class UsuariosDto {
         setApellido(u.getApellido());
         setCorreo(u.getCorreoElectronico());
         this.version = u.getVersion();
+=======
+    public UsuariosDto() {
+        this.modificado = false;
+        this.id = new SimpleStringProperty();
+        this.nombre = new SimpleStringProperty();
+        this.apellido = new SimpleStringProperty();
+        this.correo = new SimpleStringProperty();
+        this.contraseña = new SimpleStringProperty();
+        this.rolId = new SimpleStringProperty();
+        this.estado = new SimpleBooleanProperty(true);
+        this.username = new SimpleStringProperty();
+>>>>>>> Stashed changes:src/main/java/cr/ac/una/proyecto1progra2/DTO/UsuariosDto.java
     }
 
     // ID

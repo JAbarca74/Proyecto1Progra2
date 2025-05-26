@@ -1,7 +1,7 @@
 package cr.ac.una.proyecto1progra2.service;
 
 import cr.ac.una.proyecto1progra2.model.Roles;
-import cr.ac.una.proyecto1progra2.model.RolesDto;
+import cr.ac.una.proyecto1progra2.DTO.RolesDto;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.RegisterNewAdminController"
+            prefWidth="600" prefHeight="400">
+
+    <children>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <children>
+                <HBox alignment="CENTER" spacing="20">
+                    <children>
+                        <Button fx:id="btnRegresar"
+                                text="Regresar"
+                                onAction="#onActionBtnRegresar"/>
+                        <Label text="Registrar Administrador">
+                            <font>
+                                <Font name="System" size="24"/>
+                            </font>
+                            <style>-fx-font-style:italic;</style>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <GridPane hgap="10" vgap="10">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="20"/>
+                    </padding>
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" percentWidth="30"/>
+                        <ColumnConstraints percentWidth="70"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="Usuario:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtUsername" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="E-mail:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Contraseña:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="txtPassword" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="Confirmar:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="txtPasswordConfirm" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Label text="Nombre:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtName" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                        <Label text="Apellido:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtLastName" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10">
+                    <children>
+                        <Button fx:id="btnCrearCuenta"
+                                text="Crear"
+                                onAction="#onActionBtnCrearCuenta"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

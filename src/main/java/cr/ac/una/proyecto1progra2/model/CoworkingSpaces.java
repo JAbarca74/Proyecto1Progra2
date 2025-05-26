@@ -1,5 +1,6 @@
 package cr.ac.una.proyecto1progra2.model;
 
+import cr.ac.una.proyecto1progra2.DTO.CoworkingSpacesDto;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;

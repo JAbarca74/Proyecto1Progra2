@@ -1,5 +1,6 @@
-package cr.ac.una.proyecto1progra2.model;
+package cr.ac.una.proyecto1progra2.DTO;
 
+import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 

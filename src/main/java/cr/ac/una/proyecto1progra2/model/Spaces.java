@@ -1,5 +1,6 @@
 package cr.ac.una.proyecto1progra2.model;
 
+import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;

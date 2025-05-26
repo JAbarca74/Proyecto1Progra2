@@ -1,5 +1,6 @@
 package cr.ac.una.proyecto1progra2.model;
 
+import cr.ac.una.proyecto1progra2.DTO.RolesDto;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.persistence.QueryHint;
