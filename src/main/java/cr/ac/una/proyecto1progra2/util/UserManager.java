@@ -1,6 +1,6 @@
 package cr.ac.una.proyecto1progra2.util;
 
-import cr.ac.una.proyecto1progra2.model.UsuariosDto;
+import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 
 public class UserManager {
 
@@ -39,7 +39,9 @@ public class UserManager {
      * Puedes cambiar el valor 1 según el ID del rol en tu base.
      */
     public static boolean isAdmin() {
-        return currentUser != null && currentUser.getRolId() != null && currentUser.getRolId() == 1;
+        return currentUser != null &&
+               currentUser.getRolId() != null &&
+               currentUser.getRolId().equals(Long.valueOf(1));
     }
 
     /**
@@ -47,6 +49,8 @@ public class UserManager {
      * Puedes cambiar el valor 2 según el ID del rol en tu base.
      */
     public static boolean isRegularUser() {
-        return currentUser != null && currentUser.getRolId() != null && currentUser.getRolId() == 2;
+        return currentUser != null &&
+               currentUser.getRolId() != null &&
+               currentUser.getRolId().equals(Long.valueOf(2));
     }
 }
