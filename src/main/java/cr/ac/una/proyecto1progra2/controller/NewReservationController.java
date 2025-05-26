@@ -4,6 +4,7 @@ import cr.ac.una.proyecto1progra2.DTO.ReservationsDto;
 import cr.ac.una.proyecto1progra2.service.ReservationsService;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
+import cr.ac.una.proyecto1progra2.util.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -37,7 +38,7 @@ public class NewReservationController extends Controller implements Initializabl
     private Button btnSave;
 
     private final ReservationsService service = new ReservationsService();
-
+private final ReservationsService reservationsService = new ReservationsService();
     @Override
     public void initialize() {
         // si necesitas cargar algo al inicio, hazlo aquí
@@ -49,30 +50,63 @@ public class NewReservationController extends Controller implements Initializabl
     }
 
     @FXML
-    private void onSave(ActionEvent event) {
-        // 1) Construyes tu DTO con los datos de la UI:
-        ReservationsDto dto = new ReservationsDto();
-        dto.setFirstName(txtFirstName.getText());                             // CAMBIO: antes setFloorName(...)
-        dto.setLastName(txtLastName.getText());                               // NUEVO
-        dto.setSpaceId(Long.valueOf(txtSpaceId.getText().trim()));            // CAMBIO: antes no tenías
-        dto.setQuantity(Integer.valueOf(txtQuantity.getText().trim()));       // CAMBIO: antes setDuration(...)
-        dto.setDate(dpDate.getValue());                                       // CAMBIO: antes intentabas setDate() sin args
-        dto.setStartTime(LocalTime.parse(txtStartTime.getText().trim()));     // CAMBIO: antes setTime()
-        dto.setEndTime(LocalTime.parse(txtEndTime.getText().trim()));         // CAMBIO: antes setDuration()
-        dto.setPrice(new BigDecimal(txtPrice.getText().trim()));              // CAMBIO: antes setPrice() sin args
+private void onSave(ActionEvent event) {
+    if (!validarFormulario()) return;
 
-        // 2) Llamas al service:
-        Respuesta r = service.guardarReserva(dto);
+    try {
+        ReservationsDto dto = new ReservationsDto();
+        dto.setFirstName(txtFirstName.getText());
+        dto.setLastName(txtLastName.getText());
+        dto.setSpaceId(Long.valueOf(txtSpaceId.getText().trim()));
+        dto.setQuantity(Integer.valueOf(txtQuantity.getText().trim()));
+        dto.setDate(dpDate.getValue());
+        dto.setStartTime(LocalTime.parse(txtStartTime.getText().trim()));
+        dto.setEndTime(LocalTime.parse(txtEndTime.getText().trim()));
+        dto.setPrice(new BigDecimal(txtPrice.getText().trim()));
+        
+        // 👉 Enlazar el usuario actual
+        dto.setId(UserManager.getCurrentUser().getId());
+
+        Respuesta r = reservationsService.guardarReserva(dto); // ✅ BIEN
+
         if (!r.getEstado()) {
             mostrarError(r.getMensaje());
             return;
         }
 
-        // 3) Si quisieras recargar o mostrar la reserva recién guardada:
         ReservationsDto saved = (ReservationsDto) r.getResultado("Reserva");
         loadIntoForm(saved);
         mostrarInfo("Reserva guardada correctamente.");
+    } catch (Exception ex) {
+        mostrarError("Error al guardar la reserva: " + ex.getMessage());
     }
+}
+
+    private boolean validarFormulario() {
+    if (txtFirstName.getText().isBlank() ||
+        txtLastName.getText().isBlank() ||
+        txtSpaceId.getText().isBlank() ||
+        dpDate.getValue() == null ||
+        txtStartTime.getText().isBlank() ||
+        txtEndTime.getText().isBlank() ||
+        txtQuantity.getText().isBlank() ||
+        txtPrice.getText().isBlank()) {
+        mostrarError("Todos los campos son obligatorios.");
+        return false;
+    }
+
+    try {
+        Integer.parseInt(txtQuantity.getText());
+        new BigDecimal(txtPrice.getText());
+        LocalTime.parse(txtStartTime.getText());
+        LocalTime.parse(txtEndTime.getText());
+    } catch (Exception e) {
+        mostrarError("Formato inválido en cantidad, precio o tiempo.");
+        return false;
+    }
+
+    return true;
+}
 
     // Método auxiliar para volcar datos de DTO a la UI:
     private void loadIntoForm(ReservationsDto reserva) {

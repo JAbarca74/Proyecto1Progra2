@@ -4,6 +4,7 @@ import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 import cr.ac.una.proyecto1progra2.service.UsuariosService;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
+import cr.ac.una.proyecto1progra2.util.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,8 +16,10 @@ public class PrimaryController extends Controller {
 
     @FXML
     private TextField txtUsuario;
+
     @FXML
     private PasswordField txtContraseña;
+
     @FXML
     private Button btnInicioSesion;
 
@@ -24,41 +27,44 @@ public class PrimaryController extends Controller {
 
     @Override
     public void initialize() {
-        // Aquí podrías inicializar cosas si hiciera falta
+        // Inicialización si es necesaria
     }
 
     @FXML
-private void onActionBtnInicioSesion(ActionEvent event) {
-    String usuario = txtUsuario.getText().trim();
-    String contraseña = txtContraseña.getText().trim();
+    private void onActionBtnInicioSesion(ActionEvent event) {
+        String usuario = txtUsuario.getText().trim();
+        String contraseña = txtContraseña.getText().trim();
 
-    if (usuario.isEmpty() || contraseña.isEmpty()) {
-        mostrarError("Debe ingresar usuario y contraseña.");
-        return;
+        if (usuario.isEmpty() || contraseña.isEmpty()) {
+            mostrarError("Debe ingresar usuario y contraseña.");
+            return;
+        }
+
+        Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
+        if (!respuesta.getEstado()) {
+            mostrarError(respuesta.getMensaje());
+            return;
+        }
+
+        UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
+
+        // Verificar si el usuario está activo
+        if (!usuarioDto.getEstado()) {
+            mostrarError("El usuario está inactivo. Contacte al administrador.");
+            return;
+        }
+
+        // ✅ Guardar el usuario logueado para el resto del sistema
+        UserManager.setCurrentUser(usuarioDto);
+
+        Long rolId = usuarioDto.getRolId();
+        if (rolId != null) {
+            FlowController.getInstance().goMain();  // Ir a la ventana principal
+            getStage().close();                     // Cierra la ventana actual
+        } else {
+            mostrarError("No se pudo determinar el rol del usuario.");
+        }
     }
-
-    Respuesta respuesta = usuariosService.getUsuario(usuario, contraseña);
-    if (!respuesta.getEstado()) {
-        mostrarError(respuesta.getMensaje());
-        return;
-    }
-
-    UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
-
-    // ✅ Verifica si el usuario está activo (true = activo)
-    if (!usuarioDto.getEstado()) {
-        mostrarError("El usuario está inactivo. Contacte al administrador.");
-        return;
-    }
-
-    Long rolId = usuarioDto.getRolId();
-    if (rolId != null) {
-        FlowController.getInstance().goMain();
-        getStage().close();
-    } else {
-        mostrarError("No se pudo determinar el rol del usuario.");
-    }
-}
 
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
