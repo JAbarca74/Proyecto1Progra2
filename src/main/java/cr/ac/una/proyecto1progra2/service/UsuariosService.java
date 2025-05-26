@@ -48,7 +48,6 @@ public class UsuariosService {
     public Respuesta guardarUsuario(UsuariosDto dto) {
         EntityTransaction tx = em.getTransaction();
         try {
-<<<<<<< Updated upstream
             tx.begin();
             Usuarios u;
             if (dto.getId() != null) {
@@ -56,39 +55,6 @@ public class UsuariosService {
                 if (u == null) {
                     tx.rollback();
                     return new Respuesta(false, "Usuario no encontrado.", "guardarUsuario");
-=======
-            Query qry = em.createNamedQuery("Usuarios.findById", Usuarios.class);
-            qry.setParameter("id", id);
-            UsuariosDto dto = new UsuariosDto((Usuarios) qry.getSingleResult());
-            return new Respuesta(true, "", "", "Usuario", dto);
-        } catch (NoResultException ex) {
-            return new Respuesta(false,
-                "No existe un usuario con el ID ingresado.",
-                "getUsuario NoResultException");
-        } catch (Exception ex) {
-            Logger.getLogger(UsuariosService.class.getName())
-                  .log(Level.SEVERE, "Error obteniendo el usuario [" + id + "]", ex);
-            return new Respuesta(false,
-                "Error interno obteniendo el usuario.",
-                "getUsuario " + ex.getMessage());
-        }
-    }
-    
-    
-
-    public Respuesta guardarUsuario(UsuariosDto usuarioDto) {
-        try {
-            et = em.getTransaction();
-            et.begin();
-            Usuarios usuario;
-            if (usuarioDto.getId() != null && usuarioDto.getId() > 0) {
-                usuario = em.find(Usuarios.class, usuarioDto.getId());
-                if (usuario == null) {
-                    et.rollback();
-                    return new Respuesta(false,
-                        "No se encontró el usuario a modificar.",
-                        "guardarUsuario NoResultException");
->>>>>>> Stashed changes
                 }
             } else {
                 u = new Usuarios();
@@ -103,7 +69,6 @@ public class UsuariosService {
             return new Respuesta(false, "Error guardando usuario.", ex.getMessage());
         }
     }
-    
 
     public Respuesta eliminarUsuario(Long id) {
         EntityTransaction tx = em.getTransaction();
