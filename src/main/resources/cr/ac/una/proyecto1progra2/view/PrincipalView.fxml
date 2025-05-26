@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<<<<<<< Updated upstream
 <?import javafx.geometry.Insets?>
 
 <BorderPane prefHeight="500.0" prefWidth="800.0"
@@ -28,7 +30,50 @@
             <Button fx:id="btnSalir"
                     text="Salir"
                     onAction="#onActionBtnSalir"/>
+=======
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
+   <center>
+      <VBox prefHeight="500.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
+   </center>
+   <left>
+      <VBox prefHeight="490.0" prefWidth="123.0" BorderPane.alignment="CENTER">
+         <children>
+           <Button fx:id="btnReservar" mnemonicParsing="false" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" text="Reservaciones">
+               <VBox.margin>
+                  <Insets bottom="30.0" top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onAcrionBtnEditarUsuario" prefHeight="36.0" prefWidth="126.0" text="Editar Usuario">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="5.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="128.0" text="Button">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="127.0" text="Salir">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+>>>>>>> Stashed changes
          </children>
+         <padding>
+            <Insets top="30.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
    </left>
 

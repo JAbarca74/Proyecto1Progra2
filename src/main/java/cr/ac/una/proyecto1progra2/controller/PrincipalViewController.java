@@ -1,11 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package cr.ac.una.proyecto1progra2.controller;
 
+import cr.ac.una.proyecto1progra2.model.UsuariosDto;
 import cr.ac.una.proyecto1progra2.util.FlowController;
+<<<<<<< Updated upstream
 import java.io.IOException;
+=======
+import cr.ac.una.proyecto1progra2.util.UserManager;
+>>>>>>> Stashed changes
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,33 +18,42 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+<<<<<<< Updated upstream
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+=======
+>>>>>>> Stashed changes
 
-/**
- * FXML Controller class
- *
- * @author harol
- */
 public class PrincipalViewController extends Controller implements Initializable {
 
+<<<<<<< Updated upstream
     @FXML private Button btnEditarUsuario;
     @FXML private Button btnRegisterNewAccount;
     @FXML private Button btnRegisterAdminAccount;
     @FXML private Button btnSalir;
+=======
+    @FXML
+    private Button btnEditarUsuario;
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
+    @FXML
+    private Button btnSalir;
+>>>>>>> Stashed changes
+
+    @FXML
+    private Button btnReservar;
 
     @Override
-    public void initialize() {
+  public void initialize(URL url, ResourceBundle rb) {
+
+    if (UserManager.isAdmin()) {
+        btnReservar.setVisible(false);          // Admin NO reserva
+        btnEditarUsuario.setVisible(true);      // Admin SÍ edita usuarios
+    } else if (UserManager.isRegularUser()) {
+        btnReservar.setVisible(true);           // Usuario SÍ reserva
+        btnEditarUsuario.setVisible(false);     // Usuario NO ve botón de editar
     }
+}
 
    
      @FXML
@@ -65,7 +75,17 @@ public class PrincipalViewController extends Controller implements Initializable
 
     // Botón para salir de la aplicación
     @FXML
+    private void onActionBtnReservar(ActionEvent event) {
+        FlowController.getInstance().goView("NewReservation"); // Ajusta al nombre real de tu vista
+    }
+
+    @FXML
     private void onActionBtnSalir(ActionEvent event) {
         FlowController.getInstance().salir();
+    }
+
+    @Override
+    public void initialize() {
+       
     }
 }
