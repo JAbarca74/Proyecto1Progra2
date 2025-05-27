@@ -45,4 +45,7 @@ public class Respuesta {
         }
         return null;
     }
+    public boolean isSuccess() {
+    return this.estado; // o como esté definida la variable que indica éxito
+}
 }

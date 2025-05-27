@@ -16,8 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.QueryHint;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 @Entity
 @Table(name = "TB_SPACES")
@@ -30,10 +30,10 @@ import javax.persistence.Version;
 public class Spaces implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "spaces_seq")
+    @SequenceGenerator(name = "spaces_seq", sequenceName = "UNA.SPACES_SEQ", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
 
@@ -43,11 +43,6 @@ public class Spaces implements Serializable {
 
     @Column(name = "CAPACITY")
     private BigInteger capacity;
-
-    @Version
-    @Basic(optional = false)
-    @Column(name = "VERSION")
-    private Long version;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId", fetch = FetchType.LAZY)
     private Collection<CoworkingSpaces> coworkingSpacesCollection;
@@ -68,7 +63,8 @@ public class Spaces implements Serializable {
     public void actualizar(SpacesDto spacesDto) {
         this.name = spacesDto.getNombre();
         this.capacity = spacesDto.getCapacidad() != null ? BigInteger.valueOf(spacesDto.getCapacidad()) : null;
-        this.version = spacesDto.getVersion();
+        // Quité la línea que usaba version porque no existe en la tabla
+        // this.version = spacesDto.getVersion();
     }
 
     public Long getId() {
@@ -101,14 +97,6 @@ public class Spaces implements Serializable {
 
     public void setCoworkingSpacesCollection(Collection<CoworkingSpaces> coworkingSpacesCollection) {
         this.coworkingSpacesCollection = coworkingSpacesCollection;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override

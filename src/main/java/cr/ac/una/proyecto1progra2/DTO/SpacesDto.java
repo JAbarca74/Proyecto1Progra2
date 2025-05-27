@@ -1,45 +1,37 @@
 package cr.ac.una.proyecto1progra2.DTO;
 
 import cr.ac.una.proyecto1progra2.model.Spaces;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class SpacesDto {
+    private final SimpleLongProperty id = new SimpleLongProperty();
+    private final SimpleStringProperty nombre = new SimpleStringProperty();
+    private Integer capacidad;
+    private boolean modificado = false;
 
-    public SimpleStringProperty id;
-    public SimpleStringProperty nombre;
-    public SimpleStringProperty capacidad;
-    public SimpleObjectProperty<Boolean> estado;
-    public Long version;
-    private Boolean modificado;
+    public SpacesDto() {}
 
-    public SpacesDto() {
-        this.modificado = false;
-        this.id = new SimpleStringProperty();
-        this.nombre = new SimpleStringProperty();
-        this.capacidad = new SimpleStringProperty();
-        this.estado = new SimpleObjectProperty<>(true);
-    }
-
-    // 🚀 Constructor que mapea directamente desde la entidad Spaces
+    /** Constructor que mapea desde la entidad Spaces */
     public SpacesDto(Spaces space) {
-        this();
-        this.id.set(space.getId() != null ? space.getId().toString() : null);
-        this.nombre.set(space.getName());
-        this.capacidad.set(space.getCapacity() != null ? space.getCapacity().toString() : null);
-        this.version = space.getVersion();
+        setId(space.getId());
+        setNombre(space.getName());
+        setCapacidad(space.getCapacity() != null ? space.getCapacity().intValue() : null);
+        // No se debe llamar a getVersion() porque ya no existe
     }
+
+    // getters y setters
 
     public Long getId() {
-        if (id.get() != null && !id.get().isEmpty()) {
-            return Long.valueOf(id.get());
-        } else {
-            return null;
-        }
+        return id.get();
     }
 
     public void setId(Long id) {
-        this.id.set(id != null ? id.toString() : null);
+        this.id.set(id != null ? id : 0L);
+    }
+
+    public SimpleLongProperty idProperty() {
+        return id;
     }
 
     public String getNombre() {
@@ -50,49 +42,23 @@ public class SpacesDto {
         this.nombre.set(nombre);
     }
 
+    public SimpleStringProperty nombreProperty() {
+        return nombre;
+    }
+
     public Integer getCapacidad() {
-        if (capacidad.get() != null && !capacidad.get().isEmpty()) {
-            return Integer.valueOf(capacidad.get());
-        } else {
-            return null;
-        }
+        return capacidad;
     }
 
     public void setCapacidad(Integer capacidad) {
-        this.capacidad.set(capacidad != null ? capacidad.toString() : null);
+        this.capacidad = capacidad;
     }
 
-    public Boolean getEstado() {
-        return estado.get();
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado.set(estado);
-    }
-
-    public Boolean getModificado() {
+    public boolean isModificado() {
         return modificado;
     }
 
-    public void setModificado(Boolean modificado) {
+    public void setModificado(boolean modificado) {
         this.modificado = modificado;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "SpacesDto{" +
-                "id=" + id.get() +
-                ", nombre=" + nombre.get() +
-                ", capacidad=" + capacidad.get() +
-                ", estado=" + estado.get() +
-                '}';
     }
 }
