@@ -3,8 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.EditFloorAdminController">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -53,7 +53,7 @@
                      </children>
                   </HBox>
                   <GridPane fx:id="gridMatrix" prefHeight="282.0" prefWidth="243.0" VBox.vgrow="ALWAYS">
-                    <columnConstraints>
+                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.20001220703125" minWidth="10.0" prefWidth="64.4000244140625" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.5999755859375" minWidth="10.0" prefWidth="67.5999755859375" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,54 +61,49 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="26.400000000000006" minHeight="10.0" prefHeight="22.400000000000006" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="24.00000610351563" minHeight="10.0" prefHeight="22.400000000000006" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                        <RowConstraints maxHeight="24.00000610351563" minHeight="10.0" prefHeight="22.400000000000006" vgrow="SOMETIMES" />
+                     </rowConstraints>
                   </GridPane>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label layoutX="111.0" layoutY="62.0" prefHeight="18.0" prefWidth="120.0" text="Costo Total" />
-                        <Label fx:id="LabelCostoTotal" prefHeight="18.0" prefWidth="120.0" text="Costo Total" />
+                        <Label text="Agregar" />
+                        <HBox prefHeight="31.0" prefWidth="320.0">
+                           <children>
+                              <Button fx:id="BtnAgregarEscritorios" mnemonicParsing="false" onAction="#onAgregarEscritorios" prefHeight="26.0" prefWidth="116.0" text="Escritorios" />
+                              <Button fx:id="BtnAgregarSalas" mnemonicParsing="false" onAction="#onAgregarSalas" prefHeight="26.0" prefWidth="90.0" text="Salas" />
+                              <Button fx:id="BtnAgregarAreasComunes" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarAreasComunes" prefHeight="26.0" prefWidth="150.0" text="Areas Comunes" />
+                              <Button fx:id="BtnAgregarEspaciosLibres" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarEspaciosLibres" prefHeight="26.0" prefWidth="162.0" text="Espacios Libres" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="BtnBorrarTodo" mnemonicParsing="false" onAction="#onBorrarTodo" text="BorrarTodo" />
                      </children>
                   </VBox>
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="374.0" prefWidth="282.0">
                <children>
-                  <Label prefHeight="50.0" prefWidth="179.0" text="RESERVAR">
+                  <Label prefHeight="50.0" prefWidth="179.0" text="Editar">
                      <font>
                         <Font size="34.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="150.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="ComboBoxPiso" prefWidth="150.0" promptText="PISO" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="100.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <DatePicker fx:id="DatePickerDIas" prefHeight="26.0" prefWidth="158.0" promptText="Dias Reservaciones ">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </DatePicker>
-                  <Button fx:id="BtnPagar" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="PAGAR">
-                     <VBox.margin>
-                        <Insets top="100.0" />
-                     </VBox.margin>
-                  </Button>
+                  <ComboBox fx:id="ComboBoxPiso" prefWidth="150.0" promptText="PISO" VBox.vgrow="ALWAYS" />
+                  <TextField fx:id="TexFieldAgregarPrecio" maxHeight="-Infinity" maxWidth="-Infinity" promptText="AGREGAR PRECIO" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>

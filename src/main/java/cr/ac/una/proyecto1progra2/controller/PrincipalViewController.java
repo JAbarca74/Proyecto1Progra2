@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 public class PrincipalViewController extends Controller implements Initializable {
 
@@ -25,15 +26,20 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private Button btnReservar;
+    
+    @FXML
+    private VBox VBoxMenuAdmin;
 
+    @FXML
+    private VBox VBoxMenuUsuario;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (UserManager.isAdmin()) {
-            btnReservar.setVisible(false);          // Admin NO reserva
-            btnEditarUsuario.setVisible(true);      // Admin SÍ edita usuarios
+            VBoxMenuAdmin.setVisible(true);          // Admin NO reserva
+            VBoxMenuUsuario.setVisible(false); 
         } else if (UserManager.isRegularUser()) {
-            btnReservar.setVisible(true);           // Usuario SÍ reserva
-            btnEditarUsuario.setVisible(false);     // Usuario NO edita usuarios
+            VBoxMenuUsuario.setVisible(true);           // Usuario SÍ reserva
+               VBoxMenuAdmin.setVisible(false);
         }
     }
 
