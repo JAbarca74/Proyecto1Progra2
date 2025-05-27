@@ -32,7 +32,7 @@
                   </VBox>
                   <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutY="-29.6" prefHeight="500.0" prefWidth="146.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-23.0" AnchorPane.topAnchor="-30.0">
                      <children>
-                        <Button fx:id="BtnEditarPiso" mnemonicParsing="false" prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso"   prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
             
                                     <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
                            <font>

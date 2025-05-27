@@ -62,6 +62,10 @@ public class PrincipalViewController extends Controller implements Initializable
     private void onActionBtnReservar(ActionEvent event) {
         FlowController.getInstance().goView("NewReservation");
     }
+    @FXML
+    private void onActionBtnEditarPiso(ActionEvent event) {
+        FlowController.getInstance().goView("EditFloorAdmin");
+    }
 
     @FXML
     private void onActionBtnSalir(ActionEvent event) {
@@ -70,6 +74,6 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @Override
     public void initialize() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 }
