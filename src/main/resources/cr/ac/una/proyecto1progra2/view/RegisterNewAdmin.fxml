@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cr.ac.una.proyecto1progra2.controller.RegisterNewAdminController"
-            prefWidth="600" prefHeight="400">
+<AnchorPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.RegisterNewAdminController">
 
     <children>
-        <VBox spacing="15">
+        <VBox alignment="CENTER" spacing="15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             <children>
                 <HBox alignment="CENTER" spacing="20">
                     <children>
-                        <Button fx:id="btnRegresar"
-                                text="Regresar"
-                                onAction="#onActionBtnRegresar"/>
+                        <Button fx:id="btnRegresar" onAction="#onActionBtnRegresar" text="Regresar" />
                         <Label text="Registrar Administrador">
                             <font>
-                                <Font name="System" size="24"/>
+                                <Font name="System" size="24" />
                             </font>
                             <style>-fx-font-style:italic;</style>
                         </Label>
@@ -31,46 +35,44 @@
 
                 <GridPane hgap="10" vgap="10">
                     <padding>
-                        <Insets top="10" right="20" bottom="10" left="20"/>
+                        <Insets bottom="10" left="20" right="20" top="10" />
                     </padding>
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" percentWidth="30"/>
-                        <ColumnConstraints percentWidth="70"/>
+                        <ColumnConstraints halignment="RIGHT" percentWidth="30" />
+                        <ColumnConstraints percentWidth="70" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="16.6"/>
-                        <RowConstraints percentHeight="16.6"/>
-                        <RowConstraints percentHeight="16.6"/>
-                        <RowConstraints percentHeight="16.6"/>
-                        <RowConstraints percentHeight="16.6"/>
-                        <RowConstraints percentHeight="16.6"/>
+                        <RowConstraints percentHeight="16.6" />
+                        <RowConstraints percentHeight="16.6" />
+                        <RowConstraints percentHeight="16.6" />
+                        <RowConstraints percentHeight="16.6" />
+                        <RowConstraints percentHeight="16.6" />
+                        <RowConstraints percentHeight="16.6" />
                     </rowConstraints>
                     <children>
-                        <Label text="Usuario:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtUsername" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="txtUsername" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                        <Label text="E-mail:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="E-mail:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <Label text="Contraseña:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <PasswordField fx:id="txtPassword" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label text="Confirmar:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                        <PasswordField fx:id="txtPasswordConfirm" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        <Label text="Confirmar:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <PasswordField fx:id="txtPasswordConfirm" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                        <Label text="Nombre:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtName" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                        <Label text="Apellido:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtLastName" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                        <Label text="Apellido:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="txtLastName" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     </children>
                 </GridPane>
 
                 <HBox alignment="CENTER_RIGHT" spacing="10">
                     <children>
-                        <Button fx:id="btnCrearCuenta"
-                                text="Crear"
-                                onAction="#onActionBtnCrearCuenta"/>
+                        <Button fx:id="btnCrearCuenta" onAction="#onActionBtnCrearCuenta" text="Crear" />
                     </children>
                 </HBox>
             </children>

@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 
 public class EditFloorAdminController extends Controller implements Initializable {
 
+    @FXML private Label LabelPiso;  // Label para mostrar piso dinámico
     @FXML private Label LabelCanEscritorios;
     @FXML private Label LabelCanSalasComunes;
     @FXML private Label LabelCantAreasComunes;
@@ -40,35 +41,74 @@ public class EditFloorAdminController extends Controller implements Initializabl
     private static final double CELL_WIDTH = 60;
     private static final double CELL_HEIGHT = 40;
 
+    // Mapas para contadores independientes por piso
+    private Map<Integer, Integer> escritoriosPorPiso = new HashMap<>();
+    private Map<Integer, Integer> salasPorPiso = new HashMap<>();
+    private Map<Integer, Integer> areasPorPiso = new HashMap<>();
+    private Map<Integer, Integer> libresPorPiso = new HashMap<>();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         spacesService = new SpacesService();
-
         configurarGrid();
 
         ComboBoxPiso.getItems().addAll("Piso 0", "Piso 1", "Piso 2", "Piso 3");
         ComboBoxPiso.getSelectionModel().selectFirst();
 
+        // Inicializa el título y contadores para piso 0
+        LabelPiso.setText("Piso..0");
+        cargarContadoresPorPiso(0);
+
         ComboBoxPiso.setOnAction(e -> {
             pisoActual = ComboBoxPiso.getSelectionModel().getSelectedIndex();
+            LabelPiso.setText("Piso.." + pisoActual);
+            cargarContadoresPorPiso(pisoActual);
             cargarMatrizConEspacios();
         });
-
-        LabelCanEscritorios.setText("0");
-        LabelCanSalasComunes.setText("0");
-        LabelCantAreasComunes.setText("0");
-        LabelCantEspaciosLibres.setText("0");
 
         cargarMatrizConEspacios();
     }
 
-    // Configura columnas y filas con tamaño fijo para evitar superposición
+    private void cargarContadoresPorPiso(int piso) {
+        LabelCanEscritorios.setText(String.valueOf(escritoriosPorPiso.getOrDefault(piso, 0)));
+        LabelCanSalasComunes.setText(String.valueOf(salasPorPiso.getOrDefault(piso, 0)));
+        LabelCantAreasComunes.setText(String.valueOf(areasPorPiso.getOrDefault(piso, 0)));
+        LabelCantEspaciosLibres.setText(String.valueOf(libresPorPiso.getOrDefault(piso, 0)));
+    }
+
+    private void llenarCeldasLibres() {
+        int numCols = 4;
+        int numRows = 4;
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                boolean ocupado = false;
+                for (SpaceVisual esp : espaciosAgregados) {
+                    int r = esp.getRow();
+                    int c = esp.getColumn();
+                    int rs = esp.getRowSpan();
+                    int cs = esp.getColSpan();
+                    if (row >= r && row < r + rs && col >= c && col < c + cs) {
+                        ocupado = true;
+                        break;
+                    }
+                }
+                if (!ocupado) {
+                    StackPane celdaLibre = new StackPane();
+                    celdaLibre.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+                    celdaLibre.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-background-color: white;");
+                    gridMatrix.add(celdaLibre, col, row);
+                }
+            }
+        }
+    }
+
     private void configurarGrid() {
         gridMatrix.getColumnConstraints().clear();
         gridMatrix.getRowConstraints().clear();
 
-        int numCols = 9;
-        int numRows = 8;
+        int numCols = 4;
+        int numRows = 4;
 
         for (int i = 0; i < numCols; i++) {
             ColumnConstraints cc = new ColumnConstraints();
@@ -85,18 +125,17 @@ public class EditFloorAdminController extends Controller implements Initializabl
 
     public void cargarMatrizConEspacios() {
         espaciosAgregados.clear();
+        gridMatrix.getChildren().clear(); // Limpia todos los nodos visuales antes de agregar nuevos
         List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
-            .stream()
-            .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
-            .collect(Collectors.toList());
-
-        gridMatrix.getChildren().clear();
-
+                .stream()
+                .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+                .collect(Collectors.toList());
         for (SpaceVisual espacio : espacios) {
             espaciosAgregados.add(espacio);
-            StackPane cell = crearCeldaEspacio(espacio);
-            gridMatrix.add(cell, espacio.getColumn(), espacio.getRow(), espacio.getColSpan(), espacio.getRowSpan());
+            StackPane celda = crearCeldaEspacio(espacio);
+            gridMatrix.add(celda, espacio.getColumn(), espacio.getRow(), espacio.getColSpan(), espacio.getRowSpan());
         }
+        llenarCeldasLibres(); // Añade las celdas libres visibles después
     }
 
     public StackPane crearCeldaEspacio(SpaceVisual espacio) {
@@ -126,14 +165,21 @@ public class EditFloorAdminController extends Controller implements Initializabl
         return stack;
     }
 
-    private SpaceVisual crearEspacioLibre(String nombre) {
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
+    private SpaceVisual crearEspacioLibreConSpan(String nombre, int rowSpan, int colSpan) {
+        int maxRows = 4;
+        int maxCols = 4;
+
+        for (int row = 0; row <= maxRows - rowSpan; row++) {
+            for (int col = 0; col <= maxCols - colSpan; col++) {
                 boolean ocupado = false;
                 for (SpaceVisual esp : espaciosAgregados) {
-                    int r = esp.getRow(), c = esp.getColumn();
-                    int rs = esp.getRowSpan(), cs = esp.getColSpan();
-                    if (row >= r && row < r + rs && col >= c && col < c + cs) {
+                    int r = esp.getRow();
+                    int c = esp.getColumn();
+                    int rs = esp.getRowSpan();
+                    int cs = esp.getColSpan();
+
+                    if (row < r + rs && row + rowSpan > r &&
+                        col < c + cs && col + colSpan > c) {
                         ocupado = true;
                         break;
                     }
@@ -142,17 +188,20 @@ public class EditFloorAdminController extends Controller implements Initializabl
                     SpacesDto nuevo = new SpacesDto();
                     nuevo.setNombre(nombre + " P" + pisoActual);
                     spacesService.guardarSpace(nuevo);
-                    return new SpaceVisual(nuevo, row, col, 1, 1);
+                    return new SpaceVisual(nuevo, row, col, rowSpan, colSpan);
                 }
             }
         }
         return null;
     }
 
-    @FXML private void onAgregarEscritorios() {
-        int current = Integer.parseInt(LabelCanEscritorios.getText());
-        LabelCanEscritorios.setText(String.valueOf(current + 1));
-        SpaceVisual nuevo = crearEspacioLibre("E" + (current + 1));
+    @FXML
+    private void onAgregarEscritorios() {
+        int current = escritoriosPorPiso.getOrDefault(pisoActual, 0) + 1;
+        escritoriosPorPiso.put(pisoActual, current);
+        LabelCanEscritorios.setText(String.valueOf(current));
+
+        SpaceVisual nuevo = crearEspacioLibreConSpan("E" + current, 1, 1);
         if (nuevo != null) {
             espaciosAgregados.add(nuevo);
             StackPane celda = crearCeldaEspacio(nuevo);
@@ -160,21 +209,29 @@ public class EditFloorAdminController extends Controller implements Initializabl
         }
     }
 
-    @FXML private void onAgregarSalas() {
-        int current = Integer.parseInt(LabelCanSalasComunes.getText());
-        LabelCanSalasComunes.setText(String.valueOf(current + 1));
-        SpaceVisual nuevo = crearEspacioLibre("Sala " + (current + 1));
+    @FXML
+    private void onAgregarSalas() {
+        int current = salasPorPiso.getOrDefault(pisoActual, 0);
+        SpaceVisual nuevo = crearEspacioLibreConSpan("Sala " + (current + 1), 2, 2);
         if (nuevo != null) {
+            salasPorPiso.put(pisoActual, current + 1);
+            LabelCanSalasComunes.setText(String.valueOf(current + 1));
+
             espaciosAgregados.add(nuevo);
             StackPane celda = crearCeldaEspacio(nuevo);
             gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+        } else {
+            System.out.println("No hay espacio suficiente para agregar más salas.");
         }
     }
 
-    @FXML private void onAgregarAreasComunes() {
-        int current = Integer.parseInt(LabelCantAreasComunes.getText());
+    @FXML
+    private void onAgregarAreasComunes() {
+        int current = areasPorPiso.getOrDefault(pisoActual, 0);
+        areasPorPiso.put(pisoActual, current + 1);
         LabelCantAreasComunes.setText(String.valueOf(current + 1));
-        SpaceVisual nuevo = crearEspacioLibre("Área " + (current + 1));
+
+        SpaceVisual nuevo = crearEspacioLibreConSpan("Área " + (current + 1), 1, 1);
         if (nuevo != null) {
             espaciosAgregados.add(nuevo);
             StackPane celda = crearCeldaEspacio(nuevo);
@@ -182,10 +239,13 @@ public class EditFloorAdminController extends Controller implements Initializabl
         }
     }
 
-    @FXML private void onAgregarEspaciosLibres() {
-        int current = Integer.parseInt(LabelCantEspaciosLibres.getText());
+    @FXML
+    private void onAgregarEspaciosLibres() {
+        int current = libresPorPiso.getOrDefault(pisoActual, 0);
+        libresPorPiso.put(pisoActual, current + 1);
         LabelCantEspaciosLibres.setText(String.valueOf(current + 1));
-        SpaceVisual nuevo = crearEspacioLibre("Libre " + (current + 1));
+
+        SpaceVisual nuevo = crearEspacioLibreConSpan("Libre " + (current + 1), 1, 1);
         if (nuevo != null) {
             espaciosAgregados.add(nuevo);
             StackPane celda = crearCeldaEspacio(nuevo);
@@ -197,6 +257,11 @@ public class EditFloorAdminController extends Controller implements Initializabl
     private void onBorrarTodo() {
         Respuesta resp = spacesService.eliminarTodosSpaces();
         if (resp.isSuccess()) {
+            escritoriosPorPiso.clear();
+            salasPorPiso.clear();
+            areasPorPiso.clear();
+            libresPorPiso.clear();
+
             espaciosAgregados.clear();
             LabelCanEscritorios.setText("0");
             LabelCanSalasComunes.setText("0");
@@ -204,6 +269,7 @@ public class EditFloorAdminController extends Controller implements Initializabl
             LabelCantEspaciosLibres.setText("0");
             TexFieldAgregarPrecio.clear();
             ComboBoxPiso.getSelectionModel().selectFirst();
+            LabelPiso.setText("Piso..0");
             gridMatrix.getChildren().clear();
             cargarMatrizConEspacios();
         } else {

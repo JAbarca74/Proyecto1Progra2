@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -9,67 +11,73 @@
 
 <BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
 
-   <left>
-      <VBox prefHeight="490.0" prefWidth="123.0" spacing="10" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets top="30.0" />
-         </padding>
-         <children>
-            <AnchorPane prefHeight="502.0" prefWidth="123.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" text="Reservaciones">
-                           <VBox.margin>
-                              <Insets bottom="30.0" top="30.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="btnSalir1" onAction="#onActionBtnSalir" prefHeight="24.0" prefWidth="123.0" text="Salir" />
-                     </children>
-                     <padding>
-                        <Insets top="40.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutY="-29.6" prefHeight="500.0" prefWidth="146.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-23.0" AnchorPane.topAnchor="-30.0">
-                     <children>
-                        <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso"   prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
-            
-                                    <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
-                           <font>
-                              <Font size="5.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Button>
-            
-                                    <Button fx:id="btnAgregarUsuario" onAction="#onRegisterNewAccount" prefHeight="36.0" prefWidth="153.0" text="Agregar Usuario">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Button>
-            
-                                    <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Admin">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Button>
-            
-                                          <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" text="Salir">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-         </children>
-      </VBox>
-   </left>
-
    <center>
-      <VBox prefHeight="500.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
+      <VBox alignment="TOP_RIGHT" prefHeight="482.0" prefWidth="438.0" BorderPane.alignment="CENTER_RIGHT">
+         <BorderPane.margin>
+            <Insets left="80.0" />
+         </BorderPane.margin>
+      </VBox>
    </center>
+   <left>
+      <AnchorPane prefHeight="401.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="320.0" fitWidth="229.0" layoutY="-13.6" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-16.0" AnchorPane.topAnchor="-14.0">
+               <image>
+                  <Image url="@FondoIniSes.png" />
+               </image>
+            </ImageView>
+            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" text="Reservaciones">
+                     <VBox.margin>
+                        <Insets bottom="30.0" top="30.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir" prefHeight="24.0" prefWidth="123.0" text="Salir" />
+               </children>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
+            </VBox>
+            <ImageView fitHeight="319.0" fitWidth="214.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@FondoIniSes.png" />
+               </image>
+            </ImageView>
+            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
+               <children>
+                  <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
+      
+                                                      <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+      
+                                                      <Button fx:id="btnAgregarUsuario" onAction="#onRegisterNewAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Usuario">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+      
+                                                      <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Admin">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+      
+                                                            <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" text="Salir">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
 
 </BorderPane>
