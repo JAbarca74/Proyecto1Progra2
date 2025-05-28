@@ -42,15 +42,20 @@ public class SpacesService {
         try {
             et = em.getTransaction(); et.begin();
             Spaces e;
-            if (dto.getId() != null && dto.getId() > 0) {
-                e = em.find(Spaces.class, dto.getId());
-                if (e == null) { et.rollback(); return new Respuesta(false,"No encontrado.",""); }
-                e.actualizar(dto);
-                e = em.merge(e);
-            } else {
-                e = new Spaces(dto);
-                em.persist(e);
-            }
+if (dto.getId() != null && dto.getId() > 0) {
+    e = em.find(Spaces.class, dto.getId());
+    if (e == null) { et.rollback(); return new Respuesta(false,"No encontrado.",""); }
+    e.actualizar(dto);
+    e = em.merge(e);
+} else {
+    e = new Spaces(dto);
+    TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
+q.setParameter("name", dto.getNombre().toUpperCase());
+if (!q.getResultList().isEmpty()) {
+    return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
+}// Si aquí el constructor asigna un ID manual, mal
+    em.persist(e);
+}
             et.commit();
             return new Respuesta(true, "", "", "Space", new SpacesDto(e));
         } catch (Exception ex) {
@@ -76,57 +81,24 @@ public class SpacesService {
     }
 
     // Nuevo método que retorna una lista de SpaceVisual con posición y tamaño para UI
-   public List<SpaceVisual> obtenerEspaciosConPosicion() {
+  public List<SpaceVisual> obtenerEspaciosConPosicion() {
     List<SpaceVisual> listaVisual = new ArrayList<>();
     Respuesta resp = listarSpaces();
     if (!resp.isSuccess()) return listaVisual;
 
     List<SpacesDto> espacios = (List<SpacesDto>) resp.getResultado("Spaces");
 
-    // Variables para ubicar espacios automáticamente si no están definidos
-    int fila = 0;
-    int columna = 0;
-
     for (SpacesDto dto : espacios) {
-        String nombre = dto.getNombre().toLowerCase();
-        int rowSpan = 1;
-        int colSpan = 1;
+        int fila = dto.getRow();       // Ahora tomado del DTO
+        int columna = dto.getColumn(); // Ahora tomado del DTO
+        int rowSpan = dto.getRowSpan(); // Si tienes este dato, sino 1
+        int colSpan = dto.getColSpan(); // Si tienes este dato, sino 1
 
-        // Lógica personalizada según nombre para ejemplo visual
-        if (nombre.contains("sala 1")) {
-            fila = 0;
-            columna = 0;
-            rowSpan = 3;
-            colSpan = 2;
-        } else if (nombre.equals("e1")) {
-            fila = 0;
-            columna = 2;
-        } else if (nombre.contains("área 1")) {
-            fila = 0;
-            columna = 3;
-        } else if (nombre.contains("área 2")) {
-            fila = 0;
-            columna = 4;
-        } else if (nombre.equals("e2")) {
-            fila = 0;
-            columna = 5;
-        } else if (nombre.contains("sala 2")) {
-            fila = 0;
-            columna = 6;
-            rowSpan = 3;
-            colSpan = 2;
-        } else {
-            // Espacios libres automáticos
-            fila++;
-            if (fila >= 8) {
-                fila = 0;
-                columna++;
-            }
-        }
+        if (rowSpan <= 0) rowSpan = 1;
+        if (colSpan <= 0) colSpan = 1;
 
         listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
     }
-
     return listaVisual;
 }
    

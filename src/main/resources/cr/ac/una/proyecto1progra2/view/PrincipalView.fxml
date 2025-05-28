@@ -26,6 +26,11 @@
                   <Image url="@FondoIniSes.png" />
                </image>
             </ImageView>
+            <ImageView fitHeight="319.0" fitWidth="214.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@FondoIniSes.png" />
+               </image>
+            </ImageView>
             <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" text="Reservaciones">
@@ -39,11 +44,6 @@
                   <Insets top="40.0" />
                </padding>
             </VBox>
-            <ImageView fitHeight="319.0" fitWidth="214.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@FondoIniSes.png" />
-               </image>
-            </ImageView>
             <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
                <children>
                   <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
