@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
+<BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
 
    <center>
       <VBox alignment="TOP_RIGHT" prefHeight="482.0" prefWidth="438.0" BorderPane.alignment="CENTER_RIGHT">
@@ -50,7 +50,7 @@
       
                                                       <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
                      <font>
-                        <Font size="5.0" />
+                        <Font size="13.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />

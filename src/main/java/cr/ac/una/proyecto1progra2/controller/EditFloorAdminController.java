@@ -217,58 +217,69 @@ public class EditFloorAdminController extends Controller implements Initializabl
 
     @FXML
     private void onAgregarEscritorios() {
+    SpaceVisual nuevo = crearEspacioLibreConSpan("E" + (escritoriosPorPiso.getOrDefault(pisoActual, 0) + 1), 1, 1);
+    if (nuevo != null) {
         int current = escritoriosPorPiso.getOrDefault(pisoActual, 0) + 1;
         escritoriosPorPiso.put(pisoActual, current);
         LabelCanEscritorios.setText(String.valueOf(current));
 
-        SpaceVisual nuevo = crearEspacioLibreConSpan("E" + current, 1, 1);
-        if (nuevo != null) {
-            espaciosAgregados.add(nuevo);
-            StackPane celda = crearCeldaEspacio(nuevo);
-            gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
-        }
+        espaciosAgregados.add(nuevo);
+        StackPane celda = crearCeldaEspacio(nuevo);
+        gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+    } else {
+        System.out.println("No hay espacio para más escritorios.");
     }
+}
 
     @FXML
     private void onAgregarSalas() {
-        int current = salasPorPiso.getOrDefault(pisoActual, 0);
-        SpaceVisual nuevo = crearEspacioLibreConSpan("Sala " + (current + 1), 2, 2);
-        if (nuevo != null) {
-            salasPorPiso.put(pisoActual, current + 1);
-            LabelCanSalasComunes.setText(String.valueOf(current + 1));
-            espaciosAgregados.add(nuevo);
-            StackPane celda = crearCeldaEspacio(nuevo);
-            gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
-        }
+    int current = salasPorPiso.getOrDefault(pisoActual, 0);
+    SpaceVisual nuevo = crearEspacioLibreConSpan("Sala " + (current + 1), 2, 2);
+    if (nuevo != null) {
+        salasPorPiso.put(pisoActual, current + 1);
+        LabelCanSalasComunes.setText(String.valueOf(current + 1));
+
+        espaciosAgregados.add(nuevo);
+        StackPane celda = crearCeldaEspacio(nuevo);
+        gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+    } else {
+        System.out.println("No hay espacio para más salas.");
     }
+}
+   
+
 
     @FXML
-    private void onAgregarAreasComunes() {
-        int current = areasPorPiso.getOrDefault(pisoActual, 0);
+private void onAgregarAreasComunes() {
+    int current = areasPorPiso.getOrDefault(pisoActual, 0);
+    SpaceVisual nuevo = crearEspacioLibreConSpan("Área " + (current + 1), 1, 1);
+    if (nuevo != null) {
         areasPorPiso.put(pisoActual, current + 1);
         LabelCantAreasComunes.setText(String.valueOf(current + 1));
 
-        SpaceVisual nuevo = crearEspacioLibreConSpan("Área " + (current + 1), 1, 1);
-        if (nuevo != null) {
-            espaciosAgregados.add(nuevo);
-            StackPane celda = crearCeldaEspacio(nuevo);
-            gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
-        }
+        espaciosAgregados.add(nuevo);
+        StackPane celda = crearCeldaEspacio(nuevo);
+        gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+    } else {
+        System.out.println("No hay espacio para más áreas comunes.");
     }
+}
 
     @FXML
-    private void onAgregarEspaciosLibres() {
-        int current = libresPorPiso.getOrDefault(pisoActual, 0);
+   private void onAgregarEspaciosLibres() {
+    int current = libresPorPiso.getOrDefault(pisoActual, 0);
+    SpaceVisual nuevo = crearEspacioLibreConSpan("Libre " + (current + 1), 1, 1);
+    if (nuevo != null) {
         libresPorPiso.put(pisoActual, current + 1);
         LabelCantEspaciosLibres.setText(String.valueOf(current + 1));
 
-        SpaceVisual nuevo = crearEspacioLibreConSpan("Libre " + (current + 1), 1, 1);
-        if (nuevo != null) {
-            espaciosAgregados.add(nuevo);
-            StackPane celda = crearCeldaEspacio(nuevo);
-            gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
-        }
+        espaciosAgregados.add(nuevo);
+        StackPane celda = crearCeldaEspacio(nuevo);
+        gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+    } else {
+        System.out.println("No hay espacio para más espacios libres.");
     }
+}
 
     @FXML
     private void onBorrarTodo() {

@@ -84,18 +84,24 @@
                         </VBox>
                     </children>
                 </VBox>
-                <VBox alignment="CENTER" prefHeight="374.0" prefWidth="282.0">
+                <VBox alignment="CENTER_LEFT" prefHeight="400.0" prefWidth="256.0">
                     <children>
                         <Label prefHeight="50.0" prefWidth="179.0" text="Editar">
                             <font>
                                 <Font size="34.0" />
                             </font>
                             <VBox.margin>
-                                <Insets bottom="150.0" />
+                                <Insets bottom="100.0" left="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="ComboBoxPiso" prefWidth="150.0" promptText="PISO" VBox.vgrow="ALWAYS" />
-                        <TextField fx:id="TexFieldAgregarPrecio" maxHeight="-Infinity" maxWidth="-Infinity" promptText="AGREGAR PRECIO" VBox.vgrow="ALWAYS" />
+                        <ComboBox fx:id="ComboBoxPiso" prefWidth="150.0" promptText="PISO" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin></ComboBox>
+                        <TextField fx:id="TexFieldAgregarPrecio" maxHeight="-Infinity" maxWidth="-Infinity" promptText="AGREGAR PRECIO" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets left="10.0" top="80.0" />
+                     </VBox.margin></TextField>
                     </children>
                 </VBox>
             </children>
