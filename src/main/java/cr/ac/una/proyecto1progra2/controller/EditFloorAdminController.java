@@ -21,6 +21,10 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 
 public class EditFloorAdminController extends Controller implements Initializable {
 
@@ -155,32 +159,56 @@ public class EditFloorAdminController extends Controller implements Initializabl
     }
 
     public StackPane crearCeldaEspacio(SpaceVisual espacio) {
-        StackPane stack = new StackPane();
-        Rectangle rect = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
-        rect.setArcWidth(10);
-        rect.setArcHeight(10);
+    StackPane stack = new StackPane();
+    Rectangle rect = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
+    rect.setArcWidth(10);
+    rect.setArcHeight(10);
 
-        String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
+    String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
 
-        if (nombre.contains("sala")) {
-            rect.setFill(Color.CRIMSON);
-        } else if (nombre.contains("área")) {
-            rect.setFill(Color.DARKGREEN);
-        } else if (nombre.contains("e")) {
-            rect.setFill(Color.DODGERBLUE);
-        } else {
-            rect.setFill(Color.LIGHTGRAY);
-        }
-
-        rect.setStroke(Color.BLACK);
-
-        Text text = new Text(espacio.getSpace().getNombre());
-        text.setFill(Color.WHITE);
-
-        stack.getChildren().addAll(rect, text);
-        return stack;
+    if (nombre.contains("sala")) {
+        rect.setFill(Color.CRIMSON);
+    } else if (nombre.contains("área")) {
+        rect.setFill(Color.DARKGREEN);
+    } else if (nombre.contains("libre")) {
+        rect.setFill(Color.GOLD); // Amarillo para libres
+    } else if (nombre.contains("e")) {
+        rect.setFill(Color.DODGERBLUE);
+    } else {
+        rect.setFill(Color.LIGHTGRAY);
     }
 
+    rect.setStroke(Color.BLACK);
+
+    Text text = new Text(espacio.getSpace().getNombre());
+    text.setFill(Color.WHITE);
+    stack.getChildren().addAll(rect, text);
+
+    // 👇 Aquí va el evento para editar al hacer doble clic
+    stack.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2) {
+            editarEspacio(espacio);
+        }
+    });
+
+    return stack;
+}
+private void resaltarTemporal(StackPane celda) {
+    // Guarda el estilo original
+    String estiloOriginal = celda.getStyle();
+
+    // Aplica borde amarillo
+    celda.setStyle("-fx-border-color: yellow; -fx-border-width: 3; -fx-border-radius: 5;");
+
+    // Programar volver al estilo original luego de 1.5 segundos
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+            javafx.application.Platform.runLater(() -> celda.setStyle(estiloOriginal));
+        }
+    }, 1500); // 1.5 segundos
+}
     private SpaceVisual crearEspacioLibreConSpan(String nombre, int rowSpan, int colSpan) {
         int maxRows = 4;
         int maxCols = 4;
@@ -226,6 +254,7 @@ public class EditFloorAdminController extends Controller implements Initializabl
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+          resaltarTemporal(celda);
     } else {
         System.out.println("No hay espacio para más escritorios.");
     }
@@ -242,6 +271,7 @@ public class EditFloorAdminController extends Controller implements Initializabl
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+          resaltarTemporal(celda);
     } else {
         System.out.println("No hay espacio para más salas.");
     }
@@ -260,6 +290,7 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+          resaltarTemporal(celda);
     } else {
         System.out.println("No hay espacio para más áreas comunes.");
     }
@@ -276,33 +307,89 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+          resaltarTemporal(celda);
     } else {
         System.out.println("No hay espacio para más espacios libres.");
     }
 }
 
     @FXML
-    private void onBorrarTodo() {
-        Respuesta resp = spacesService.eliminarTodosSpaces();
+ private void onBorrarTodo() {
+    // Paso 1: Confirmación visual
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmación");
+    alert.setHeaderText("¿Deseas borrar TODOS los espacios del piso " + pisoActual + "?");
+    alert.setContentText("Esta acción no se puede deshacer.");
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+
+        // Paso 2: Verificar si hay espacios en este piso
+        List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion();
+        String filtro = "P" + pisoActual;
+        boolean hayEspacios = espacios.stream()
+            .anyMatch(esp -> esp.getSpace().getNombre().contains(filtro));
+
+        if (!hayEspacios) {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Información");
+            info.setHeaderText("No hay espacios para borrar");
+            info.setContentText("El piso " + pisoActual + " no tiene espacios registrados.");
+            info.showAndWait();
+            return;
+        }
+
+        // Paso 3: Eliminar solo los del piso actual
+        Respuesta resp = spacesService.eliminarEspaciosPorPiso(pisoActual);
         if (resp.isSuccess()) {
-            escritoriosPorPiso.clear();
-            salasPorPiso.clear();
-            areasPorPiso.clear();
-            libresPorPiso.clear();
-            espaciosAgregados.clear();
+            escritoriosPorPiso.put(pisoActual, 0);
+            salasPorPiso.put(pisoActual, 0);
+            areasPorPiso.put(pisoActual, 0);
+            libresPorPiso.put(pisoActual, 0);
+            espaciosAgregados.removeIf(esp -> esp.getSpace().getNombre().contains(filtro));
 
             LabelCanEscritorios.setText("0");
             LabelCanSalasComunes.setText("0");
             LabelCantAreasComunes.setText("0");
             LabelCantEspaciosLibres.setText("0");
-            TexFieldAgregarPrecio.clear();
-            ComboBoxPiso.getSelectionModel().selectFirst();
-            LabelPiso.setText("Piso 0");
+
             gridMatrix.getChildren().clear();
             cargarMatrizConEspacios();
+        } else {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("No se pudieron eliminar los espacios");
+            error.setContentText(resp.getMensaje());
+            error.showAndWait();
         }
     }
+}
+private void editarEspacio(SpaceVisual espacio) {
+    TextInputDialog dialog = new TextInputDialog(espacio.getSpace().getNombre());
+    dialog.setTitle("Editar espacio");
+    dialog.setHeaderText("Modificar nombre del espacio");
+    dialog.setContentText("Nuevo nombre:");
 
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(nombreNuevo -> {
+        if (!nombreNuevo.trim().isEmpty()) {
+            // Actualizar el nombre en la base de datos
+            SpacesDto dto = espacio.getSpace();
+            dto.setNombre(nombreNuevo.trim());
+
+            Respuesta respuesta = spacesService.guardarSpace(dto);
+            if (respuesta.isSuccess()) {
+                cargarMatrizConEspacios(); // Recargar la vista con el nuevo nombre
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("No se pudo actualizar el espacio");
+                error.setContentText(respuesta.getMensaje());
+                error.showAndWait();
+            }
+        }
+    });
+}
     @Override
     public void initialize() {
       

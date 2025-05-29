@@ -40,22 +40,29 @@ public class SpacesService {
 
     public Respuesta guardarSpace(SpacesDto dto) {
         try {
-            et = em.getTransaction(); et.begin();
+            et = em.getTransaction();
+            et.begin();
             Spaces e;
-if (dto.getId() != null && dto.getId() > 0) {
-    e = em.find(Spaces.class, dto.getId());
-    if (e == null) { et.rollback(); return new Respuesta(false,"No encontrado.",""); }
-    e.actualizar(dto);
-    e = em.merge(e);
-} else {
-    e = new Spaces(dto);
-    TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
-q.setParameter("name", dto.getNombre().toUpperCase());
-if (!q.getResultList().isEmpty()) {
-    return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
-}// Si aquí el constructor asigna un ID manual, mal
-    em.persist(e);
-}
+
+            if (dto.getId() != null && dto.getId() > 0) {
+                e = em.find(Spaces.class, dto.getId());
+                if (e == null) {
+                    et.rollback();
+                    return new Respuesta(false, "No encontrado.", "");
+                }
+                e.actualizar(dto);
+                e = em.merge(e);
+            } else {
+                e = new Spaces(dto);
+                TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
+                q.setParameter("name", dto.getNombre().toUpperCase());
+                if (!q.getResultList().isEmpty()) {
+                    et.rollback();
+                    return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
+                }
+                em.persist(e);
+            }
+
             et.commit();
             return new Respuesta(true, "", "", "Space", new SpacesDto(e));
         } catch (Exception ex) {
@@ -65,70 +72,81 @@ if (!q.getResultList().isEmpty()) {
         }
     }
 
-    public Respuesta eliminarSpace(Long id) {
+    public void eliminarSpace(Long id) {
         try {
-            et = em.getTransaction(); et.begin();
-            Spaces e = em.find(Spaces.class, id);
-            if (e == null) { et.rollback(); return new Respuesta(false,"No encontrado.",""); }
-            em.remove(e);
-            et.commit();
-            return new Respuesta(true, "Eliminado.", "");
-        } catch (Exception ex) {
-            if (et.isActive()) et.rollback();
-            Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
-            return new Respuesta(false, "Error eliminando espacio.", ex.getMessage());
+            if (!em.getTransaction().isActive()) {
+                em.getTransaction().begin();
+            }
+            Spaces space = em.find(Spaces.class, id);
+            if (space != null) {
+                em.remove(space);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
         }
     }
 
-    // Nuevo método que retorna una lista de SpaceVisual con posición y tamaño para UI
-  public List<SpaceVisual> obtenerEspaciosConPosicion() {
-    List<SpaceVisual> listaVisual = new ArrayList<>();
-    Respuesta resp = listarSpaces();
-    if (!resp.isSuccess()) return listaVisual;
+    public List<SpaceVisual> obtenerEspaciosConPosicion() {
+        List<SpaceVisual> listaVisual = new ArrayList<>();
+        Respuesta resp = listarSpaces();
+        if (!resp.isSuccess()) return listaVisual;
 
-    List<SpacesDto> espacios = (List<SpacesDto>) resp.getResultado("Spaces");
+        List<SpacesDto> espacios = (List<SpacesDto>) resp.getResultado("Spaces");
 
-    for (SpacesDto dto : espacios) {
-        int fila = dto.getRow();       // Ahora tomado del DTO
-        int columna = dto.getColumn(); // Ahora tomado del DTO
-        int rowSpan = dto.getRowSpan(); // Si tienes este dato, sino 1
-        int colSpan = dto.getColSpan(); // Si tienes este dato, sino 1
+        for (SpacesDto dto : espacios) {
+            int fila = dto.getRow();
+            int columna = dto.getColumn();
+            int rowSpan = dto.getRowSpan();
+            int colSpan = dto.getColSpan();
 
-        if (rowSpan <= 0) rowSpan = 1;
-        if (colSpan <= 0) colSpan = 1;
+            if (rowSpan <= 0) rowSpan = 1;
+            if (colSpan <= 0) colSpan = 1;
 
-        listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
+            listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
+        }
+        return listaVisual;
     }
-    return listaVisual;
-}
-   
-   public Respuesta eliminarTodosSpaces() {
-    try {
-        et = em.getTransaction();
-        et.begin();
 
-        // 1. Borrar primero las reservas (hijas de CoworkingSpaces)
-        int borradosReservas = em.createQuery("DELETE FROM Reservations").executeUpdate();
+    public Respuesta eliminarTodosSpaces() {
+        try {
+            et = em.getTransaction();
+            et.begin();
 
-        // 2. Luego borrar los coworkingSpaces
-        int borradosCoworking = em.createQuery("DELETE FROM CoworkingSpaces").executeUpdate();
+            int borradosReservas = em.createQuery("DELETE FROM Reservations").executeUpdate();
+            int borradosCoworking = em.createQuery("DELETE FROM CoworkingSpaces").executeUpdate();
+            int borradosSpaces = em.createQuery("DELETE FROM Spaces").executeUpdate();
 
-        // 3. Finalmente borrar los spaces
-        int borradosSpaces = em.createQuery("DELETE FROM Spaces").executeUpdate();
-
-        et.commit();
-        return new Respuesta(true,
-            "Se eliminaron " + borradosReservas + " reservas, " +
-            borradosCoworking + " coworkings y " +
-            borradosSpaces + " espacios.",
-            "");
-    } catch (Exception ex) {
-        if (et.isActive()) et.rollback();
-        Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
-        return new Respuesta(false, "Error eliminando espacios.", ex.getMessage());
+            et.commit();
+            return new Respuesta(true,
+                "Se eliminaron " + borradosReservas + " reservas, " +
+                borradosCoworking + " coworkings y " +
+                borradosSpaces + " espacios.",
+                "");
+        } catch (Exception ex) {
+            if (et.isActive()) et.rollback();
+            Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, "Error eliminando espacios.", ex.getMessage());
+        }
     }
-}
 
-   // En SpacesService.java
+    public Respuesta eliminarEspaciosPorPiso(int piso) {
+        try {
+            List<SpaceVisual> espacios = obtenerEspaciosConPosicion();
+            String filtro = "P" + piso;
 
+            for (SpaceVisual esp : espacios) {
+                if (esp.getSpace().getNombre().contains(filtro)) {
+                    eliminarSpace(esp.getSpace().getId());
+                }
+            }
+
+            return new Respuesta(true, "Espacios del piso eliminados correctamente.", "");
+        } catch (Exception e) {
+            return new Respuesta(false, "Error eliminando espacios del piso.", e.getMessage());
+        }
+    }
 }

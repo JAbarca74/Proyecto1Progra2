@@ -44,10 +44,7 @@ public class CoworkingSpaces implements Serializable {
     @Column(name = "CAPACITY")
     private Integer capacity;
 
-    @Version
-    @Basic(optional = false)
-    @Column(name = "VERSION")
-    private Long version;
+  
 
     @JoinColumn(name = "SPACE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -74,7 +71,7 @@ public class CoworkingSpaces implements Serializable {
     public void actualizar(CoworkingSpacesDto coworkingSpacesDto) {
         this.name = coworkingSpacesDto.getNombre();
         this.capacity = coworkingSpacesDto.getCapacidad();
-        this.version = coworkingSpacesDto.getVersion();
+     
         // Nota: spaceId y typeId deben actualizarse en el Service si quieres cambiar las relaciones
     }
 
@@ -118,13 +115,7 @@ public class CoworkingSpaces implements Serializable {
         this.typeId = typeId;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
+  
 
     @Override
     public int hashCode() {
