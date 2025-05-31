@@ -6,10 +6,10 @@ import javax.persistence.Persistence;
 
 public class JPAUtil {
     private static final EntityManagerFactory emf =
-        Persistence.createEntityManagerFactory(
-          "cr.ac.una_Proyecto1Progra2_jar_1.0-SNAPSHOTPU"
-        );
-
+        Persistence.createEntityManagerFactory("ProyectoPU");
+   public static EntityManagerFactory getEMF() {
+        return emf;
+    }
     public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }

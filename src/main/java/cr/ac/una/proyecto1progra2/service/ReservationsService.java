@@ -1,83 +1,96 @@
 package cr.ac.una.proyecto1progra2.service;
 
+import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.model.Reservations;
-import cr.ac.una.proyecto1progra2.DTO.ReservationsDto;
-import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
-import cr.ac.una.proyecto1progra2.util.Respuesta;
+import cr.ac.una.proyecto1progra2.model.Usuarios;
+import cr.ac.una.proyecto1progra2.util.JPAUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReservationsService {
-    private final EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
 
-    public Respuesta listarReservas() {
+    public List<Reservations> buscarReservasTraslapadas(Long coworkingSpaceId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Reservations> traslapadas = null;
         try {
-            List<ReservationsDto> datos = em.createNamedQuery("Reservations.findAll", Reservations.class)
-                .getResultList()
-                .stream()
-                .map(ReservationsDto::new)
-                .collect(Collectors.toList());
-            return new Respuesta(true, "", "", "Reservas", datos);
-        } catch (Exception ex) {
-            return new Respuesta(false, "Error listando reservas.", ex.getMessage());
+            TypedQuery<Reservations> query = em.createQuery(
+                "SELECT r FROM Reservations r WHERE r.coworkingSpaceId = :spaceId AND r.reservationDate = :fecha " +
+                "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Reservations.class);
+            query.setParameter("spaceId", coworkingSpaceId);
+            query.setParameter("fecha", fecha);
+            query.setParameter("horaInicio", horaInicio);
+            query.setParameter("horaFin", horaFin);
+            traslapadas = query.getResultList();
+        } finally {
+            em.close();
+        }
+        return traslapadas;
+    }
+
+    public boolean guardarReserva(Long userId, Long coworkingSpaceId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Reservations reserva = new Reservations();
+            reserva.setUserId(em.getReference(Usuarios.class, userId));
+            reserva.setCoworkingSpaceId(coworkingSpaceId);
+            reserva.setReservationDate(fecha);
+            reserva.setStartTime(horaInicio);
+            reserva.setEndTime(horaFin);
+            em.persist(reserva);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            return false;
+        } finally {
+            em.close();
         }
     }
 
-    public boolean disponible(Long spaceId, LocalDate date,
-                              LocalTime start, LocalTime end) {
-        TypedQuery<Reservations> q = em.createNamedQuery("Reservations.findByOverlap", Reservations.class);
-        q.setParameter("spaceId", spaceId);
-        q.setParameter("date", date);
-        q.setParameter("startTime", start);
-        q.setParameter("endTime", end);
-        return q.getResultList().isEmpty();
+    public List<Long> obtenerEspaciosOcupados(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Long> ids = null;
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                "SELECT DISTINCT r.coworkingSpaceId FROM Reservations r WHERE r.reservationDate = :fecha " +
+                "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Long.class);
+            query.setParameter("fecha", fecha);
+            query.setParameter("horaInicio", horaInicio);
+            query.setParameter("horaFin", horaFin);
+            ids = query.getResultList();
+        } finally {
+            em.close();
+        }
+        return ids;
     }
 
-    public Respuesta guardarReserva(ReservationsDto dto) {
+    public List<CoworkingSpaces> buscarEspaciosDisponibles(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, int capacidadMinima) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<CoworkingSpaces> disponibles;
         try {
-            if (!disponible(dto.getSpaceId(), dto.getDate(), dto.getStartTime(), dto.getEndTime())) {
-                return new Respuesta(false,
-                    "El espacio no está disponible en esa franja.", "disponibilidad");
-            }
+            TypedQuery<Long> queryReservados = em.createQuery(
+                "SELECT DISTINCT r.coworkingSpaceId FROM Reservations r WHERE r.reservationDate = :fecha " +
+                "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Long.class);
+            queryReservados.setParameter("fecha", fecha);
+            queryReservados.setParameter("horaInicio", horaInicio);
+            queryReservados.setParameter("horaFin", horaFin);
+            List<Long> ocupados = queryReservados.getResultList();
 
-            et = em.getTransaction();
-            et.begin();
-
-            Reservations r;
-            if (dto.getId() != null) {
-                r = em.find(Reservations.class, dto.getId());
-                if (r == null) {
-                    et.rollback();
-                    return new Respuesta(false, "Reserva no encontrada.", "guardarReserva");
-                }
-            } else {
-                r = new Reservations();
-            }
-
-            r.setFirstName(dto.getFirstName());
-            r.setLastName(dto.getLastName());
-            r.setSpaceId(dto.getSpaceId());
-            r.setQuantity(dto.getQuantity());
-            r.setDate(dto.getDate());
-            r.setStartTime(dto.getStartTime());
-            r.setEndTime(dto.getEndTime());
-            r.setPrice(dto.getPrice());
-
-            if (dto.getId() == null) em.persist(r);
-            else                   em.merge(r);
-
-            et.commit();
-            return new Respuesta(true, "", "", "Reserva", new ReservationsDto(r));
-        } catch (Exception ex) {
-            if (et != null && et.isActive()) et.rollback();
-            return new Respuesta(false, "Error guardando reserva.", ex.getMessage());
+            TypedQuery<CoworkingSpaces> queryDisponibles = em.createQuery(
+                "SELECT c FROM CoworkingSpaces c WHERE c.spaceId NOT IN :ocupados AND c.capacity >= :capacidad", CoworkingSpaces.class);
+            queryDisponibles.setParameter("ocupados", ocupados.isEmpty() ? List.of(-1L) : ocupados);
+            queryDisponibles.setParameter("capacidad", capacidadMinima);
+            disponibles = queryDisponibles.getResultList();
+        } finally {
+            em.close();
         }
+        return disponibles;
     }
 }

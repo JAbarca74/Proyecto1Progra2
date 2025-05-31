@@ -1,139 +1,182 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.DTO.ReservationsDto;
+import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
+import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.service.ReservationsService;
-import cr.ac.una.proyecto1progra2.util.FlowController;
-import cr.ac.una.proyecto1progra2.util.Respuesta;
+import cr.ac.una.proyecto1progra2.service.SpacesService;
+import cr.ac.una.proyecto1progra2.util.SpaceVisual;
 import cr.ac.una.proyecto1progra2.util.UserManager;
-import javafx.event.ActionEvent;
+import cr.ac.una.proyecto1progra2.util.Utilities;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import java.math.BigDecimal;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+
+import javax.persistence.EntityManager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import java.util.stream.Collectors;
 
 public class NewReservationController extends Controller implements Initializable {
+    @FXML private DatePicker DatePickerDIasDIasReservaciones;
+    @FXML private ComboBox<LocalTime> ComboBoxHoraIncio1;
+    @FXML private ComboBox<LocalTime> ComboBoxHoraFin1;
+    @FXML private ComboBox<String> ComboBoxPiso;
+    @FXML private GridPane gridMatrix;
+    @FXML private Label LabelNombreUsuario;
 
-    // ——— CONTROLES DE UI ———
-    @FXML
-    private TextField txtFirstName;    // antes usabas txtPiso
-    @FXML
-    private TextField txtLastName;     // nuevo: apellido
-    @FXML
-    private TextField txtSpaceId;      // antes quizás no lo tenías
-    @FXML
-    private TextField txtQuantity;     // antes txtDuracion?
-    @FXML
-    private DatePicker dpDate;         // antes txtFecha
-    @FXML
-    private TextField txtStartTime;    // antes txtHora
-    @FXML
-    private TextField txtEndTime;      // antes txtDuracion
-    @FXML
-    private TextField txtPrice;        // antes txtPrecio
-    @FXML
-    private Button btnSave;
+    private ReservationsService reservationsService = new ReservationsService();
+    private SpacesService spacesService = new SpacesService();
+    private int pisoActual = 0;
 
-    private final ReservationsService service = new ReservationsService();
-private final ReservationsService reservationsService = new ReservationsService();
     @Override
-    public void initialize() {
-        // si necesitas cargar algo al inicio, hazlo aquí
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        LocalTime hora = LocalTime.of(7, 0);
+        while (hora.isBefore(LocalTime.of(21, 0))) {
+            ComboBoxHoraIncio1.getItems().add(hora);
+            ComboBoxHoraFin1.getItems().add(hora);
+            hora = hora.plusHours(1);
+        }
+        ComboBoxHoraIncio1.setValue(LocalTime.of(8, 0));
+        ComboBoxHoraFin1.setValue(LocalTime.of(9, 0));
+
+        ComboBoxPiso.getItems().addAll("Piso 0", "Piso 1", "Piso 2", "Piso 3");
+        ComboBoxPiso.getSelectionModel().selectFirst();
+        pisoActual = ComboBoxPiso.getSelectionModel().getSelectedIndex();
+
+        ComboBoxPiso.setOnAction(e -> {
+            pisoActual = ComboBoxPiso.getSelectionModel().getSelectedIndex();
+            buscarEspacios();
+        });
+
+        DatePickerDIasDIasReservaciones.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
+        ComboBoxHoraIncio1.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
+        ComboBoxHoraFin1.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
+
+        UsuariosDto usuario = UserManager.getCurrentUser();
+        if (usuario != null) {
+            LabelNombreUsuario.setText("Usuario: " + usuario.getNombre() + " " + usuario.getApellido());
+        }
+
+        cargarMatrizDeEspaciosDisponibles();
     }
 
     @FXML
-    private void onNewReservation(ActionEvent event) {
-        FlowController.getInstance().goView("newReservation");
+    private void buscarEspacios() {
+        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+        LocalTime horaFin = ComboBoxHoraFin1.getValue();
+
+        if (fecha == null || horaInicio == null || horaFin == null || !horaInicio.isBefore(horaFin)) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Datos inv\u00e1lidos", "Ingrese fecha y horas v\u00e1lidas.");
+            return;
+        }
+        cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
     }
 
     @FXML
-private void onSave(ActionEvent event) {
-    if (!validarFormulario()) return;
+    private void guardarReserva() {
+        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+        LocalTime horaFin = ComboBoxHoraFin1.getValue();
 
-    try {
-        ReservationsDto dto = new ReservationsDto();
-        dto.setFirstName(txtFirstName.getText());
-        dto.setLastName(txtLastName.getText());
-        dto.setSpaceId(Long.valueOf(txtSpaceId.getText().trim()));
-        dto.setQuantity(Integer.valueOf(txtQuantity.getText().trim()));
-        dto.setDate(dpDate.getValue());
-        dto.setStartTime(LocalTime.parse(txtStartTime.getText().trim()));
-        dto.setEndTime(LocalTime.parse(txtEndTime.getText().trim()));
-        dto.setPrice(new BigDecimal(txtPrice.getText().trim()));
-        
-        // 👉 Enlazar el usuario actual
-        dto.setId(UserManager.getCurrentUser().getId());
-
-        Respuesta r = reservationsService.guardarReserva(dto); // ✅ BIEN
-
-        if (!r.getEstado()) {
-            mostrarError(r.getMensaje());
+        if (fecha == null || horaInicio == null || horaFin == null) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
             return;
         }
 
-        ReservationsDto saved = (ReservationsDto) r.getResultado("Reserva");
-        loadIntoForm(saved);
-        mostrarInfo("Reserva guardada correctamente.");
-    } catch (Exception ex) {
-        mostrarError("Error al guardar la reserva: " + ex.getMessage());
-    }
-}
+        Long userId = UserManager.getCurrentUser().getId();
+        List<Long> espaciosEnPiso = spacesService.obtenerEspaciosConPosicion().stream()
+                .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+                .map(e -> e.getSpace().getId())
+                .toList();
 
-    private boolean validarFormulario() {
-    if (txtFirstName.getText().isBlank() ||
-        txtLastName.getText().isBlank() ||
-        txtSpaceId.getText().isBlank() ||
-        dpDate.getValue() == null ||
-        txtStartTime.getText().isBlank() ||
-        txtEndTime.getText().isBlank() ||
-        txtQuantity.getText().isBlank() ||
-        txtPrice.getText().isBlank()) {
-        mostrarError("Todos los campos son obligatorios.");
-        return false;
-    }
+        boolean ocupado = espaciosEnPiso.stream().anyMatch(id ->
+                !reservationsService.buscarReservasTraslapadas(id, fecha, horaInicio, horaFin).isEmpty());
 
-    try {
-        Integer.parseInt(txtQuantity.getText());
-        new BigDecimal(txtPrice.getText());
-        LocalTime.parse(txtStartTime.getText());
-        LocalTime.parse(txtEndTime.getText());
-    } catch (Exception e) {
-        mostrarError("Formato inválido en cantidad, precio o tiempo.");
-        return false;
+        if (ocupado) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Piso ocupado", "Ya existe una reserva en este piso y horario.");
+            return;
+        }
+
+        for (Long id : espaciosEnPiso) {
+            reservationsService.guardarReserva(userId, id, fecha, horaInicio, horaFin);
+        }
+
+        Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
+        cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
     }
 
-    return true;
-}
-
-    // Método auxiliar para volcar datos de DTO a la UI:
-    private void loadIntoForm(ReservationsDto reserva) {
-        txtFirstName.setText(reserva.getFirstName());                       // CAMBIO: antes getFloorName()
-        txtLastName.setText(reserva.getLastName());                         // NUEVO
-        txtSpaceId.setText(reserva.getSpaceId().toString());                // CAMBIO
-        txtQuantity.setText(reserva.getQuantity().toString());              // CAMBIO
-        dpDate.setValue(reserva.getDate());                                 // CAMBIO: antes txtFecha.setText(...)
-        txtStartTime.setText(reserva.getStartTime().toString());            // CAMBIO: antes getTime()
-        txtEndTime.setText(reserva.getEndTime().toString());                // CAMBIO: antes getDuration()
-        txtPrice.setText(reserva.getPrice().toPlainString());               // CAMBIO
+    private void cargarMatrizDeEspaciosDisponibles() {
+        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+        if (fecha == null) fecha = LocalDate.now();
+        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+        if (horaInicio == null) horaInicio = LocalTime.of(8, 0);
+        LocalTime horaFin = ComboBoxHoraFin1.getValue();
+        if (horaFin == null) horaFin = LocalTime.of(9, 0);
+        cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
     }
 
-    private void mostrarError(String msg) {
-        Alert a = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        a.setHeaderText(null);
-        a.showAndWait();
+    private void cargarMatrizDeEspaciosDisponibles(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+        gridMatrix.getChildren().clear();
+        int piso = obtenerPisoSeleccionado();
+
+        List<Long> ocupados = reservationsService.obtenerEspaciosOcupados(fecha, horaInicio, horaFin);
+        List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
+                .stream()
+                .filter(e -> {
+                    String nombre = e.getSpace().getNombre();
+                    return nombre != null && nombre.toLowerCase().contains("p" + piso);
+                })
+                .toList();
+
+        for (SpaceVisual espacio : espacios) {
+            boolean estaOcupado = ocupados.contains(espacio.getSpace().getId());
+            StackPane celda = crearCeldaEspacio(espacio, estaOcupado);
+            gridMatrix.add(celda,
+                    espacio.getColumn(),
+                    espacio.getRow(),
+                    espacio.getColSpan(),
+                    espacio.getRowSpan());
+        }
     }
 
-    private void mostrarInfo(String msg) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        a.setHeaderText(null);
-        a.showAndWait();
+    private StackPane crearCeldaEspacio(SpaceVisual espacio, boolean estaOcupado) {
+        StackPane stack = new StackPane();
+        Rectangle rect = new Rectangle(100 * espacio.getColSpan(), 60 * espacio.getRowSpan());
+        rect.setArcWidth(0);
+        rect.setArcHeight(10);
+
+        if (estaOcupado) {
+            rect.setFill(Color.GRAY);
+        } else {
+            String nombre = espacio.getSpace().getNombre().toLowerCase();
+            if (nombre.contains("sala")) rect.setFill(Color.CRIMSON);
+            else if (nombre.contains("\u00e1rea")) rect.setFill(Color.DARKGREEN);
+            else if (nombre.contains("libre")) rect.setFill(Color.GOLD);
+            else if (nombre.contains("e")) rect.setFill(Color.DODGERBLUE);
+            else rect.setFill(Color.LIGHTGRAY);
+        }
+
+        rect.setStroke(Color.BLACK);
+        Text text = new Text(espacio.getSpace().getNombre());
+        text.setFill(Color.WHITE);
+        stack.getChildren().addAll(rect, text);
+        return stack;
+    }
+
+    private int obtenerPisoSeleccionado() {
+        return ComboBoxPiso.getSelectionModel().getSelectedIndex();
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize() {
     }
-
 }
