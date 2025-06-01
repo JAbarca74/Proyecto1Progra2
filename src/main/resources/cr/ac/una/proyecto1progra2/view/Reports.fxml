@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="cr.ac.una.proyecto1progra2.controller.ReportsController"
+            prefWidth="800.0" prefHeight="600.0">
+    <VBox spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0"
+          AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0">
+        
+        <Label text="Reportes Estadísticos del Sistema" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        
+        <TabPane>
+            
+            <!-- TAB 1: Espacios más reservados -->
+            <Tab text="Espacios más reservados">
+                <AnchorPane>
+                    <TableView fx:id="tablaEspacios" layoutX="10.0" layoutY="10.0" prefWidth="760.0">
+                        <columns>
+                            <TableColumn fx:id="colEspacio" text="Espacio" prefWidth="400.0"/>
+                            <TableColumn fx:id="colTotalEspacios" text="Total de Reservas" prefWidth="200.0"/>
+                        </columns>
+                    </TableView>
+                </AnchorPane>
+            </Tab>
+
+            <!-- TAB 2: Usuarios con más reservas -->
+            <Tab text="Usuarios más activos">
+                <AnchorPane>
+                    <TableView fx:id="tablaUsuarios" layoutX="10.0" layoutY="10.0" prefWidth="760.0">
+                        <columns>
+                            <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="400.0"/>
+                            <TableColumn fx:id="colTotalUsuarios" text="Total de Reservas" prefWidth="200.0"/>
+                        </columns>
+                    </TableView>
+                </AnchorPane>
+            </Tab>
+
+            <!-- TAB 3: Horarios pico de uso -->
+            <Tab text="Horarios pico de uso">
+                <AnchorPane>
+                    <BarChart fx:id="graficoHoras" layoutX="10.0" layoutY="10.0"
+                              prefWidth="760.0" prefHeight="500.0" title="Reservas por Hora">
+                        <xAxis>
+                            <CategoryAxis fx:id="ejeX" label="Hora del día"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="ejeY" label="Cantidad de reservas"/>
+                        </yAxis>
+                    </BarChart>
+                </AnchorPane>
+            </Tab>
+
+        </TabPane>
+    </VBox>
+</AnchorPane>
