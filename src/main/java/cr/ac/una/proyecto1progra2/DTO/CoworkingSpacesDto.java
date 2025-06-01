@@ -33,7 +33,7 @@ public class CoworkingSpacesDto {
         this.capacidad.set(coworkingSpace.getCapacity() != null ? coworkingSpace.getCapacity().toString() : null);
         this.spaceId.set(coworkingSpace.getSpaceId() != null ? coworkingSpace.getSpaceId().getId().toString() : null);
         this.typeId.set(coworkingSpace.getTypeId() != null ? coworkingSpace.getTypeId().getId().toString() : null);
-        this.version = coworkingSpace.getVersion();
+  
     }
 
     public Long getId() {
@@ -104,13 +104,7 @@ public class CoworkingSpacesDto {
         this.modificado = modificado;
     }
 
-    public Long getVersion() {
-        return version;
-    }
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
     @Override
     public String toString() {

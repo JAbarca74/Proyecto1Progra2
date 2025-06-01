@@ -17,7 +17,7 @@ public class SpaceTypesDto {
     public SpaceTypesDto(SpaceTypes e) {
         setId(e.getId());
         setTypeName(e.getTypeName());
-        this.version = e.getVersion();
+       
     }
 
     // id
@@ -30,8 +30,7 @@ public class SpaceTypesDto {
     public void setTypeName(String name) { this.typeName.set(name); }
     public SimpleStringProperty typeNameProperty() { return typeName; }
 
-    public Long getVersion() { return version; }
-    public void setVersion(Long version) { this.version = version; }
+    
 
     public boolean isModificado() { return modificado; }
     public void setModificado(boolean m) { this.modificado = m; }

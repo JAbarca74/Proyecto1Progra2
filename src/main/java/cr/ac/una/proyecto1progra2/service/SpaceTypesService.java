@@ -55,7 +55,7 @@ public class SpaceTypesService {
                     return new Respuesta(false, "Tipo no encontrado.", "guardarTipo");
                 }
                 e.setTypeName(dto.getTypeName());
-                e.setVersion(dto.getVersion());
+             
                 e = em.merge(e);
             } else {
                 e = new SpaceTypes(dto);

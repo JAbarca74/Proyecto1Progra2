@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
+<BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
 
    <center>
       <VBox alignment="TOP_RIGHT" prefHeight="482.0" prefWidth="438.0" BorderPane.alignment="CENTER_RIGHT">
@@ -22,6 +22,11 @@
       <AnchorPane prefHeight="401.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="320.0" fitWidth="229.0" layoutY="-13.6" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-16.0" AnchorPane.topAnchor="-14.0">
+               <image>
+                  <Image url="@FondoIniSes.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="319.0" fitWidth="214.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@FondoIniSes.png" />
                </image>
@@ -39,18 +44,13 @@
                   <Insets top="40.0" />
                </padding>
             </VBox>
-            <ImageView fitHeight="319.0" fitWidth="214.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@FondoIniSes.png" />
-               </image>
-            </ImageView>
             <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
                <children>
                   <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
       
                                                       <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
                      <font>
-                        <Font size="5.0" />
+                        <Font size="13.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -64,6 +64,11 @@
                   </Button>
       
                                                       <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Admin">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" text="Estadisticas">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

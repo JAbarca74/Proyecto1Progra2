@@ -1,96 +1,109 @@
 package cr.ac.una.proyecto1progra2.model;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "TB_RESERVATIONS")
 @NamedQueries({
-  @NamedQuery(
-    name="Reservations.findAll",
-    query="SELECT r FROM Reservations r"
-  ),
-  @NamedQuery(
-    name="Reservations.findByOverlap",
-    query="SELECT r FROM Reservations r " +
-          "WHERE r.spaceId = :spaceId " +
-            "AND r.date = :date " +
-            "AND r.startTime < :endTime " +
-            "AND r.endTime > :startTime"
-  )
+    @NamedQuery(
+        name = "Reservations.findAll",
+        query = "SELECT r FROM Reservations r"
+    ),
+    @NamedQuery(
+        name = "Reservations.findByOverlap",
+        query = "SELECT r FROM Reservations r " +
+                "WHERE r.coworkingSpaceId = :spaceId " +
+                "AND r.reservationDate = :date " +
+                "AND r.startTime < :endTime " +
+                "AND r.endTime > :startTime"
+    )
 })
 public class Reservations implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservations_seq")
+    @SequenceGenerator(name = "reservations_seq", sequenceName = "UNA.RESERVATIONS_SEQ", allocationSize = 1)
+    @Column(name = "ID", nullable = false)
     private Long id;
-    
-    @Column(name="FIRST_NAME")
-    private String firstName;
-    
-    @Column(name="LAST_NAME")
-    private String lastName;
-    
-    @Column(name="SPACE_ID")
-    private Long spaceId;
+
+    @Column(name = "COWORKING_SPACE_ID", nullable = false)
+    private Long coworkingSpaceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false)
     private Usuarios userId;
-    
-    @Column(name="QUANTITY")
-    private Integer quantity;
-    
-    // FIX: Quote the DATE column name to handle Oracle reserved keyword
-    @Column(name="\"DATE\"")
-    private LocalDate date;
-    
-    @Column(name="START_TIME")
+
+    @Column(name = "RESERVATION_DATE", nullable = true)
+    private LocalDate reservationDate;
+
+    @Column(name = "START_TIME", nullable = false)
     private LocalTime startTime;
-    
-    @Column(name="END_TIME")
+
+    @Column(name = "END_TIME", nullable = false)
     private LocalTime endTime;
-    
-    @Column(name="PRICE")
-    private BigDecimal price;
-    
+
     @Version
-    @Column(name="VERSION")
+    @Column(name = "VERSION")
     private Long version;
-    
-    // --- getters & setters ---
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String fn) { this.firstName = fn; }
-    
-    public String getLastName() { return lastName; }
-    public void setLastName(String ln) { this.lastName = ln; }
-    
-    public Long getSpaceId() { return spaceId; }
-    public void setSpaceId(Long sid) { this.spaceId = sid; }
-    
-    public Usuarios getUserId() { return userId; }
-    public void setUserId(Usuarios u) { this.userId = u; }
-    
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer q) { this.quantity = q; }
-    
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate d) { this.date = d; }
-    
-    public LocalTime getStartTime() { return startTime; }
-    public void setStartTime(LocalTime st) { this.startTime = st; }
-    
-    public LocalTime getEndTime() { return endTime; }
-    public void setEndTime(LocalTime et) { this.endTime = et; }
-    
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal p) { this.price = p; }
-    
-    public Long getVersion() { return version; }
-    public void setVersion(Long v) { this.version = v; }
+
+    // --- Getters y Setters ---
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCoworkingSpaceId() {
+        return coworkingSpaceId;
+    }
+
+    public void setCoworkingSpaceId(Long coworkingSpaceId) {
+        this.coworkingSpaceId = coworkingSpaceId;
+    }
+
+    public Usuarios getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Usuarios userId) {
+        this.userId = userId;
+    }
+
+    public LocalDate getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }
