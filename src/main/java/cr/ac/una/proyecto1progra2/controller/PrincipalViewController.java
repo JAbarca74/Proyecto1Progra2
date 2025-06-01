@@ -28,6 +28,9 @@ public class PrincipalViewController extends Controller implements Initializable
     private Button btnReservar;
     
     @FXML
+    private Button btnStatistics;
+    
+    @FXML
     private VBox VBoxMenuAdmin;
 
     @FXML
@@ -71,7 +74,10 @@ public class PrincipalViewController extends Controller implements Initializable
     private void onActionBtnSalir(ActionEvent event) {
         FlowController.getInstance().salir();
     }
-
+     @FXML
+    private void onStatistics(ActionEvent event) {
+        FlowController.getInstance().goView("Reports");
+    }
     @Override
     public void initialize() {
         

@@ -68,6 +68,11 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
+                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" text="Estadisticas">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
       
                                                             <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" text="Salir">
                      <VBox.margin>
