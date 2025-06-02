@@ -15,7 +15,7 @@
 <BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
 
    <center>
-      <VBox alignment="TOP_RIGHT" prefHeight="500.0" prefWidth="534.0" BorderPane.alignment="CENTER_RIGHT">
+      <VBox alignment="TOP_RIGHT" prefHeight="500.0" prefWidth="587.0" BorderPane.alignment="CENTER_RIGHT">
          <BorderPane.margin>
             <Insets left="80.0" />
          </BorderPane.margin>
@@ -69,14 +69,17 @@
                         <Font size="15.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="8.0" top="8.0" />
+                        <Insets bottom="20.0" top="8.0" />
                      </VBox.margin>
                   </Text>
 
                   <Line endX="61.29" endY="0.79" startX="-100.0" />
                   <MFXFontIcon />
 
-                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Editar Piso" VBox.vgrow="ALWAYS" />
+                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Editar Piso" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
                   <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Editar Usuario">
                      <font><Font size="13.0" /></font>
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
@@ -91,7 +94,10 @@
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
                   <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Cerrar sesión">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
+                     <VBox.margin><Insets top="75.0" /></VBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </Button>
                </children>
             </VBox>

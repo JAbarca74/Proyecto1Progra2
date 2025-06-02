@@ -13,11 +13,22 @@
             <children>
                 <Label styleClass="titulo" text="Editar Usuario" />
 
+                <Label text="Nombre" />
                 <TextField fx:id="txtNombre" promptText="Nombre" />
+
+                <Label text="Apellido" />
                 <TextField fx:id="txtApellido" promptText="Apellido" />
+
+                <Label text="Nombre de usuario" />
                 <TextField fx:id="txtUsername" promptText="Nombre de usuario" />
+
+                <Label text="Correo electrónico" />
                 <TextField fx:id="txtCorreo" promptText="Correo electrónico" />
+
+                <Label text="Nueva contraseña" />
                 <TextField fx:id="txtNuevaPassword" promptText="Nueva contraseña" />
+
+                <Label text="Confirmar contraseña" />
                 <TextField fx:id="txtConfirmPassword" promptText="Confirmar contraseña" />
 
                 <Button fx:id="btnEstado" onAction="#onCambiarEstado" text="Activo" style="-fx-background-color: green; -fx-text-fill: white;" />
