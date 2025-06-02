@@ -58,8 +58,15 @@
             #a8a8a8 100%
         );
 }
-/* Aplica a todo el AnchorPane raíz */
-/* Con selector de clase (.) */
+
+.nav-btn(
+    -fx-background-color:transparent;
+    -fx-cursor:hand;
+    -fx-font-size:14px;
+    -fx-text-fill:tfff;
+    -fx-alignment:CENTER-LEFT;
+)
+
 .imagen-fondo {
     -fx-background-image: url("FondoIniSes.png");
     -fx-background-repeat: no-repeat;
@@ -72,3 +79,4 @@
     -fx-background-size: cover;
     -fx-background-position: center center;
 }
+
