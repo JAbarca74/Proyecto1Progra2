@@ -21,30 +21,20 @@
          </BorderPane.margin>
       </VBox>
    </center>
+
    <left>
       <AnchorPane prefHeight="401.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+            <!-- Menú de usuario oculto -->
+            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" styleClass="menu-lateral" stylesheets="@styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" text="Reservaciones">
-                     <VBox.margin>
-                        <Insets bottom="30.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir" prefHeight="24.0" prefWidth="123.0" text="Salir" />
-               </children>
-               <padding>
-                  <Insets top="40.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" stylesheets="@styles.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
-               <children>
-                  <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
-                        <Image url="@cuenta.png" />
+                        <Image url="@usuario.png" />
                      </image>
                   </ImageView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido administrador">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido ">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -52,43 +42,60 @@
                         <Insets bottom="8.0" top="8.0" />
                      </VBox.margin>
                   </Text>
-                  <Line endX="61.29289245605469" endY="0.7928932309150696" startX="-100.0" />
-                  <MFXFontIcon />
-                  <Button fx:id="BtnEditarPiso" mnemonicParsing="false" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" text="Editar Piso" VBox.vgrow="ALWAYS" />
-      
-                                                      <Button fx:id="btnEditarUsuario" mnemonicParsing="false" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" text="Editar Usuario">
+                  <Line endX="61.29" endY="0.79" startX="-100.0" />
+                  <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="36.0" prefWidth="122.0" styleClass="button-flat" text="Reservaciones">
+                     <VBox.margin>
+                        <Insets bottom="30.0" top="30.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir" prefHeight="24.0" prefWidth="123.0" styleClass="button-flat" text="Salir" />
+               </children>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
+            </VBox>
+
+            <!-- Menú del administrador con estilo aplicado -->
+            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" styleClass="menu-lateral" stylesheets="@styles.css" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
+               <children>
+                  <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
+                     <image>
+                        <Image url="@usuario.png" />
+                     </image>
+                  </ImageView>
+
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido administrador">
                      <font>
-                        <Font size="13.0" />
+                        <Font size="15.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="8.0" top="8.0" />
                      </VBox.margin>
+                  </Text>
+
+                  <Line endX="61.29" endY="0.79" startX="-100.0" />
+                  <MFXFontIcon />
+
+                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Editar Piso" VBox.vgrow="ALWAYS" />
+                  <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Editar Usuario">
+                     <font><Font size="13.0" /></font>
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-      
-                                                      <Button fx:id="btnAgregarUsuario" onAction="#onRegisterNewAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Usuario">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
+                  <Button fx:id="btnAgregarUsuario" onAction="#onRegisterNewAccount" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Agregar Usuario" textAlignment="CENTER">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-      
-                                                      <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" text="Agregar Admin">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
+                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Agregar Admin">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" text="Estadisticas">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
+                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Estadisticas">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-      
-                                                            <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" text="Salir">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
+                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Salir">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
                </children>
             </VBox>
+
          </children>
       </AnchorPane>
    </left>

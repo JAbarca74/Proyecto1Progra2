@@ -66,13 +66,16 @@
         );
 }
 
-.nav-btn(
+.nav-btn{
     -fx-background-color:transparent;
     -fx-cursor:hand;
     -fx-font-size:14px;
-    -fx-text-fill:tfff;
+   -fx-text-fill: #ffffff; /* ✅ blanco correcto */
     -fx-alignment:CENTER-LEFT;
-)
+}
+.icono-transparente {
+    -fx-opacity: 0.5; /* Cambia a 0.2, 0.7, etc. según el nivel deseado */
+}
 
 .imagen-fondo {
     -fx-background-image: url("FondoIniSes.png");
@@ -87,3 +90,35 @@
     -fx-background-position: center center;
 }
 
+.menu-lateral {
+    -fx-background-color: linear-gradient(to bottom, #000428, #00e0ff);
+    -fx-padding: 200;
+}
+
+.icono-transparente {
+    -fx-opacity: 0.5; /* Ajusta según tu gusto: 0.2, 0.6, etc. */
+}
+
+.menu-lateral {
+     -fx-background-color: linear-gradient(to bottom, #004d00, #ccff66);
+    -fx-padding: 20;
+}
+
+.button-flat {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+    -fx-graphic-text-gap: 10px;
+    -fx-padding: 6px 10px;
+    -fx-cursor: hand;
+}
+
+.button-flat:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1); /* leve fondo al pasar el mouse */
+    -fx-background-radius: 5;
+}
+
+.icono-blanco {
+    -fx-opacity: 0.6;
+}
