@@ -35,6 +35,8 @@ public class EditFloorAdminController extends Controller implements Initializabl
     @FXML private ComboBox<String> ComboBoxPiso;
     @FXML private TextField TexFieldAgregarPrecio;
     @FXML private GridPane gridMatrix;
+    @FXML private Label LabelCapacidadTotal;
+
 
     private SpacesService spacesService;
     private List<SpaceVisual> espaciosAgregados = new ArrayList<>();
@@ -154,8 +156,19 @@ public class EditFloorAdminController extends Controller implements Initializabl
             }
         }
         cargarContadoresPorPiso(pisoActual);
-        llenarCeldasLibres();
+llenarCeldasLibres();
+actualizarCapacidadTotalDelPiso();
     }
+private void actualizarCapacidadTotalDelPiso() {
+    int escritorios = escritoriosPorPiso.getOrDefault(pisoActual, 0);
+    int salas = salasPorPiso.getOrDefault(pisoActual, 0);
+    int areas = areasPorPiso.getOrDefault(pisoActual, 0);
+    int capacidadTotal = escritorios * 1 + salas * 4 + areas * 2;
+    LabelCapacidadTotal.setText("Capacidad total: " + capacidadTotal);
+
+    // Si deseas guardar en la BD:
+    spacesService.actualizarCapacidadCoworkingSpace(pisoActual, capacidadTotal);
+}
 
     public StackPane crearCeldaEspacio(SpaceVisual espacio) {
     StackPane stack = new StackPane();
@@ -254,6 +267,7 @@ private void resaltarTemporal(StackPane celda) {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
+          actualizarCapacidadTotalDelPiso();
     } else {
         System.out.println("No hay espacio para más escritorios.");
     }
@@ -271,6 +285,7 @@ private void resaltarTemporal(StackPane celda) {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
+          actualizarCapacidadTotalDelPiso();
     } else {
         System.out.println("No hay espacio para más salas.");
     }
@@ -290,6 +305,7 @@ private void onAgregarAreasComunes() {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
+          actualizarCapacidadTotalDelPiso();
     } else {
         System.out.println("No hay espacio para más áreas comunes.");
     }
@@ -307,6 +323,7 @@ private void onAgregarAreasComunes() {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
+          actualizarCapacidadTotalDelPiso();
     } else {
         System.out.println("No hay espacio para más espacios libres.");
     }

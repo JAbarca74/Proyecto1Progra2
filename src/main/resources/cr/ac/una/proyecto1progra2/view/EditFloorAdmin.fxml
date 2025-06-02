@@ -85,8 +85,10 @@
                     </children>
                 </VBox>
                 <VBox alignment="CENTER_LEFT" prefHeight="400.0" prefWidth="256.0">
+                    
                     <children>
                         <Label prefHeight="50.0" prefWidth="179.0" text="Editar">
+                            
                             <font>
                                 <Font size="34.0" />
                             </font>
@@ -94,6 +96,7 @@
                                 <Insets bottom="100.0" left="10.0" />
                             </VBox.margin>
                         </Label>
+                      <Label fx:id="LabelCapacidadTotal" style="-fx-text-fill: black; -fx-font-size: 16px;" text="Capacidad total: 0" />
                         <ComboBox fx:id="ComboBoxPiso" prefWidth="150.0" promptText="PISO" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets left="10.0" />

@@ -44,7 +44,9 @@ public class CoworkingSpaces implements Serializable {
     @Column(name = "CAPACITY")
     private Integer capacity;
 
-  
+  @Version
+@Column(name = "VERSION")
+private Long version;
 
     @JoinColumn(name = "SPACE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -95,6 +97,14 @@ public class CoworkingSpaces implements Serializable {
         return capacity;
     }
 
+    public Long getVersion() {
+    return version;
+}
+
+public void setVersion(Long version) {
+    this.version = version;
+}
+    
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
