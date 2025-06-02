@@ -5,6 +5,13 @@
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
+.text-field.invalid, .password-field.invalid {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}
+
+
+
 /* Estilo de los TextField */
 .text-field {
     -fx-background-color: white;
