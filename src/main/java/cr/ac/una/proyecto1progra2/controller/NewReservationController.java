@@ -68,7 +68,6 @@ public class NewReservationController extends Controller implements Initializabl
         cargarMatrizDeEspaciosDisponibles();
     }
 
-    @FXML
     private void buscarEspacios() {
         LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
         LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
