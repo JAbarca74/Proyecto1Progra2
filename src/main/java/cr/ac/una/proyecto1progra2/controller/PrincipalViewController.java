@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class PrincipalViewController extends Controller implements Initializable {
 
@@ -35,6 +36,10 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private VBox VBoxMenuUsuario;
+    
+    @FXML
+    private Button btnSalir1;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (UserManager.isAdmin()) {
@@ -72,8 +77,30 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private void onActionBtnSalir(ActionEvent event) {
-        FlowController.getInstance().salir();
+        // Cierra la ventana actual
+    Stage ventanaActual = (Stage) btnSalir.getScene().getWindow();
+    ventanaActual.close();
+
+    // Limpia el loader si deseas reiniciar su estado
+    FlowController.getInstance().limpiarLoader("Primary");
+
+    // Abre la ventana de login
+    FlowController.getInstance().goViewInWindow("Primary");
     }
+    
+    @FXML
+    private void onActionBtnSalir1(ActionEvent event) {
+        // Cierra la ventana actual
+    Stage ventanaActual = (Stage) btnSalir1.getScene().getWindow();
+    ventanaActual.close();
+
+    // Limpia el loader si deseas reiniciar su estado
+    FlowController.getInstance().limpiarLoader("Primary");
+
+    // Abre la ventana de login
+    FlowController.getInstance().goViewInWindow("Primary");
+    }
+    
      @FXML
     private void onStatistics(ActionEvent event) {
         FlowController.getInstance().goView("Reports");

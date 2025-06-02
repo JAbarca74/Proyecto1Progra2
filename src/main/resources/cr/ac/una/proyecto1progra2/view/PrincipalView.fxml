@@ -27,7 +27,7 @@
          <children>
 
             <!-- Menú de usuario oculto -->
-            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" styleClass="menu-lateral" stylesheets="@styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="100.0" styleClass="menu-lateral" stylesheets="@styles.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
@@ -48,7 +48,7 @@
                         <Insets bottom="30.0" top="30.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir" prefHeight="24.0" prefWidth="123.0" styleClass="button-flat" text="Salir" />
+                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1" prefHeight="24.0" prefWidth="123.0" styleClass="button-flat" text="Cerrar sesión" />
                </children>
                <padding>
                   <Insets top="40.0" />
@@ -56,7 +56,7 @@
             </VBox>
 
             <!-- Menú del administrador con estilo aplicado -->
-            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" styleClass="menu-lateral" stylesheets="@styles.css" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
+            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" styleClass="menu-lateral" stylesheets="@styles.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
                <children>
                   <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
@@ -90,7 +90,7 @@
                   <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Estadisticas">
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Salir">
+                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="button-flat" text="Cerrar sesión">
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
                </children>

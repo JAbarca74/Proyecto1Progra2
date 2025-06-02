@@ -106,7 +106,7 @@
 
 .button-flat {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-alignment: CENTER;
     -fx-graphic-text-gap: 10px;
