@@ -1,6 +1,8 @@
+// --- DTO: ReservationsDto.java ---
 package cr.ac.una.proyecto1progra2.DTO;
 
 import cr.ac.una.proyecto1progra2.model.Reservations;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -16,15 +18,14 @@ public class ReservationsDto {
     public ReservationsDto() {}
 
     public ReservationsDto(Reservations r) {
-        this.id               = r.getId();
-        this.coworkingSpaceId = r.getCoworkingSpaceId();
+        this.id = r.getId();
+        this.coworkingSpaceId = r.getCoworkingSpaceId() != null ? r.getCoworkingSpaceId().getId() : null;
         this.reservationDate = r.getReservationDate();
-        this.startTime       = r.getStartTime();
-        this.endTime         = r.getEndTime();
-        this.version         = r.getVersion();
+        this.startTime = r.getStartTime();
+        this.endTime = r.getEndTime();
+        this.version = r.getVersion();
     }
 
-    // --- Getters y Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -18,7 +18,7 @@ public class ReservationsService {
         List<Reservations> traslapadas = null;
         try {
             TypedQuery<Reservations> query = em.createQuery(
-                "SELECT r FROM Reservations r WHERE r.coworkingSpaceId = :spaceId AND r.reservationDate = :fecha " +
+                "SELECT r FROM Reservations r WHERE r.coworkingSpaceId.id = :spaceId AND r.reservationDate = :fecha " +
                 "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Reservations.class);
             query.setParameter("spaceId", coworkingSpaceId);
             query.setParameter("fecha", fecha);
@@ -31,35 +31,48 @@ public class ReservationsService {
         return traslapadas;
     }
 
-    public boolean guardarReserva(Long userId, Long coworkingSpaceId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            Reservations reserva = new Reservations();
-            reserva.setUserId(em.getReference(Usuarios.class, userId));
-            reserva.setCoworkingSpaceId(coworkingSpaceId);
-            reserva.setReservationDate(fecha);
-            reserva.setStartTime(horaInicio);
-            reserva.setEndTime(horaFin);
-            em.persist(reserva);
-            em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            return false;
-        } finally {
-            em.close();
-        }
-    }
+   public boolean guardarReserva(Long userId, Long coworkingSpaceId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        em.getTransaction().begin();
+        Reservations reserva = new Reservations();
+        reserva.setUserId(em.getReference(Usuarios.class, userId));
+        reserva.setCoworkingSpaceId(em.getReference(CoworkingSpaces.class, coworkingSpaceId));
+        reserva.setReservationDate(fecha);
+        reserva.setStartTime(horaInicio);
+        reserva.setEndTime(horaFin);
+        em.persist(reserva);
+        em.getTransaction().commit();
 
+        System.out.println("✅ Reserva guardada con éxito:");
+        System.out.println("   - Usuario ID: " + userId);
+        System.out.println("   - Espacio ID: " + coworkingSpaceId);
+        System.out.println("   - Fecha: " + fecha);
+        System.out.println("   - Hora inicio: " + horaInicio);
+        System.out.println("   - Hora fin: " + horaFin);
+        return true;
+    } catch (Exception e) {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        System.out.println("❌ ERROR al guardar la reserva:");
+        System.out.println("   - Usuario ID: " + userId);
+        System.out.println("   - Espacio ID: " + coworkingSpaceId);
+        System.out.println("   - Fecha: " + fecha);
+        System.out.println("   - Hora inicio: " + horaInicio);
+        System.out.println("   - Hora fin: " + horaFin);
+        e.printStackTrace();
+        return false;
+    } finally {
+        em.close();
+    }
+}
     public List<Long> obtenerEspaciosOcupados(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
         EntityManager em = JPAUtil.getEntityManager();
         List<Long> ids = null;
         try {
             TypedQuery<Long> query = em.createQuery(
-                "SELECT DISTINCT r.coworkingSpaceId FROM Reservations r WHERE r.reservationDate = :fecha " +
+                "SELECT DISTINCT r.coworkingSpaceId.id FROM Reservations r WHERE r.reservationDate = :fecha " +
                 "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Long.class);
             query.setParameter("fecha", fecha);
             query.setParameter("horaInicio", horaInicio);
@@ -76,7 +89,7 @@ public class ReservationsService {
         List<CoworkingSpaces> disponibles;
         try {
             TypedQuery<Long> queryReservados = em.createQuery(
-                "SELECT DISTINCT r.coworkingSpaceId FROM Reservations r WHERE r.reservationDate = :fecha " +
+                "SELECT DISTINCT r.coworkingSpaceId.id FROM Reservations r WHERE r.reservationDate = :fecha " +
                 "AND r.startTime < :horaFin AND r.endTime > :horaInicio", Long.class);
             queryReservados.setParameter("fecha", fecha);
             queryReservados.setParameter("horaInicio", horaInicio);
@@ -84,7 +97,7 @@ public class ReservationsService {
             List<Long> ocupados = queryReservados.getResultList();
 
             TypedQuery<CoworkingSpaces> queryDisponibles = em.createQuery(
-                "SELECT c FROM CoworkingSpaces c WHERE c.spaceId NOT IN :ocupados AND c.capacity >= :capacidad", CoworkingSpaces.class);
+                "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id NOT IN :ocupados AND c.capacity >= :capacidad", CoworkingSpaces.class);
             queryDisponibles.setParameter("ocupados", ocupados.isEmpty() ? List.of(-1L) : ocupados);
             queryDisponibles.setParameter("capacidad", capacidadMinima);
             disponibles = queryDisponibles.getResultList();

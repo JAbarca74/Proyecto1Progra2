@@ -1,3 +1,4 @@
+// --- ENTITY: Reservations.java ---
 package cr.ac.una.proyecto1progra2.model;
 
 import javax.persistence.*;
@@ -8,18 +9,8 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "TB_RESERVATIONS")
 @NamedQueries({
-    @NamedQuery(
-        name = "Reservations.findAll",
-        query = "SELECT r FROM Reservations r"
-    ),
-    @NamedQuery(
-        name = "Reservations.findByOverlap",
-        query = "SELECT r FROM Reservations r " +
-                "WHERE r.coworkingSpaceId = :spaceId " +
-                "AND r.reservationDate = :date " +
-                "AND r.startTime < :endTime " +
-                "AND r.endTime > :startTime"
-    )
+    @NamedQuery(name = "Reservations.findAll", query = "SELECT r FROM Reservations r"),
+    @NamedQuery(name = "Reservations.findByOverlap", query = "SELECT r FROM Reservations r WHERE r.coworkingSpaceId = :space AND r.reservationDate = :date AND r.startTime < :endTime AND r.endTime > :startTime")
 })
 public class Reservations implements Serializable {
 
@@ -29,14 +20,15 @@ public class Reservations implements Serializable {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(name = "COWORKING_SPACE_ID", nullable = false)
-    private Long coworkingSpaceId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COWORKING_SPACE_ID", nullable = false)
+    private CoworkingSpaces coworkingSpaceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private Usuarios userId;
 
-    @Column(name = "RESERVATION_DATE", nullable = true)
+    @Column(name = "RESERVATION_DATE")
     private LocalDate reservationDate;
 
     @Column(name = "START_TIME", nullable = false)
@@ -49,61 +41,25 @@ public class Reservations implements Serializable {
     @Column(name = "VERSION")
     private Long version;
 
-    // --- Getters y Setters ---
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public CoworkingSpaces getCoworkingSpaceId() { return coworkingSpaceId; }
+    public void setCoworkingSpaceId(CoworkingSpaces coworkingSpaceId) { this.coworkingSpaceId = coworkingSpaceId; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Usuarios getUserId() { return userId; }
+    public void setUserId(Usuarios userId) { this.userId = userId; }
 
-    public Long getCoworkingSpaceId() {
-        return coworkingSpaceId;
-    }
+    public LocalDate getReservationDate() { return reservationDate; }
+    public void setReservationDate(LocalDate reservationDate) { this.reservationDate = reservationDate; }
 
-    public void setCoworkingSpaceId(Long coworkingSpaceId) {
-        this.coworkingSpaceId = coworkingSpaceId;
-    }
+    public LocalTime getStartTime() { return startTime; }
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
 
-    public Usuarios getUserId() {
-        return userId;
-    }
+    public LocalTime getEndTime() { return endTime; }
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
-    public void setUserId(Usuarios userId) {
-        this.userId = userId;
-    }
-
-    public LocalDate getReservationDate() {
-        return reservationDate;
-    }
-
-    public void setReservationDate(LocalDate reservationDate) {
-        this.reservationDate = reservationDate;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 }

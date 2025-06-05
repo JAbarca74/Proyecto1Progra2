@@ -1,9 +1,9 @@
 package cr.ac.una.proyecto1progra2.model;
 
 import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Collection;
 
 @Entity
@@ -14,6 +14,7 @@ import java.util.Collection;
     @NamedQuery(name = "Spaces.findByName", query = "SELECT s FROM Spaces s WHERE UPPER(s.name) = :name")
 })
 public class Spaces implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "spaces_seq")
     @SequenceGenerator(name = "spaces_seq", sequenceName = "SPACES_SEQ", allocationSize = 1)
@@ -24,7 +25,7 @@ public class Spaces implements Serializable {
     private String name;
 
     @Column(name = "CAPACITY")
-    private BigInteger capacity;
+    private Integer capacity;
 
     @Column(name = "ROW_INDEX")
     private Integer rowIndex;
@@ -41,7 +42,8 @@ public class Spaces implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId", fetch = FetchType.LAZY)
     private Collection<CoworkingSpaces> coworkingSpacesCollection;
 
-    public Spaces() {}
+    public Spaces() {
+    }
 
     public Spaces(Long id) {
         this.id = id;
@@ -54,7 +56,7 @@ public class Spaces implements Serializable {
 
     public void actualizar(SpacesDto dto) {
         this.name = dto.getNombre();
-        this.capacity = dto.getCapacidad() != null ? BigInteger.valueOf(dto.getCapacidad()) : null;
+        this.capacity = dto.getCapacidad();
         this.rowIndex = dto.getRowIndex();
         this.columnIndex = dto.getColumnIndex();
         this.rowSpan = dto.getRowSpan();
@@ -62,31 +64,58 @@ public class Spaces implements Serializable {
     }
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public BigInteger getCapacity() { return capacity; }
-    public void setCapacity(BigInteger capacity) { this.capacity = capacity; }
+    public Integer getCapacity() {
+        return capacity;
+    }
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
 
-    public Integer getRowIndex() { return rowIndex; }
-    public void setRowIndex(Integer rowIndex) { this.rowIndex = rowIndex; }
+    public Integer getRowIndex() {
+        return rowIndex;
+    }
+    public void setRowIndex(Integer rowIndex) {
+        this.rowIndex = rowIndex;
+    }
 
-    public Integer getColumnIndex() { return columnIndex; }
-    public void setColumnIndex(Integer columnIndex) { this.columnIndex = columnIndex; }
+    public Integer getColumnIndex() {
+        return columnIndex;
+    }
+    public void setColumnIndex(Integer columnIndex) {
+        this.columnIndex = columnIndex;
+    }
 
-    public Integer getRowSpan() { return rowSpan; }
-    public void setRowSpan(Integer rowSpan) { this.rowSpan = rowSpan; }
+    public Integer getRowSpan() {
+        return rowSpan;
+    }
+    public void setRowSpan(Integer rowSpan) {
+        this.rowSpan = rowSpan;
+    }
 
-    public Integer getColSpan() { return colSpan; }
-    public void setColSpan(Integer colSpan) { this.colSpan = colSpan; }
+    public Integer getColSpan() {
+        return colSpan;
+    }
+    public void setColSpan(Integer colSpan) {
+        this.colSpan = colSpan;
+    }
 
     public Collection<CoworkingSpaces> getCoworkingSpacesCollection() {
         return coworkingSpacesCollection;
     }
-
     public void setCoworkingSpacesCollection(Collection<CoworkingSpaces> coworkingSpacesCollection) {
         this.coworkingSpacesCollection = coworkingSpacesCollection;
     }
@@ -100,7 +129,8 @@ public class Spaces implements Serializable {
     public boolean equals(Object object) {
         if (!(object instanceof Spaces)) return false;
         Spaces other = (Spaces) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        return (this.id != null || other.id == null) &&
+               (this.id == null || this.id.equals(other.id));
     }
 
     @Override

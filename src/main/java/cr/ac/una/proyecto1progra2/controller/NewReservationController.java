@@ -81,38 +81,58 @@ public class NewReservationController extends Controller implements Initializabl
     }
 
     @FXML
-    private void guardarReserva() {
-        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
-        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
-        LocalTime horaFin = ComboBoxHoraFin1.getValue();
+private void guardarReserva() {
+    LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+    LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+    LocalTime horaFin = ComboBoxHoraFin1.getValue();
 
-        if (fecha == null || horaInicio == null || horaFin == null) {
-            Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
-            return;
-        }
-
-        Long userId = UserManager.getCurrentUser().getId();
-        List<Long> espaciosEnPiso = spacesService.obtenerEspaciosConPosicion().stream()
-                .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
-                .map(e -> e.getSpace().getId())
-                .toList();
-
-        boolean ocupado = espaciosEnPiso.stream().anyMatch(id ->
-                !reservationsService.buscarReservasTraslapadas(id, fecha, horaInicio, horaFin).isEmpty());
-
-        if (ocupado) {
-            Utilities.showAlert(Alert.AlertType.WARNING, "Piso ocupado", "Ya existe una reserva en este piso y horario.");
-            return;
-        }
-
-        for (Long id : espaciosEnPiso) {
-            reservationsService.guardarReserva(userId, id, fecha, horaInicio, horaFin);
-        }
-
-        Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
-        cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+    if (fecha == null || horaInicio == null || horaFin == null) {
+        Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
+        return;
     }
 
+    Long userId = UserManager.getCurrentUser().getId();
+
+    List<Long> espaciosEnPiso = spacesService.obtenerEspaciosConPosicion().stream()
+            .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+            .map(e -> e.getSpace().getId())
+            .toList();
+
+    boolean ocupado = espaciosEnPiso.stream().anyMatch(id ->
+            !reservationsService.buscarReservasTraslapadas(id, fecha, horaInicio, horaFin).isEmpty());
+
+    if (ocupado) {
+        Utilities.showAlert(Alert.AlertType.WARNING, "Piso ocupado", "Ya existe una reserva en este piso y horario.");
+        return;
+    }
+
+    List<CoworkingSpaces> coworkingSpaces = spacesService.obtenerCoworkingSpacesPorSpaceIds(espaciosEnPiso);
+
+    // 🛑 Validación extra: ¿hay espacios sin coworking asociado?
+    if (coworkingSpaces.size() != espaciosEnPiso.size()) {
+    List<Long> idsCoworking = coworkingSpaces.stream()
+            .map(cs -> cs.getSpaceId().getId())
+            .toList();
+    List<Long> idsFaltantes = espaciosEnPiso.stream()
+            .filter(id -> !idsCoworking.contains(id))
+            .toList();
+
+    System.out.println("❌ Espacios sin CoworkingSpace:");
+    idsFaltantes.forEach(id -> System.out.println(" - Space ID sin asociar: " + id));
+
+    Utilities.showAlert(Alert.AlertType.ERROR,
+        "Error en espacios",
+        "Uno o más espacios del piso no tienen un CoworkingSpace asociado. No se puede completar la reserva.");
+    return;
+}
+
+    for (CoworkingSpaces cs : coworkingSpaces) {
+        reservationsService.guardarReserva(userId, cs.getId(), fecha, horaInicio, horaFin);
+    }
+
+    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
+    cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+}
     private void cargarMatrizDeEspaciosDisponibles() {
         LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
         if (fecha == null) fecha = LocalDate.now();

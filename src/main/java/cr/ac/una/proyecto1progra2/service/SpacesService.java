@@ -28,29 +28,28 @@ public class SpacesService {
             return new Respuesta(false, "Error listando espacios.", ex.getMessage());
         }
     }
-public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
-    EntityManager em = emf.createEntityManager();
-    try {
-        em.getTransaction().begin();
-        TypedQuery<CoworkingSpaces> query = em.createQuery(
-            "SELECT c FROM CoworkingSpaces c WHERE UPPER(c.name) LIKE :nombre", CoworkingSpaces.class);
-        query.setParameter("nombre", "%" + ("PISO " + piso).toUpperCase());
-        List<CoworkingSpaces> resultados = query.getResultList();
 
-        if (!resultados.isEmpty()) {
-            CoworkingSpaces coworking = resultados.get(0);
-            coworking.setCapacity(nuevaCapacidad);
-            em.merge(coworking);
+    public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            TypedQuery<CoworkingSpaces> query = em.createQuery(
+                "SELECT c FROM CoworkingSpaces c WHERE UPPER(c.name) LIKE :nombre", CoworkingSpaces.class);
+            query.setParameter("nombre", "%" + ("PISO " + piso).toUpperCase());
+            List<CoworkingSpaces> resultados = query.getResultList();
+            if (!resultados.isEmpty()) {
+                CoworkingSpaces coworking = resultados.get(0);
+                coworking.setCapacity(nuevaCapacidad);
+                em.merge(coworking);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+        } finally {
+            em.close();
         }
-
-        em.getTransaction().commit();
-    } catch (Exception e) {
-        e.printStackTrace();
-        if (em.getTransaction().isActive()) em.getTransaction().rollback();
-    } finally {
-        em.close();
     }
-}
 
     public Respuesta getSpace(Long id) {
         try {
@@ -68,7 +67,6 @@ public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
             et = em.getTransaction();
             et.begin();
             Spaces e;
-
             if (dto.getId() != null && dto.getId() > 0) {
                 e = em.find(Spaces.class, dto.getId());
                 if (e == null) {
@@ -87,7 +85,6 @@ public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
                 }
                 em.persist(e);
             }
-
             et.commit();
             return new Respuesta(true, "", "", "Space", new SpacesDto(e));
         } catch (Exception ex) {
@@ -119,18 +116,14 @@ public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
         List<SpaceVisual> listaVisual = new ArrayList<>();
         Respuesta resp = listarSpaces();
         if (!resp.isSuccess()) return listaVisual;
-
         List<SpacesDto> espacios = (List<SpacesDto>) resp.getResultado("Spaces");
-
         for (SpacesDto dto : espacios) {
             int fila = dto.getRow();
             int columna = dto.getColumn();
             int rowSpan = dto.getRowSpan();
             int colSpan = dto.getColSpan();
-
             if (rowSpan <= 0) rowSpan = 1;
             if (colSpan <= 0) colSpan = 1;
-
             listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
         }
         return listaVisual;
@@ -140,11 +133,9 @@ public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
         try {
             et = em.getTransaction();
             et.begin();
-
             int borradosReservas = em.createQuery("DELETE FROM Reservations").executeUpdate();
             int borradosCoworking = em.createQuery("DELETE FROM CoworkingSpaces").executeUpdate();
             int borradosSpaces = em.createQuery("DELETE FROM Spaces").executeUpdate();
-
             et.commit();
             return new Respuesta(true,
                 "Se eliminaron " + borradosReservas + " reservas, " +
@@ -157,63 +148,78 @@ public void actualizarCapacidadCoworkingSpace(int piso, int nuevaCapacidad) {
             return new Respuesta(false, "Error eliminando espacios.", ex.getMessage());
         }
     }
-public void incrementarCapacidadPorEspacio(int piso, String tipoEspacio) {
-    EntityManager em = emf.createEntityManager();
-    try {
-        em.getTransaction().begin();
 
-        String nombrePiso = "PISO " + piso;
+    public void incrementarCapacidadPorEspacio(int piso, String tipoEspacio) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            String nombrePiso = "PISO " + piso;
+            CoworkingSpaces coworking = em.createQuery(
+                "SELECT c FROM CoworkingSpaces c WHERE UPPER(c.name) = :nombre", CoworkingSpaces.class)
+                .setParameter("nombre", nombrePiso.toUpperCase())
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+            if (coworking == null) {
+                coworking = new CoworkingSpaces();
+                coworking.setName(nombrePiso);
+                coworking.setCapacity(0);
+                coworking.setVersion(1L);
+                em.persist(coworking);
+            }
 
-        // Buscar el coworking space por nombre
-        CoworkingSpaces coworking = em.createQuery(
-            "SELECT c FROM CoworkingSpaces c WHERE UPPER(c.name) = :nombre", CoworkingSpaces.class)
-            .setParameter("nombre", nombrePiso.toUpperCase())
-            .getResultStream()
-            .findFirst()
-            .orElse(null);
+            int incremento = 0;
+            String tipo = tipoEspacio.toLowerCase();
+            if (tipo.equals("sala")) {
+                incremento = 4;
+            } else if (tipo.equals("escritorio")) {
+                incremento = 1;
+            } else if (tipo.equals("area comun")) {
+                incremento = 2;
+            }
 
-        // Si no existe, se crea con capacidad inicial 0
-        if (coworking == null) {
-            coworking = new CoworkingSpaces();
-            coworking.setName(nombrePiso);
-            coworking.setCapacity(0);
-            coworking.setVersion(1L);
-            em.persist(coworking);
+            coworking.setCapacity(coworking.getCapacity() + incremento);
+            em.merge(coworking);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+        } finally {
+            em.close();
         }
-
-        // Sumar según el tipo de espacio
-        int incremento = switch (tipoEspacio.toLowerCase()) {
-            case "sala" -> 4;
-            case "escritorio" -> 1;
-            case "area comun" -> 2;
-            default -> 0; // espacios libres o no reconocidos
-        };
-
-        coworking.setCapacity(coworking.getCapacity() + incremento);
-        em.merge(coworking);
-
-        em.getTransaction().commit();
-    } catch (Exception e) {
-        e.printStackTrace();
-        if (em.getTransaction().isActive()) em.getTransaction().rollback();
-    } finally {
-        em.close();
     }
-}
+
     public Respuesta eliminarEspaciosPorPiso(int piso) {
         try {
             List<SpaceVisual> espacios = obtenerEspaciosConPosicion();
             String filtro = "P" + piso;
-
             for (SpaceVisual esp : espacios) {
                 if (esp.getSpace().getNombre().contains(filtro)) {
                     eliminarSpace(esp.getSpace().getId());
                 }
             }
-
             return new Respuesta(true, "Espacios del piso eliminados correctamente.", "");
         } catch (Exception e) {
             return new Respuesta(false, "Error eliminando espacios del piso.", e.getMessage());
         }
     }
+    
+    
+    public List<CoworkingSpaces> obtenerCoworkingSpacesPorSpaceIds(List<Long> spaceIds) {
+    EntityManager em = emf.createEntityManager();
+    List<CoworkingSpaces> lista = new ArrayList<>();
+    try {
+        if (spaceIds == null || spaceIds.isEmpty()) return lista;
+        TypedQuery<CoworkingSpaces> query = em.createQuery(
+            "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id IN :ids", CoworkingSpaces.class);
+        query.setParameter("ids", spaceIds);
+        lista = query.getResultList();
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        em.close();
+    }
+    return lista;
+}
+    
 }
