@@ -168,29 +168,61 @@ private void guardarReserva() {
     }
 
     private StackPane crearCeldaEspacio(SpaceVisual espacio, boolean estaOcupado) {
-        StackPane stack = new StackPane();
-        Rectangle rect = new Rectangle(100 * espacio.getColSpan(), 60 * espacio.getRowSpan());
-        rect.setArcWidth(0);
-        rect.setArcHeight(10);
+    StackPane stack = new StackPane();
+    Rectangle rect = new Rectangle(100 * espacio.getColSpan(), 60 * espacio.getRowSpan());
+    rect.setArcWidth(0);
+    rect.setArcHeight(10);
 
-        if (estaOcupado) {
-            rect.setFill(Color.GRAY);
-        } else {
-            String nombre = espacio.getSpace().getNombre().toLowerCase();
-            if (nombre.contains("sala")) rect.setFill(Color.CRIMSON);
-            else if (nombre.contains("\u00e1rea")) rect.setFill(Color.DARKGREEN);
-            else if (nombre.contains("libre")) rect.setFill(Color.GOLD);
-            else if (nombre.contains("e")) rect.setFill(Color.DODGERBLUE);
-            else rect.setFill(Color.LIGHTGRAY);
-        }
-
-        rect.setStroke(Color.BLACK);
-        Text text = new Text(espacio.getSpace().getNombre());
-        text.setFill(Color.WHITE);
-        stack.getChildren().addAll(rect, text);
-        return stack;
+    if (estaOcupado) {
+        rect.setFill(Color.GRAY);
+    } else {
+        String nombre = espacio.getSpace().getNombre().toLowerCase();
+        if (nombre.contains("sala")) rect.setFill(Color.CRIMSON);
+        else if (nombre.contains("área")) rect.setFill(Color.DARKGREEN);
+        else if (nombre.contains("libre")) rect.setFill(Color.GOLD);
+        else if (nombre.contains("e")) rect.setFill(Color.DODGERBLUE);
+        else rect.setFill(Color.LIGHTGRAY);
     }
 
+    rect.setStroke(Color.BLACK);
+    Text text = new Text(espacio.getSpace().getNombre());
+    text.setFill(Color.WHITE);
+    stack.getChildren().addAll(rect, text);
+
+    // ✅ Clic para reservar este espacio individualmente
+    stack.setOnMouseClicked(event -> {
+        if (estaOcupado) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Espacio ocupado", "Este espacio ya está reservado.");
+            return;
+        }
+
+        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+        LocalTime horaFin = ComboBoxHoraFin1.getValue();
+        Long userId = UserManager.getCurrentUser().getId();
+
+        if (fecha == null || horaInicio == null || horaFin == null) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
+            return;
+        }
+
+        CoworkingSpaces coworking = espacio.getSpace().getCoworkingSpace();
+        if (coworking == null) {
+            Utilities.showAlert(Alert.AlertType.ERROR, "Error", "Este espacio no tiene CoworkingSpace asociado.");
+            return;
+        }
+
+        boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
+        if (guardado) {
+            Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva exitosa", "Reserva registrada correctamente.");
+            cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+        } else {
+            Utilities.showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar la reserva.");
+        }
+    });
+
+    return stack;
+}
     private int obtenerPisoSeleccionado() {
         return ComboBoxPiso.getSelectionModel().getSelectedIndex();
     }

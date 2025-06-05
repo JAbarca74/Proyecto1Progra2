@@ -39,8 +39,13 @@ public class Spaces implements Serializable {
     @Column(name = "COL_SPAN")
     private Integer colSpan;
 
+    // Relación con CoworkingSpaces (colección original)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId", fetch = FetchType.LAZY)
     private Collection<CoworkingSpaces> coworkingSpacesCollection;
+
+    // Nueva relación directa con un CoworkingSpaces
+    @OneToOne(mappedBy = "spaceId", fetch = FetchType.LAZY)
+    private CoworkingSpaces coworkingSpace;
 
     public Spaces() {
     }
@@ -67,6 +72,7 @@ public class Spaces implements Serializable {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -74,6 +80,7 @@ public class Spaces implements Serializable {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -81,6 +88,7 @@ public class Spaces implements Serializable {
     public Integer getCapacity() {
         return capacity;
     }
+
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
@@ -88,6 +96,7 @@ public class Spaces implements Serializable {
     public Integer getRowIndex() {
         return rowIndex;
     }
+
     public void setRowIndex(Integer rowIndex) {
         this.rowIndex = rowIndex;
     }
@@ -95,6 +104,7 @@ public class Spaces implements Serializable {
     public Integer getColumnIndex() {
         return columnIndex;
     }
+
     public void setColumnIndex(Integer columnIndex) {
         this.columnIndex = columnIndex;
     }
@@ -102,6 +112,7 @@ public class Spaces implements Serializable {
     public Integer getRowSpan() {
         return rowSpan;
     }
+
     public void setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
     }
@@ -109,6 +120,7 @@ public class Spaces implements Serializable {
     public Integer getColSpan() {
         return colSpan;
     }
+
     public void setColSpan(Integer colSpan) {
         this.colSpan = colSpan;
     }
@@ -116,8 +128,17 @@ public class Spaces implements Serializable {
     public Collection<CoworkingSpaces> getCoworkingSpacesCollection() {
         return coworkingSpacesCollection;
     }
+
     public void setCoworkingSpacesCollection(Collection<CoworkingSpaces> coworkingSpacesCollection) {
         this.coworkingSpacesCollection = coworkingSpacesCollection;
+    }
+
+    public CoworkingSpaces getCoworkingSpace() {
+        return coworkingSpace;
+    }
+
+    public void setCoworkingSpace(CoworkingSpaces coworkingSpace) {
+        this.coworkingSpace = coworkingSpace;
     }
 
     @Override

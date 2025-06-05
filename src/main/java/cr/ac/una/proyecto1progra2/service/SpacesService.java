@@ -154,22 +154,29 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
     }
 
     public List<SpaceVisual> obtenerEspaciosConPosicion() {
-        List<SpaceVisual> listaVisual = new ArrayList<>();
-        Respuesta resp = listarSpaces();
-        if (!resp.isSuccess()) return listaVisual;
-        List<SpacesDto> espacios = (List<SpacesDto>) resp.getResultado("Spaces");
-        for (SpacesDto dto : espacios) {
+    EntityManager em = emf.createEntityManager();
+    List<SpaceVisual> listaVisual = new ArrayList<>();
+    try {
+        List<Spaces> espacios = em.createQuery("SELECT s FROM Spaces s", Spaces.class).getResultList();
+        for (Spaces space : espacios) {
+            SpacesDto dto = new SpacesDto(space);
+            // 👇 Relación directa desde Spaces al CoworkingSpaces
+            dto.setCoworkingSpace(space.getCoworkingSpace());
+
             int fila = dto.getRow();
             int columna = dto.getColumn();
-            int rowSpan = dto.getRowSpan();
-            int colSpan = dto.getColSpan();
-            if (rowSpan <= 0) rowSpan = 1;
-            if (colSpan <= 0) colSpan = 1;
+            int rowSpan = dto.getRowSpan() != null && dto.getRowSpan() > 0 ? dto.getRowSpan() : 1;
+            int colSpan = dto.getColSpan() != null && dto.getColSpan() > 0 ? dto.getColSpan() : 1;
+
             listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
         }
-        return listaVisual;
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        em.close();
     }
-
+    return listaVisual;
+}
     public Respuesta eliminarTodosSpaces() {
         try {
             et = em.getTransaction();
