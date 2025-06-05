@@ -63,37 +63,78 @@ public class SpacesService {
     }
 
     public Respuesta guardarSpace(SpacesDto dto) {
-        try {
-            et = em.getTransaction();
-            et.begin();
-            Spaces e;
-            if (dto.getId() != null && dto.getId() > 0) {
-                e = em.find(Spaces.class, dto.getId());
-                if (e == null) {
-                    et.rollback();
-                    return new Respuesta(false, "No encontrado.", "");
-                }
-                e.actualizar(dto);
-                e = em.merge(e);
-            } else {
-                e = new Spaces(dto);
-                TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
-                q.setParameter("name", dto.getNombre().toUpperCase());
-                if (!q.getResultList().isEmpty()) {
-                    et.rollback();
-                    return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
-                }
-                em.persist(e);
-            }
-            et.commit();
-            return new Respuesta(true, "", "", "Space", new SpacesDto(e));
-        } catch (Exception ex) {
-            if (et.isActive()) et.rollback();
-            Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
-            return new Respuesta(false, "Error guardando espacio.", ex.getMessage());
-        }
-    }
+    try {
+        et = em.getTransaction();
+        et.begin();
+        Spaces e;
+        boolean nuevo = false;
 
+        if (dto.getId() != null && dto.getId() > 0) {
+            e = em.find(Spaces.class, dto.getId());
+            if (e == null) {
+                et.rollback();
+                return new Respuesta(false, "No encontrado.", "");
+            }
+            e.actualizar(dto);
+            e = em.merge(e);
+        } else {
+            e = new Spaces(dto);
+            TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
+            q.setParameter("name", dto.getNombre().toUpperCase());
+            if (!q.getResultList().isEmpty()) {
+                et.rollback();
+                return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
+            }
+            em.persist(e);
+            nuevo = true;
+        }
+
+        et.commit();
+
+        // 🆕 Si es nuevo, crear CoworkingSpace automáticamente
+        if (nuevo) {
+            crearCoworkingSpaceSiNoExiste(e);
+        }
+
+        return new Respuesta(true, "", "", "Space", new SpacesDto(e));
+    } catch (Exception ex) {
+        if (et.isActive()) et.rollback();
+        Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
+        return new Respuesta(false, "Error guardando espacio.", ex.getMessage());
+    }
+}
+private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        em.getTransaction().begin();
+
+        TypedQuery<CoworkingSpaces> query = em.createQuery(
+            "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id = :spaceId", CoworkingSpaces.class);
+        query.setParameter("spaceId", espacio.getId());
+        List<CoworkingSpaces> resultado = query.getResultList();
+
+        if (resultado.isEmpty()) {
+            CoworkingSpaces nuevo = new CoworkingSpaces();
+            nuevo.setId(espacio.getId()); // mismo ID que Space
+            nuevo.setName("Espacio " + espacio.getId());
+            nuevo.setCapacity(1);
+            nuevo.setVersion(1L);
+            nuevo.setSpaceId(espacio);
+
+            // Establecer TYPE_ID por defecto (puede ajustarse si tenés lógica distinta)
+            nuevo.setTypeId(em.find(cr.ac.una.proyecto1progra2.model.SpaceTypes.class, 1L));
+
+            em.persist(nuevo);
+        }
+
+        em.getTransaction().commit();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+    } finally {
+        em.close();
+    }
+}
     public void eliminarSpace(Long id) {
         try {
             if (!em.getTransaction().isActive()) {
