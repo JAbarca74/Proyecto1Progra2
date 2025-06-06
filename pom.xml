@@ -26,7 +26,7 @@
       <artifactId>javafx-fxml</artifactId>
       <version>21</version>
     </dependency>
-
+    
     <!-- MaterialFX -->
     <dependency>
       <groupId>io.github.palexdev</groupId>

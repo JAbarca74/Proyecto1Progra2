@@ -3,7 +3,6 @@ package cr.ac.una.proyecto1progra2.service;
 import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.util.JPAUtil;
 
-import javax.persistence.*;
 
 import java.util.List;
 import javax.persistence.EntityManager;

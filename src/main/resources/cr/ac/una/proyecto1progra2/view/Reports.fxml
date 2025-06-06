@@ -3,6 +3,7 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
@@ -15,7 +16,7 @@
         <Label text="Reportes Estadísticos del Sistema" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
         
         <TabPane>
-            
+
             <!-- TAB 1: Espacios más reservados -->
             <Tab text="Espacios más reservados">
                 <AnchorPane>
@@ -40,7 +41,17 @@
                 </AnchorPane>
             </Tab>
 
-            <!-- TAB 3: Horarios pico de uso -->
+            <!-- TAB 3: Gráficos de Reservas -->
+            <Tab text="Distribución de Reservas">
+                <AnchorPane>
+                    <HBox spacing="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <PieChart fx:id="chartTiposEspacios" title="Reservas por Tipo de Espacio" prefWidth="350" />
+                        <PieChart fx:id="chartReservasCoworking" title="Reservas por Coworking" prefWidth="350" />
+                    </HBox>
+                </AnchorPane>
+            </Tab>
+
+            <!-- TAB 4: Horarios pico de uso -->
             <Tab text="Horarios pico de uso">
                 <AnchorPane>
                     <BarChart fx:id="graficoHoras" layoutX="10.0" layoutY="10.0"
