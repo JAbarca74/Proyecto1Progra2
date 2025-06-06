@@ -20,21 +20,21 @@
             <HBox alignment="CENTER" prefHeight="374.0" prefWidth="492.0" spacing="20">
 
                 <!-- Panel de login -->
-                <VBox alignment="CENTER" prefHeight="367.0" prefWidth="329.0" spacing="15">
-                    <ImageView fitHeight="110.0" fitWidth="353.0" preserveRatio="true">
-                        <image>
-                            <Image url="@Logo&amp;Nombre.png" />
-                        </image>
-                    </ImageView>
+                <VBox alignment="CENTER" prefHeight="150.0" prefWidth="329.0" spacing="15">
+               <ImageView fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@aa.png" />
+                  </image>
+               </ImageView>
 
-                    <TextField fx:id="txtUsuario" maxWidth="200" promptText="Usuario" />
+                    <TextField fx:id="txtUsuario" maxWidth="200" prefHeight="25.0" prefWidth="133.0" promptText="Usuario" />
 
                     <PasswordField fx:id="txtContraseña" maxWidth="200" promptText="Contraseña" />
 
                     <!-- Label para mostrar mensaje de error -->
                     <Label fx:id="lblErrorLogin" maxWidth="200" textFill="red" wrapText="true" />
-
-                    <Button fx:id="btnInicioSesion" maxWidth="200" onAction="#onActionBtnInicioSesion" text="Iniciar sesión" />
+         
+                    <Button fx:id="btnInicioSesion" maxWidth="200" onAction="#onActionBtnInicioSesion" prefHeight="25.0" prefWidth="117.0" text="Iniciar sesión" />
                 </VBox>
 
             </HBox>
@@ -44,4 +44,11 @@
             </VBox.margin></Button>
         </VBox>
     </center>
+   <left>
+      <ImageView fitHeight="403.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@Login.png" />
+         </image>
+      </ImageView>
+   </left>
 </BorderPane>

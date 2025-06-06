@@ -22,7 +22,7 @@
             <Label styleClass="titulo-principal" text="Buscar Usuario" />
 
             <HBox alignment="CENTER" spacing="10">
-                <TextField fx:id="txtBuscarUsuario" onKeyTyped="#onActionBtnBuscar" prefWidth="300" promptText="Ingrese el nombre de usuario" />
+                <TextField fx:id="txtBuscarUsuario" alignment="TOP_CENTER" onKeyTyped="#onActionBtnBuscar" prefWidth="300" promptText="nombre ó usuario" />
                 <Button fx:id="btnBuscar" onAction="#onActionBtnBuscar" text="Buscar">
                <HBox.margin>
                   <Insets left="40.0" />
@@ -30,19 +30,19 @@
             </HBox>
          <TableView fx:id="tblUsuarios" prefHeight="223.0" prefWidth="560.0">
   <columns>
-     <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150" />
-        <TableColumn fx:id="colApellido" text="Apellido" prefWidth="150" />
-        <TableColumn fx:id="colUsername" text="Usuario" prefWidth="100" />
-        <TableColumn fx:id="colCorreo" text="Correo" prefWidth="180" />
-        <TableColumn fx:id="colRole" text="Rol" prefWidth="80" />
-        <TableColumn fx:id="colEstado" text="Estado" prefWidth="60" />
+     <TableColumn fx:id="colId" prefWidth="50" text="ID" />
+        <TableColumn fx:id="colNombre" prefWidth="150" text="Nombre" />
+        <TableColumn fx:id="colApellido" prefWidth="150" text="Apellido" />
+        <TableColumn fx:id="colUsername" prefWidth="100" text="Usuario" />
+        <TableColumn fx:id="colCorreo" prefWidth="180" text="Correo" />
+        <TableColumn fx:id="colRole" prefWidth="80" text="Rol" />
+        <TableColumn fx:id="colEstado" prefWidth="60" text="Estado" />
   </columns>
 </TableView>
 
          <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-               <Button fx:id="btnEditUser" mnemonicParsing="false" onAction="#onActionBtnEditar" text="Editar Usuario">
+               <Button fx:id="btnEditUser" mnemonicParsing="false" onAction="#onActionBtnEditar" text="Editar datos">
                   <HBox.margin>
                      <Insets left="50.0" />
                   </HBox.margin>
