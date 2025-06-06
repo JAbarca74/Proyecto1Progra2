@@ -8,8 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +18,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.control.TableCell;
+
 
 public class EditDeleteUserController extends Controller implements Initializable {
 
@@ -32,7 +36,15 @@ public class EditDeleteUserController extends Controller implements Initializabl
     @FXML
     private TableColumn<UsuariosDto, String> colRole;
     @FXML
-   private TableColumn<UsuariosDto, String> colEstado;
+    private TableColumn<UsuariosDto, String> colEstado;
+    @FXML
+    private TableColumn<UsuariosDto, String> colNombre;
+    @FXML
+    private TableColumn<UsuariosDto, String> colApellido;
+
+    @FXML
+    private TableColumn<UsuariosDto, String> colCorreo;
+
     @FXML
     private Button btnEditUser;
     @FXML
@@ -42,77 +54,110 @@ public class EditDeleteUserController extends Controller implements Initializabl
 
     private final UsuariosService usuariosService = new UsuariosService();
     private UsuariosDto usuarioSeleccionado;
+    private List<UsuariosDto> usuariosOriginal = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colUsername.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
-colEstado.setCellValueFactory(cellData -> {
-    String estado = cellData.getValue().getEstado() ? "A" : "I";
-    return new javafx.beans.property.SimpleStringProperty(estado);
-});
-
-        tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            usuarioSeleccionado = newVal;
-            boolean habilitar = usuarioSeleccionado != null;
-            btnEditUser.setDisable(!habilitar);
-            btnDeleteUser.setDisable(!habilitar);
-        });
-
-        btnEditUser.setDisable(true);
-        btnDeleteUser.setDisable(true);
-        cargarUsuarios();
+    // Cargar usuarios una sola vez
+    Respuesta resp = usuariosService.listarUsuarios();
+    if (resp.getEstado()) {
+        usuariosOriginal = (List<UsuariosDto>) resp.getResultado("Usuarios");
+        tblUsuarios.setItems(FXCollections.observableArrayList(usuariosOriginal));
+    } else {
+        mostrarMensaje("Error al cargar usuarios: " + resp.getMensaje());
     }
 
-    @Override
-    public void initialize() {
-        // llamado por FlowController si es necesario
-    }
+    // Configurar columnas
+    colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+    colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+    colApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+    colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+    colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+    colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
+
+    // Celda personalizada para mostrar A/I con color
+    colEstado.setCellFactory(column -> new TableCell<UsuariosDto, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                setText(null);
+                setGraphic(null);
+                return;
+            }
+
+            UsuariosDto usuario = getTableRow().getItem();
+            boolean estadoActivo = usuario.getEstado(); // true = A, false = I
+
+            javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(10, 10);
+            rect.setArcWidth(3);
+            rect.setArcHeight(3);
+            rect.setFill(estadoActivo ? javafx.scene.paint.Color.GREEN : javafx.scene.paint.Color.RED);
+
+            setText(estadoActivo ? "A" : "I");
+            setGraphic(rect);
+            setGraphicTextGap(10);
+        }
+    });
+
+    // Listener de selección en la tabla
+    tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+        usuarioSeleccionado = newVal;
+        boolean habilitar = usuarioSeleccionado != null;
+        btnEditUser.setDisable(!habilitar);
+        btnDeleteUser.setDisable(!habilitar);
+    });
+
+    btnEditUser.setDisable(true);
+    btnDeleteUser.setDisable(true);
+}
 
     public void cargarUsuarios() {
-        Respuesta resp = usuariosService.listarUsuarios();
-        if (resp.getEstado()) {
-            @SuppressWarnings("unchecked")
-            List<UsuariosDto> lista = (List<UsuariosDto>) resp.getResultado("Usuarios");
-            ObservableList<UsuariosDto> data = FXCollections.observableArrayList(lista);
-            tblUsuarios.setItems(data);
-        } else {
-            mostrarMensaje("Error al cargar usuarios: " + resp.getMensaje());
-        }
+    Respuesta resp = usuariosService.listarUsuarios();
+    if (resp.getEstado()) {
+        usuariosOriginal = (List<UsuariosDto>) resp.getResultado("Usuarios");
+        tblUsuarios.setItems(FXCollections.observableArrayList(usuariosOriginal));
+    } else {
+        mostrarMensaje("Error al cargar usuarios: " + resp.getMensaje());
     }
+}
 
-    @FXML
-    private void onActionBtnBuscar(ActionEvent event) {
-        String nombre = txtBuscarUsuario.getText().trim();
-        if (nombre.isEmpty()) {
-            mostrarMensaje("Debe ingresar un nombre de usuario.");
-            return;
-        }
+    
+   @Override
+public void initialize() {
+    // Método requerido por la clase base 'Controller'
+}
 
-        Respuesta respuesta = usuariosService.listarUsuarios(); // usamos todos para filtrar por nombre
-        if (!respuesta.getEstado()) {
-            mostrarMensaje(respuesta.getMensaje());
-            return;
-        }
 
-        List<UsuariosDto> todos = (List<UsuariosDto>) respuesta.getResultado("Usuarios");
-        List<UsuariosDto> filtrados = new ArrayList<>();
-        for (UsuariosDto u : todos) {
-            if (u.getUsername() != null && u.getUsername().toLowerCase().contains(nombre.toLowerCase())) {
-                filtrados.add(u);
-            }
-        }
-
-        ObservableList<UsuariosDto> data = FXCollections.observableArrayList(filtrados);
-        tblUsuarios.setItems(data);
+   @FXML
+private void onActionBtnBuscar(javafx.event.Event event) {
+    String filtro = txtBuscarUsuario.getText().trim().toLowerCase();
+    if (filtro.isEmpty()) {
+        tblUsuarios.setItems(FXCollections.observableArrayList(usuariosOriginal));
         btnEditUser.setDisable(true);
         btnDeleteUser.setDisable(true);
-
-        if (data.isEmpty()) {
-            mostrarMensaje("No se encontraron usuarios.");
-        }
+        return;
     }
+
+    List<UsuariosDto> filtrados = usuariosOriginal.stream()
+            .filter(u -> {
+                String nombre = u.getNombre() != null ? u.getNombre().toLowerCase() : "";
+                String username = u.getUsername() != null ? u.getUsername().toLowerCase() : "";
+                return nombre.contains(filtro) || username.contains(filtro);
+            })
+            .collect(Collectors.toList());
+
+    tblUsuarios.setItems(FXCollections.observableArrayList(filtrados));
+    btnEditUser.setDisable(true);
+    btnDeleteUser.setDisable(true);
+
+    if (filtrados.isEmpty()) {
+        mostrarMensaje("No se encontraron usuarios.");
+    }
+}
+
+
 
     @FXML
     private void onActionBtnEliminar(ActionEvent event) {
@@ -124,6 +169,7 @@ colEstado.setCellValueFactory(cellData -> {
         Respuesta respuesta = usuariosService.eliminarUsuario(usuarioSeleccionado.getId());
         if (respuesta.getEstado()) {
             mostrarMensaje("Usuario eliminado correctamente.");
+            usuariosOriginal.remove(usuarioSeleccionado);
             tblUsuarios.getItems().remove(usuarioSeleccionado);
             tblUsuarios.getSelectionModel().clearSelection();
             usuarioSeleccionado = null;
@@ -135,7 +181,7 @@ colEstado.setCellValueFactory(cellData -> {
     }
 
     private void mostrarMensaje(String mensaje) {
-        System.out.println(mensaje); // Aquí puedes usar tu clase Utilities si la tienes
+        System.out.println(mensaje); // Puedes cambiarlo por diálogo si lo deseas
     }
 
     @FXML
@@ -150,5 +196,4 @@ colEstado.setCellValueFactory(cellData -> {
 
         FlowController.getInstance().goViewInWindowModal("EditUser", getStage(), true);
     }
-
 }
