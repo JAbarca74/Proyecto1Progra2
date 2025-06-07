@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.ReservationManagementController">
+
+    <VBox spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0">
+        <Label text="Gestión de Reservas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+        <HBox spacing="10">
+            <Label text="Fecha:" />
+            <DatePicker fx:id="datePickerFiltro" />
+            <Label text="Usuario:" />
+            <ComboBox fx:id="comboUsuarios" promptText="Seleccione un usuario" prefWidth="150" />
+            <Label text="Piso:" />
+            <ComboBox fx:id="comboPiso" promptText="Piso" prefWidth="100" />
+            <Button text="Buscar" onAction="#onBuscar" />
+            <Button text="Limpiar" onAction="#onLimpiar" />
+        </HBox>
+
+        <TableView fx:id="tablaReservas" prefHeight="450.0">
+            <columns>
+                <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="150" />
+                <TableColumn fx:id="colEspacio" text="Espacio" prefWidth="120" />
+                <TableColumn fx:id="colPiso" text="Piso" prefWidth="80" />
+                <TableColumn fx:id="colFecha" text="Fecha" prefWidth="100" />
+                <TableColumn fx:id="colInicio" text="Hora Inicio" prefWidth="100" />
+                <TableColumn fx:id="colFin" text="Hora Fin" prefWidth="100" />
+                <TableColumn fx:id="colEstado" text="Estado" prefWidth="100" />
+                <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120" />
+            </columns>
+        </TableView>
+    </VBox>
+</AnchorPane>

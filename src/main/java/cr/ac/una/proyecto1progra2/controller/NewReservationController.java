@@ -37,36 +37,47 @@ public class NewReservationController extends Controller implements Initializabl
     private int pisoActual = 0;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        LocalTime hora = LocalTime.of(7, 0);
-        while (hora.isBefore(LocalTime.of(21, 0))) {
-            ComboBoxHoraIncio1.getItems().add(hora);
-            ComboBoxHoraFin1.getItems().add(hora);
-            hora = hora.plusHours(1);
-        }
-        ComboBoxHoraIncio1.setValue(LocalTime.of(8, 0));
-        ComboBoxHoraFin1.setValue(LocalTime.of(9, 0));
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    // 1) Fecha por defecto: hoy
+    DatePickerDIasDIasReservaciones.setValue(LocalDate.now());
 
-        ComboBoxPiso.getItems().addAll("Piso 0", "Piso 1", "Piso 2", "Piso 3");
-        ComboBoxPiso.getSelectionModel().selectFirst();
-        pisoActual = ComboBoxPiso.getSelectionModel().getSelectedIndex();
-
-        ComboBoxPiso.setOnAction(e -> {
-            pisoActual = ComboBoxPiso.getSelectionModel().getSelectedIndex();
-            buscarEspacios();
-        });
-
-        DatePickerDIasDIasReservaciones.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
-        ComboBoxHoraIncio1.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
-        ComboBoxHoraFin1.valueProperty().addListener((obs, oldVal, newVal) -> buscarEspacios());
-
-        UsuariosDto usuario = UserManager.getCurrentUser();
-        if (usuario != null) {
-            LabelNombreUsuario.setText("Usuario: " + usuario.getNombre() + " " + usuario.getApellido());
-        }
-
-        cargarMatrizDeEspaciosDisponibles();
+    // 2) Horarios cada 30 minutos desde 07:00 hasta 21:00
+    LocalTime t = LocalTime.of(7, 0);
+    while (!t.isAfter(LocalTime.of(21, 0))) {
+        ComboBoxHoraIncio1.getItems().add(t);
+        ComboBoxHoraFin1.getItems().add(t);
+        t = t.plusMinutes(30);
     }
+
+    // 3) Valores iniciales: 08:00 → 08:00, fin al siguiente slot → 08:30
+    ComboBoxHoraIncio1.setValue(LocalTime.of(8, 0));
+    int idx = ComboBoxHoraIncio1.getItems().indexOf(ComboBoxHoraIncio1.getValue());
+    if (idx >= 0 && idx < ComboBoxHoraFin1.getItems().size() - 1) {
+        ComboBoxHoraFin1.setValue(ComboBoxHoraFin1.getItems().get(idx + 1));
+    }
+
+    // 4) Listeners para recargar y ajustar fin automáticamente
+    DatePickerDIasDIasReservaciones.valueProperty().addListener((obs, o, n) -> buscarEspacios());
+    ComboBoxHoraFin1.valueProperty().addListener((obs, o, n) -> buscarEspacios());
+
+    ComboBoxHoraIncio1.valueProperty().addListener((obs, oldVal, newVal) -> {
+        if (newVal != null) {
+            int i = ComboBoxHoraIncio1.getItems().indexOf(newVal);
+            if (i >= 0 && i < ComboBoxHoraFin1.getItems().size() - 1) {
+                ComboBoxHoraFin1.setValue(ComboBoxHoraFin1.getItems().get(i + 1));
+            }
+        }
+        buscarEspacios();
+    });
+
+    // 5) Piso y su listener
+    ComboBoxPiso.getItems().setAll("Piso 0", "Piso 1", "Piso 2", "Piso 3");
+    ComboBoxPiso.getSelectionModel().selectFirst();
+    ComboBoxPiso.valueProperty().addListener((obs, o, n) -> buscarEspacios());
+
+    // 6) Carga inicial
+    buscarEspacios();
+}
 
     private void buscarEspacios() {
         LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();

@@ -24,6 +24,9 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private Button btnSalir;
+    
+    @FXML
+    private Button btnGestionReservas;
 
     @FXML
     private Button btnReservar;
@@ -105,6 +108,13 @@ public class PrincipalViewController extends Controller implements Initializable
     private void onStatistics(ActionEvent event) {
         FlowController.getInstance().goView("Reports");
     }
+    
+    @FXML
+    private void onGestionReservas(ActionEvent event) {
+        // Carga ReservationManagement.fxml en el CENTER del BorderPane principal
+        FlowController.getInstance().goView("ReservationManagement");
+    }
+    
     @Override
     public void initialize() {
         

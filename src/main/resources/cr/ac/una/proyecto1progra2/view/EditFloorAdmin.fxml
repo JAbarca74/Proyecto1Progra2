@@ -23,35 +23,44 @@
                             <font>
                                 <Font size="26.0" />
                             </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
                         </Label>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="100.0" prefWidth="606.0">
                             <children>
                                 <VBox layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label fx:id="LabelCanEscritorios" prefHeight="18.0" prefWidth="118.0" text=" Cantidad Escritorios " />
-                                        <Label prefHeight="34.0" prefWidth="80.0" text="ESCRITORIOS" />
+                                        <Label fx:id="LabelCanEscritorios" prefHeight="18.0" prefWidth="118.0" text="0" />
+                                        <Label prefHeight="34.0" prefWidth="70.0" text="Escritorios" />
                                     </children>
                                 </VBox>
                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
                                     <children>
                                         <Label fx:id="LabelCanSalasComunes" prefHeight="18.0" prefWidth="125.0" text="0" />
-                                        <Label prefHeight="34.0" prefWidth="80.0" text="SALAS" />
+                                        <Label prefHeight="34.0" prefWidth="71.0" text="Salas" />
                                     </children>
                                 </VBox>
 
                                 <VBox prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label fx:id="LabelCantAreasComunes" prefHeight="18.0" prefWidth="134.0" text="areas comunes " />
-                                        <Label prefHeight="34.0" prefWidth="80.0" text="Areas Comunes" />
+                                        <Label fx:id="LabelCantAreasComunes" prefHeight="18.0" prefWidth="134.0" text="0" />
+                                        <Label prefHeight="34.0" prefWidth="103.0" text="Areas Comunes" />
                                     </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                                 </VBox>
                                 <VBox layoutX="210.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label fx:id="LabelCantEspaciosLibres" prefHeight="18.0" prefWidth="90.0" text="Espacios Libres " />
-                                        <Label prefHeight="34.0" prefWidth="80.0" text="Espacios Libres " />
+                                        <Label fx:id="LabelCantEspaciosLibres" prefHeight="18.0" prefWidth="90.0" text="0" />
+                                        <Label prefHeight="34.0" prefWidth="106.0" text="Espacios Libres " />
                                     </children>
                                 </VBox>
                             </children>
+                     <VBox.margin>
+                        <Insets left="50.0" top="25.0" />
+                     </VBox.margin>
                         </HBox>
                        <GridPane fx:id="gridMatrix" alignment="CENTER" prefHeight="260.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
 
@@ -70,16 +79,30 @@
                         </GridPane>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                             <children>
-                                <Label text="Agregar" />
                                 <HBox prefHeight="31.0" prefWidth="320.0">
                                     <children>
                                         <Button fx:id="BtnAgregarEscritorios" mnemonicParsing="false" onAction="#onAgregarEscritorios" prefHeight="26.0" prefWidth="116.0" text="Escritorios" />
-                                        <Button fx:id="BtnAgregarSalas" mnemonicParsing="false" onAction="#onAgregarSalas" prefHeight="26.0" prefWidth="90.0" text="Salas" />
-                                        <Button fx:id="BtnAgregarAreasComunes" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarAreasComunes" prefHeight="26.0" prefWidth="150.0" text="Areas Comunes" />
-                                        <Button fx:id="BtnAgregarEspaciosLibres" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarEspaciosLibres" prefHeight="26.0" prefWidth="162.0" text="Espacios Libres" />
+                                        <Button fx:id="BtnAgregarSalas" mnemonicParsing="false" onAction="#onAgregarSalas" prefHeight="26.0" prefWidth="90.0" text="Salas">
+                                 <HBox.margin>
+                                    <Insets left="25.0" />
+                                 </HBox.margin></Button>
+                                        <Button fx:id="BtnAgregarAreasComunes" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarAreasComunes" prefHeight="26.0" prefWidth="150.0" text="Areas Comunes">
+                                 <HBox.margin>
+                                    <Insets left="25.0" />
+                                 </HBox.margin></Button>
+                                        <Button fx:id="BtnAgregarEspaciosLibres" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAgregarEspaciosLibres" prefHeight="26.0" prefWidth="162.0" text="Espacios Libres">
+                                 <HBox.margin>
+                                    <Insets left="25.0" />
+                                 </HBox.margin></Button>
                                     </children>
+                           <VBox.margin>
+                              <Insets left="40.0" />
+                           </VBox.margin>
                                 </HBox>
-                                <Button fx:id="BtnBorrarTodo" mnemonicParsing="false" onAction="#onBorrarTodo" text="BorrarTodo" />
+                                <Button fx:id="BtnBorrarTodo" mnemonicParsing="false" onAction="#onBorrarTodo" text="BorrarTodo">
+                           <VBox.margin>
+                              <Insets top="13.0" />
+                           </VBox.margin></Button>
                             </children>
                         </VBox>
                     </children>

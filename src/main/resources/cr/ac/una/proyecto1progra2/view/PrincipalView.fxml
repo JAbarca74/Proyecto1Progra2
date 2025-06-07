@@ -17,7 +17,7 @@
    <center>
       <VBox alignment="TOP_RIGHT" prefHeight="500.0" prefWidth="587.0" BorderPane.alignment="CENTER_RIGHT">
          <BorderPane.margin>
-            <Insets left="80.0" />
+            <Insets />
          </BorderPane.margin>
       </VBox>
    </center>
@@ -89,6 +89,11 @@
                   </Button>
                   <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Agregar Admin">
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
+                  </Button>
+                  <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Gestión de reservas">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </Button>
                   <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" styleClass="button-flat" text="Estadisticas">
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
