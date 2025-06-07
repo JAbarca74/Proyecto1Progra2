@@ -186,18 +186,18 @@ public class ReportsController extends Controller implements Initializable {
             .createNativeQuery(sql)
             .getResultList();
 
-        // Serie para el BarChart
+       
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName("Reservas por hora");
 
         for (Object[] fila : resultados) {
-            // fila[0] es BigDecimal/Number, fila[1] es BigDecimal/Number
+            
             String hora = fila[0].toString();
             Number total = ((Number) fila[1]).longValue();
             serie.getData().add(new XYChart.Data<>(hora, total));
         }
 
-        // Refrescar gráfico
+    
         graficoHoras.getData().clear();
         graficoHoras.getData().add(serie);
 
@@ -206,11 +206,7 @@ public class ReportsController extends Controller implements Initializable {
     }
 }
 
-    /**
-     * Cuenta cuántas reservas hay por cada tipo de espacio.
-     * Según tu entidad CoworkingSpaces.java, el atributo que apunta a SpaceTypes se llama "typeId",
-     * y dentro de ese SpaceTypes está la propiedad "typeName".
-     */
+ 
     private Map<String, Long> obtenerReservasPorTipoEspacio() {
         EntityManager em = JPAUtil.getEMF().createEntityManager();
         try {
@@ -220,24 +216,21 @@ public class ReportsController extends Controller implements Initializable {
                 "JOIN r.coworkingSpaceId cs " +
                 "GROUP BY cs.typeId.typeName";
 
-            // Especificamos Object[].class porque cada fila es un Object[]{ String typeName, Long count }
+            
             @SuppressWarnings("unchecked")
             List<Object[]> resultados = em.createQuery(jpql, Object[].class).getResultList();
 
             return resultados.stream()
                              .collect(Collectors.toMap(
-                                 row -> (String) row[0],    // row[0] = cs.typeId.typeName
-                                 row -> (Long)   row[1]     // row[1] = COUNT(r)
+                                 row -> (String) row[0],    
+                                 row -> (Long)   row[1]    
                              ));
         } finally {
             em.close();
         }
     }
 
-    /**
-     * Cuenta cuántas reservas hay por cada coworking (nombre de CoworkingSpaces).
-     * En la entidad CoworkingSpaces.java, el atributo que guarda el nombre se llama "name".
-     */
+    
     private Map<String, Long> obtenerReservasPorCoworking() {
         EntityManager em = JPAUtil.getEMF().createEntityManager();
         try {
@@ -252,8 +245,8 @@ public class ReportsController extends Controller implements Initializable {
 
             return resultados.stream()
                              .collect(Collectors.toMap(
-                                 row -> (String) row[0],    // row[0] = cs.name
-                                 row -> (Long)   row[1]     // row[1] = COUNT(r)
+                                 row -> (String) row[0],    
+                                 row -> (Long)   row[1]     
                              ));
         } finally {
             em.close();
