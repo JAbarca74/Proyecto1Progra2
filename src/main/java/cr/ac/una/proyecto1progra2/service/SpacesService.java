@@ -3,7 +3,9 @@ package cr.ac.una.proyecto1progra2.service;
 import cr.ac.una.proyecto1progra2.model.Spaces;
 import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
 import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
+import cr.ac.una.proyecto1progra2.model.Reservations;
 import cr.ac.una.proyecto1progra2.util.EntityManagerHelper;
+import static cr.ac.una.proyecto1progra2.util.JPAUtil.getEntityManager;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 import cr.ac.una.proyecto1progra2.util.SpaceVisual;
 
@@ -137,23 +139,48 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
         em.close();
     }
 }
-    public void eliminarSpace(Long id) {
-        try {
-            if (!em.getTransaction().isActive()) {
-                em.getTransaction().begin();
-            }
-            Spaces space = em.find(Spaces.class, id);
-            if (space != null) {
-                em.remove(space);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
+   public Respuesta eliminarSpace(Long id) {
+    EntityManager em = getEntityManager();
+    try {
+        em.getTransaction().begin();
+
+        Spaces espacio = em.find(Spaces.class, id);
+        if (espacio == null)
+            return new Respuesta(false, "No se encontró el espacio", "eliminarSpace NoResult");
+
+        // Paso 1: Obtener coworking asociado
+        CoworkingSpaces coworking = em.createQuery(
+            "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id = :id", CoworkingSpaces.class)
+            .setParameter("id", id)
+            .getSingleResult();
+
+        // Paso 2: Eliminar reservas asociadas
+        List<Reservations> reservas = em.createQuery(
+            "SELECT r FROM Reservations r WHERE r.coworkingSpaceId.id = :id", Reservations.class)
+            .setParameter("id", coworking.getId())
+            .getResultList();
+
+        for (Reservations r : reservas) {
+            em.remove(r);
         }
+
+        // Paso 3: Eliminar coworking space
+        em.remove(coworking);
+
+        // Paso 4: Eliminar space
+        em.remove(espacio);
+
+        em.getTransaction().commit();
+  return new Respuesta(true, "Espacio eliminado exitosamente.");
+    } catch (NoResultException ex) {
+        return new Respuesta(false, "Coworking space no encontrado para este espacio.", "eliminarSpace NoResult");
+    } catch (Exception ex) {
+        em.getTransaction().rollback();
+        return new Respuesta(false, "Error al eliminar espacio: " + ex.getMessage(), "eliminarSpace " + ex.getMessage());
+    } finally {
+        em.close();
     }
+}
 
     public List<SpaceVisual> obtenerEspaciosConPosicion() {
     EntityManager em = emf.createEntityManager();
