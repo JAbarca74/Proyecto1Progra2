@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.EditDeleteUserController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.EditDeleteUserController">
 
     <children>
         <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -19,18 +19,18 @@
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             
-            <Label styleClass="titulo-principal" text="Buscar Usuario" />
+            <Label styleClass="titulo-busqueda" text="Buscar Usuario" />
 
             <HBox alignment="CENTER" spacing="10">
-                <TextField fx:id="txtBuscarUsuario" alignment="TOP_CENTER" onKeyTyped="#onActionBtnBuscar" prefWidth="300" promptText="nombre ó usuario" />
-                <Button fx:id="btnBuscar" onAction="#onActionBtnBuscar" text="Buscar">
+                <TextField fx:id="txtBuscarUsuario" alignment="TOP_CENTER" onKeyTyped="#onActionBtnBuscar" prefWidth="300" promptText="nombre ó usuario" styleClass="panel-busqueda" />
+                <Button fx:id="btnBuscar" onAction="#onActionBtnBuscar" styleClass="boton-buscar" text="Buscar">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin></Button>
             </HBox>
          <TableView fx:id="tblUsuarios" prefHeight="223.0" prefWidth="560.0">
   <columns>
-     <TableColumn fx:id="colId" prefWidth="50" text="ID" />
+     <TableColumn fx:id="colId" prefWidth="50" styleClass="usuario-nombre" text="ID" />
         <TableColumn fx:id="colNombre" prefWidth="150" text="Nombre" />
         <TableColumn fx:id="colApellido" prefWidth="150" text="Apellido" />
         <TableColumn fx:id="colUsername" prefWidth="100" text="Usuario" />
@@ -42,7 +42,7 @@
 
          <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-               <Button fx:id="btnEditUser" mnemonicParsing="false" onAction="#onActionBtnEditar" text="Editar datos">
+               <Button fx:id="btnEditUser" mnemonicParsing="false" onAction="#onActionBtnEditar" styleClass="text-field" text="Editar datos">
                   <HBox.margin>
                      <Insets left="50.0" />
                   </HBox.margin>

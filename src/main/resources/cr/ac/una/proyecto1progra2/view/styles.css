@@ -207,4 +207,84 @@
     -fx-text-fill: #4CAF50;
     -fx-font-weight: bold;
     -fx-font-size: 22px;
+}/* ============================= */
+/*      PANEL DE BÚSQUEDA       */
+/* ============================= */
+.panel-busqueda {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 12, 0, 0, 4);
+}
+
+/* ============================= */
+/*          TÍTULO              */
+/* ============================= */
+.titulo-busqueda {
+    -fx-text-fill: #5D4037;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+/* ============================= */
+/*       BOTÓN BUSCAR           */
+/* ============================= */
+.boton-buscar {
+    -fx-background-color: #43A047;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+}
+.boton-buscar:hover {
+    -fx-background-color: #388E3C;
+    -fx-cursor: hand;
+}
+
+/* ============================= */
+/*        TABLA DE USUARIOS     */
+/* ============================= */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+.table-view .column-header-background {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 8 8 0 0;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-size: 32px;
+    -fx-border-color: transparent;
+}
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+}
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+.table-view .table-row-cell:odd {
+    -fx-background-color: #FAFAFA;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: #E0F2F1;
+}
+
+/* ============================= */
+/*   COLORES PERSONALIZADOS     */
+/* ============================= */
+.usuario-nombre {
+    -fx-text-fill: #EF6C00;
+    -fx-font-weight: bold;
+}
+.usuario-usuario {
+    -fx-text-fill: #1E88E5;
+    -fx-font-weight: bold;
+}
+.usuario-correo {
+    -fx-text-fill: #1976D2;
 }
