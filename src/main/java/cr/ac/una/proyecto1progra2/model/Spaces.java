@@ -40,7 +40,7 @@ public class Spaces implements Serializable {
     private Integer colSpan;
     
     
-@Column(name = "FLOOR_NUMBER")
+    @Column(name = "FLOOR")
 private Integer floor;
 
 // 1.2  Getter / Setter
