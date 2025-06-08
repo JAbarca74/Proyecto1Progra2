@@ -118,49 +118,49 @@ public class ReservationManagementController extends Controller implements Initi
     // -------------------- calendario --------------------
 
     private void drawCalendar() {
-        // 1) recarga todas las reservas
-        
+    // 1) recarga todas las reservas
 
-        // 3) pintar mes/año
-        lblMonthYear.setText(currentYearMonth.getMonth().name() + " " + currentYearMonth.getYear());
-        // 4) limpiar días viejos
-        calendarGrid.getChildren().removeIf(node ->
-            GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0
-        );
+    // 3) pintar mes/año
+    lblMonthYear.setText(currentYearMonth.getMonth().name() + " " + currentYearMonth.getYear());
 
-        LocalDate first = currentYearMonth.atDay(1);
-        int offset = (first.getDayOfWeek().getValue() + 6) % 7; // lunes=0
-        int days = currentYearMonth.lengthOfMonth();
+    // 4) limpiar días viejos
+    calendarGrid.getChildren().removeIf(node ->
+        GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0
+    );
 
-        for (int d = 1; d <= days; d++) {
-            LocalDate date = currentYearMonth.atDay(d);
-            int col = (offset + d - 1) % 7;
-            int row = 1 + (offset + d - 1) / 7;
+    LocalDate first = currentYearMonth.atDay(1);
+    int offset = (first.getDayOfWeek().getValue() + 6) % 7; // lunes=0
+    int days = currentYearMonth.lengthOfMonth();
 
-            Button b = new Button(String.valueOf(d));
-            b.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+    for (int d = 1; d <= days; d++) {
+        LocalDate date = currentYearMonth.atDay(d);
+        int col = (offset + d - 1) % 7;
+        int row = 1 + (offset + d - 1) / 7;
 
-            // colorear si hay reservas ese día
-            boolean has = allReservas.stream()
-                            .anyMatch(r -> r.getReservationDate().equals(date));
-            if (has) {
-                b.setStyle("-fx-background-color:#90ee90;");
-            }
+        Button b = new Button(String.valueOf(d));
+        b.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-            // al click, filtrar por fecha
-            b.setOnAction(evt -> {
-                reservas.setAll(
-                    reservationsService.listarPorFiltros(
-                        date,
-                        comboUsuarios.getValue() != null ? comboUsuarios.getValue().getId() : null,
-                        comboPiso.getValue() != null ? comboPiso.getValue() : ""
-                    )
-                );
-            });
+        // ✅ Evitar NPE al comparar fechas
+        boolean has = allReservas.stream()
+                        .anyMatch(r -> r.getReservationDate() != null && r.getReservationDate().equals(date));
 
-            calendarGrid.add(b, col, row);
+        if (has) {
+            b.setStyle("-fx-background-color:#90ee90;");
         }
+
+        b.setOnAction(evt -> {
+            reservas.setAll(
+                reservationsService.listarPorFiltros(
+                    date,
+                    comboUsuarios.getValue() != null ? comboUsuarios.getValue().getId() : null,
+                    comboPiso.getValue() != null ? comboPiso.getValue() : ""
+                )
+            );
+        });
+
+        calendarGrid.add(b, col, row);
     }
+}
 
     @FXML private void onPrevMonth(ActionEvent ev){
         currentYearMonth = currentYearMonth.minusMonths(1);
