@@ -118,7 +118,7 @@ public void initialize(URL url, ResourceBundle rb) {
     
     @FXML
     private void onGestionReservas(ActionEvent event) {
-        // Carga ReservationManagement.fxml en el CENTER del BorderPane principal
+        FlowController.getInstance().limpiarLoader("ReservationManagement");// Carga ReservationManagement.fxml en el CENTER del BorderPane principal
         FlowController.getInstance().goView("ReservationManagement");
     }
     

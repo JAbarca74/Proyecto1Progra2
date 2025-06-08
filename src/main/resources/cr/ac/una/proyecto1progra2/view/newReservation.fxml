@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="713.0" prefWidth="800" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController">
-   <ScrollPane prefHeight="780.0" prefWidth="800.0">
+<VBox alignment="TOP_CENTER" prefHeight="1100.0" prefWidth="820.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController">
+   <ScrollPane prefHeight="1134.0" prefWidth="820.0">
      <content>
-       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="780.0" prefWidth="799.0">
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1100.0" prefWidth="820.0">
             <children>
                <VBox prefHeight="777.0" prefWidth="767.0" AnchorPane.bottomAnchor="-219.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
