@@ -265,74 +265,69 @@ private void limpiarCeldasDisponibles() {
     celdasDisponibles.clear();
 }
 
-
 private void mostrarCeldasDisponibles(SpaceVisual espacio) {
     limpiarCeldasDisponibles();
     int filas = 4;
     int columnas = 4;
+    int spanRow = espacio.getRowSpan();
+    int spanCol = espacio.getColSpan();
 
-    for (int row = 0; row <= filas - espacio.getRowSpan(); row++) {
-        for (int col = 0; col <= columnas - espacio.getColSpan(); col++) {
+    for (int row = 0; row <= filas - spanRow; row++) {
+        for (int col = 0; col <= columnas - spanCol; col++) {
             boolean ocupado = false;
-            for (javafx.scene.Node node : gridMatrix.getChildren()) {
-                if (node instanceof StackPane && node != stackSeleccionado) {
-                    Integer r = GridPane.getRowIndex(node);
-                    Integer c = GridPane.getColumnIndex(node);
-                    Integer rowSpan = GridPane.getRowSpan(node);
-                    Integer colSpan = GridPane.getColumnSpan(node);
-                    if (r == null || c == null) continue;
-                    int rs = rowSpan != null ? rowSpan : 1;
-                    int cs = colSpan != null ? colSpan : 1;
-                    if (intersecta(row, col, espacio.getRowSpan(), espacio.getColSpan(), r, c, rs, cs)) {
-                        ocupado = true;
-                        break;
-                    }
+
+            for (SpaceVisual ocupadoEspacio : espaciosAgregados) {
+                if (ocupadoEspacio == espacioSeleccionado) continue;
+
+                if (intersecta(row, col, spanRow, spanCol,
+                        ocupadoEspacio.getRow(),
+                        ocupadoEspacio.getColumn(),
+                        ocupadoEspacio.getRowSpan(),
+                        ocupadoEspacio.getColSpan())) {
+                    ocupado = true;
+                    break;
                 }
             }
 
             if (!ocupado) {
-                StackPane celdaAmarilla = new StackPane();
-                celdaAmarilla.setPrefSize(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
+                StackPane celda = new StackPane();
+                celda.setPrefSize(CELL_WIDTH * spanCol, CELL_HEIGHT * spanRow);
 
-                Rectangle fondo = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
-                fondo.setFill(Color.rgb(255, 255, 0, 0.3));
+                Rectangle fondo = new Rectangle(CELL_WIDTH * spanCol, CELL_HEIGHT * spanRow);
+                fondo.setFill(Color.rgb(255, 255, 0, 0.4)); // Amarillo con transparencia
                 fondo.setStroke(Color.YELLOW);
                 fondo.setArcWidth(10);
                 fondo.setArcHeight(10);
 
-                celdaAmarilla.getChildren().add(fondo);
+                celda.getChildren().add(fondo);
+                GridPane.setRowIndex(celda, row);
+                GridPane.setColumnIndex(celda, col);
+                GridPane.setRowSpan(celda, spanRow);
+                GridPane.setColumnSpan(celda, spanCol);
 
                 final int finalRow = row;
                 final int finalCol = col;
 
-                celdaAmarilla.setOnMouseClicked(event -> {
+                celda.setOnMouseClicked(event -> {
                     if (espacioSeleccionado != null && stackSeleccionado != null) {
-                        // Eliminar anterior
                         gridMatrix.getChildren().remove(stackSeleccionado);
-
                         espacioSeleccionado.setRow(finalRow);
                         espacioSeleccionado.setColumn(finalCol);
                         espacioSeleccionado.getSpace().setRow(finalRow);
                         espacioSeleccionado.getSpace().setColumn(finalCol);
-
                         Respuesta r = spacesService.guardarSpace(espacioSeleccionado.getSpace());
                         if (!r.isSuccess()) {
                             Utilities.mostrarMensaje("Error al guardar", r.getMensaje());
                             return;
                         }
-
                         espacioSeleccionado = null;
                         stackSeleccionado = null;
-
-                        cargarMatrizConEspacios(); // Recarga todo lo visual
+                        cargarMatrizConEspacios();
                     }
                     event.consume();
                 });
 
-                gridMatrix.add(celdaAmarilla, col, row, espacio.getColSpan(), espacio.getRowSpan());
-
-                // Se guardan todos los rectángulos para poder eliminarlos después
-                celdasDisponibles.add(fondo);
+                gridMatrix.getChildren().add(celda);
             }
         }
     }
