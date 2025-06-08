@@ -99,8 +99,7 @@ private void onActionBtnCrearCuenta(ActionEvent event) {
     
      limpiarFormulario();
     
- Stage thisStage = (Stage) btnRegresar.getScene().getWindow();
-    thisStage.close();
+ 
 
 }
 
