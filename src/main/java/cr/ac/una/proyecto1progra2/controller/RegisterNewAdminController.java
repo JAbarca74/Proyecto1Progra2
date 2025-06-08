@@ -19,7 +19,7 @@ public class RegisterNewAdminController extends Controller implements Initializa
     @FXML private TextField txtName;
     @FXML private TextField txtLastName;
     @FXML private Button btnCrearCuenta;
-    @FXML private Button btnRegresar;
+ 
 
     @FXML public void initialize() {
     }
@@ -31,13 +31,10 @@ public class RegisterNewAdminController extends Controller implements Initializa
         }
         // TODO: persiste administrador con rol ADMIN
         new Alert(Alert.AlertType.INFORMATION, "Administrador creado con éxito").show();
-        btnRegresar.getScene().getWindow().hide();
+        
     }
 
-    @FXML private void onActionBtnRegresar(ActionEvent event) {
-        btnRegresar.getScene().getWindow().hide();
-    }
-
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
