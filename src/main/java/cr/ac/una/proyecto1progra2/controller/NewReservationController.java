@@ -31,6 +31,11 @@ public class NewReservationController extends Controller implements Initializabl
     @FXML private ComboBox<String> ComboBoxPiso;
     @FXML private GridPane gridMatrix;
     @FXML private Label LabelNombreUsuario;
+    @FXML private Label LabelPiso;
+@FXML private Label LabelCanEscritorios;
+@FXML private Label LabelCanSalasComunes;
+@FXML private Label LabelCantAreasComunes;
+@FXML private Label LabelCantEspaciosLibres;
     
     
 
@@ -81,18 +86,44 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     buscarEspacios();
 }
 
-    private void buscarEspacios() {
-        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
-        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
-        LocalTime horaFin = ComboBoxHoraFin1.getValue();
 
-        if (fecha == null || horaInicio == null || horaFin == null || !horaInicio.isBefore(horaFin)) {
-            Utilities.showAlert(Alert.AlertType.WARNING, "Datos inv\u00e1lidos", "Ingrese fecha y horas v\u00e1lidas.");
-            return;
-        }
-        cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+private void cargarContadoresPorPiso(int piso) {
+    List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
+        .stream()
+        .filter(e -> e.getSpace().getNombre() != null && e.getSpace().getNombre().contains("P" + piso))
+        .collect(Collectors.toList());
+
+    int escritorios = 0, salas = 0, areas = 0, libres = 0;
+
+    for (SpaceVisual espacio : espacios) {
+        String nombre = espacio.getSpace().getNombre().toLowerCase();
+        if (nombre.startsWith("e -")) escritorios++;
+        else if (nombre.startsWith("s -")) salas++;
+        else if (nombre.startsWith("a -")) areas++;
+        else if (nombre.startsWith("l -")) libres++;
     }
 
+    LabelPiso.setText("Piso " + piso);
+    LabelCanEscritorios.setText(String.valueOf(escritorios));
+    LabelCanSalasComunes.setText(String.valueOf(salas));
+    LabelCantAreasComunes.setText(String.valueOf(areas));
+    LabelCantEspaciosLibres.setText(String.valueOf(libres));
+}
+
+ private void buscarEspacios() {
+    LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+    LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+    LocalTime horaFin = ComboBoxHoraFin1.getValue();
+    pisoActual = obtenerPisoSeleccionado(); // 🔸 asegurarse de actualizar el piso
+
+    if (fecha == null || horaInicio == null || horaFin == null || !horaInicio.isBefore(horaFin)) {
+        Utilities.showAlert(Alert.AlertType.WARNING, "Datos inválidos", "Ingrese fecha y horas válidas.");
+        return;
+    }
+
+    cargarContadoresPorPiso(pisoActual); // 🔸 mostrar cantidades
+    cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+}
     @FXML
 private void guardarReserva() {
     LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
