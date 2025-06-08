@@ -25,6 +25,9 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -130,7 +133,7 @@ text.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         stackSeleccionado = stack;
         stack.setStyle("-fx-border-color: yellow; -fx-border-width: 3; -fx-border-radius: 8;");
         mostrarCeldasDisponibles(espacioSeleccionado);
-        Utilities.mostrarMensaje("Movimiento activado", "Haz clic en un espacio vacío para moverlo.");
+
         event.consume();
     });
 
@@ -245,24 +248,26 @@ private void llenarCeldasLibres() {
         }
     }
 }
-private void limpiarCeldasDisponibles() {
-    List<javafx.scene.Node> nodosAEliminar = new ArrayList<>();
 
-    for (javafx.scene.Node node : gridMatrix.getChildren()) {
+private void limpiarCeldasDisponibles() {
+    List<Node> nodosParaEliminar = new ArrayList<>();
+
+    for (Node node : gridMatrix.getChildren()) {
         if (node instanceof StackPane) {
-            StackPane stack = (StackPane) node;
-            if (!stack.getChildren().isEmpty() && stack.getChildren().get(0) instanceof Rectangle) {
-                Rectangle rect = (Rectangle) stack.getChildren().get(0);
-                Color color = (Color) rect.getFill();
-                if (color.equals(Color.YELLOW)) {
-                    nodosAEliminar.add(stack);
+            StackPane celda = (StackPane) node;
+            if (!celda.getChildren().isEmpty() && celda.getChildren().get(0) instanceof Rectangle) {
+                Rectangle fondo = (Rectangle) celda.getChildren().get(0);
+                if (fondo.getFill().equals(Color.rgb(255, 255, 0, 0.4))) {
+                    FadeTransition fadeOut = new FadeTransition(Duration.millis(250), celda);
+                    fadeOut.setFromValue(1.0);
+                    fadeOut.setToValue(0.0);
+                    fadeOut.setOnFinished(e -> gridMatrix.getChildren().remove(celda));
+                    fadeOut.play();
+                    nodosParaEliminar.add(celda);
                 }
             }
         }
     }
-
-    gridMatrix.getChildren().removeAll(nodosAEliminar);
-    celdasDisponibles.clear();
 }
 
 private void mostrarCeldasDisponibles(SpaceVisual espacio) {
@@ -275,10 +280,8 @@ private void mostrarCeldasDisponibles(SpaceVisual espacio) {
     for (int row = 0; row <= filas - spanRow; row++) {
         for (int col = 0; col <= columnas - spanCol; col++) {
             boolean ocupado = false;
-
             for (SpaceVisual ocupadoEspacio : espaciosAgregados) {
                 if (ocupadoEspacio == espacioSeleccionado) continue;
-
                 if (intersecta(row, col, spanRow, spanCol,
                         ocupadoEspacio.getRow(),
                         ocupadoEspacio.getColumn(),
@@ -298,16 +301,34 @@ private void mostrarCeldasDisponibles(SpaceVisual espacio) {
                 fondo.setStroke(Color.YELLOW);
                 fondo.setArcWidth(10);
                 fondo.setArcHeight(10);
-
                 celda.getChildren().add(fondo);
+
+                // Posicionamiento
                 GridPane.setRowIndex(celda, row);
                 GridPane.setColumnIndex(celda, col);
                 GridPane.setRowSpan(celda, spanRow);
                 GridPane.setColumnSpan(celda, spanCol);
 
+                // Animación de entrada
+                celda.setOpacity(0);
+                celda.setScaleX(0.8);
+                celda.setScaleY(0.8);
+
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(300), celda);
+                fadeIn.setFromValue(0);
+                fadeIn.setToValue(1);
+
+                ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), celda);
+                scaleIn.setFromX(0.8);
+                scaleIn.setFromY(0.8);
+                scaleIn.setToX(1.0);
+                scaleIn.setToY(1.0);
+
+                ParallelTransition animacion = new ParallelTransition(fadeIn, scaleIn);
+                animacion.play();
+
                 final int finalRow = row;
                 final int finalCol = col;
-
                 celda.setOnMouseClicked(event -> {
                     if (espacioSeleccionado != null && stackSeleccionado != null) {
                         gridMatrix.getChildren().remove(stackSeleccionado);
@@ -332,7 +353,6 @@ private void mostrarCeldasDisponibles(SpaceVisual espacio) {
         }
     }
 }
-
 
     private void cargarContadoresPorPiso(int piso) {
         LabelCanEscritorios.setText(String.valueOf(escritoriosPorPiso.getOrDefault(piso, 0)));
