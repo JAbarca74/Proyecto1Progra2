@@ -1,78 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
-    <center>
-        <VBox alignment="TOP_CENTER" prefHeight="335.0" prefWidth="325.0">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-            <HBox alignment="CENTER" prefHeight="462.0" prefWidth="308.0" VBox.vgrow="ALWAYS">
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController"
+           stylesheets="@styles.css"
+           prefWidth="820" prefHeight="620">
 
-                <!-- Panel de login -->
-                <VBox alignment="CENTER" prefHeight="386.0" prefWidth="278.0" styleClass="panel-blanco-sombra" HBox.hgrow="ALWAYS">
-               <ImageView fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../controller/Images/aa.png" />
-                  </image>
-                  <VBox.margin>
-                     <Insets />
-                  </VBox.margin>
-               </ImageView>
-               <Label styleClass="label-link-gris" text="Ingresa a tu cuenta " />
-               <Label styleClass="label-link-gris" text="Usuario">
-                  <VBox.margin>
-                     <Insets right="130.0" />
-                  </VBox.margin>
-               </Label>
+    <!-- Panel blanco que se expande automáticamente y distribuye los elementos con más espacio -->
+    <VBox styleClass="panel-blanco-sombra" VBox.vgrow="ALWAYS" alignment="TOP_CENTER" spacing="20">
+        <padding>
+            <Insets top="60" bottom="60" left="120" right="120"/>
+        </padding>
 
-                    <TextField fx:id="txtUsuario" maxWidth="200" prefHeight="25.0" prefWidth="133.0" promptText="Ingresar Usuario" />
-               <Label styleClass="label-link-gris" text="Contraseña">
-                  <VBox.margin>
-                     <Insets right="130.0" />
-                  </VBox.margin>
-               </Label>
+        <Region VBox.vgrow="ALWAYS" />
 
-                    <PasswordField fx:id="txtContraseña" maxWidth="200" promptText="Ingresar Contraseña">
-                  <VBox.margin>
-                     <Insets />
-                  </VBox.margin></PasswordField>
+        <ImageView fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
+            <image>
+                <Image url="@../controller/Images/aa.png" />
+            </image>
+        </ImageView>
 
-                    <!-- Label para mostrar mensaje de error -->
-                    <Label fx:id="lblErrorLogin" maxWidth="200" textFill="red" wrapText="true" />
-         
-                    <Button fx:id="btnInicioSesion" maxWidth="200" onAction="#onActionBtnInicioSesion" prefHeight="25.0" prefWidth="117.0" styleClass="boton-menu-activo" text="Iniciar sesión">
-                  <VBox.margin>
-                     <Insets />
-                  </VBox.margin></Button>
-               <Button fx:id="BtnRegistrarUsuario" mnemonicParsing="false" onAction="#onActionBtnRegistrarUsuario" styleClass="boton-link-verde" text="¿No tienes cuenta? Regístrate aquí">
-                  <VBox.margin>
-                     <Insets bottom="50.0" top="10.0" />
-                  </VBox.margin>
-               </Button>
-               <padding>
-                  <Insets bottom="20.0" />
-               </padding>
-                </VBox>
+        <Label text="FlexSpace" style="-fx-font-size: 32px; -fx-text-fill: green; -fx-font-weight: bold;" />
+        <Label text="Ingresa a tu cuenta" styleClass="label-link-gris" />
 
-            </HBox>
+        <VBox spacing="12" alignment="CENTER">
+            <Label text="Usuario" styleClass="label-link-gris" />
+            <TextField fx:id="txtUsuario" promptText="Ingresar Usuario" maxWidth="400" />
+
+            <Label text="Contraseña" styleClass="label-link-gris" />
+            <PasswordField fx:id="txtContraseña" promptText="Ingresar Contraseña" maxWidth="400" />
+
+            <Label fx:id="lblErrorLogin" textFill="red" wrapText="true" maxWidth="400" />
+
+            <Button fx:id="btnInicioSesion" text="Iniciar sesión" onAction="#onActionBtnInicioSesion"
+                    maxWidth="400" styleClass="boton-menu-activo" disable="true" />
+
+            <Button fx:id="BtnRegistrarUsuario" text="¿No tienes cuenta? Regístrate aquí"
+                    onAction="#onActionBtnRegistrarUsuario" styleClass="boton-link-verde" />
+
+            <Button fx:id="btnAcercaDe" text="Acerca de"
+                    onAction="#onActionBtnAcercaDe" styleClass="boton-link-verde" />
         </VBox>
-    </center>
-   <left>
-      <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../controller/Images/Login.png" />
-         </image>
-      </ImageView>
-   </left>
-</BorderPane>
+
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+</StackPane>
