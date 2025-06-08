@@ -218,6 +218,7 @@ private void llenarCeldasLibres() {
                         }
 
                         if (ocupadoDestino) {
+                               reproducirSonido("BadReservaciones.wav");
                             Utilities.mostrarMensaje("Espacio ocupado", "Ya hay otro espacio en esa posición.");
                             return;
                         }
@@ -230,6 +231,7 @@ private void llenarCeldasLibres() {
                         dto.setColumn(finalCol);
                         Respuesta r = spacesService.guardarSpace(dto);
                         if (!r.isSuccess()) {
+                               reproducirSonido("BadReservaciones.wav");
                             Utilities.mostrarMensaje("Error al guardar", r.getMensaje());
                             return;
                         }
@@ -616,6 +618,7 @@ private boolean validarNombreDisponible(String nombre) {
 
                 Respuesta r = spacesService.guardarSpace(nuevo);
                 if (!r.getEstado()) {
+                       reproducirSonido("BadReservaciones.wav");
                     System.out.println("❌ Error al guardar: " + r.getMensaje());
                     return null;
                 }
@@ -709,6 +712,7 @@ private void onAgregarAreasComunes() {
             .anyMatch(esp -> esp.getSpace().getNombre().contains(filtro));
 
         if (!hayEspacios) {
+               reproducirSonido("BadReservaciones.wav");
             Alert info = new Alert(Alert.AlertType.INFORMATION);
             info.setTitle("Información");
             info.setHeaderText("No hay espacios para borrar");
@@ -734,6 +738,7 @@ private void onAgregarAreasComunes() {
             gridMatrix.getChildren().clear();
             cargarMatrizConEspacios();
         } else {
+               reproducirSonido("BadReservaciones.wav");
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("No se pudieron eliminar los espacios");
@@ -759,6 +764,7 @@ private void editarEspacio(SpaceVisual espacio) {
             if (respuesta.isSuccess()) {
                 cargarMatrizConEspacios(); // Recargar la vista con el nuevo nombre
             } else {
+                reproducirSonido("BadReservaciones.wav");
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
                 error.setHeaderText("No se pudo actualizar el espacio");

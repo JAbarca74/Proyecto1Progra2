@@ -250,6 +250,7 @@ Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Re
     // Comportamiento al hacer clic
     stack.setOnMouseClicked(event -> {
         if (estaOcupado) {
+             reproducirSonido("correct-cbt.wav");
             Utilities.showAlert(Alert.AlertType.WARNING, "Espacio ocupado", "Este espacio ya está reservado.");
             return;
         }
@@ -263,16 +264,19 @@ Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Re
         }
         CoworkingSpaces coworking = espacio.getSpace().getCoworkingSpace();
         if (coworking == null) {
+            reproducirSonido("correct-cbt.wav");
             Utilities.showAlert(Alert.AlertType.ERROR, "Error", "Este espacio no tiene CoworkingSpace asociado.");
             return;
         }
         boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
         if (guardado) {
-            reproducirSonido("intro-sound-bell-269297-_1_.wav");
+            reproducirSonido("intro-sound-bell-269297-_1_.wav"); 
+          
 Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
             
             cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
         } else {
+            reproducirSonido("correct-cbt.wav");
             Utilities.showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar la reserva.");
         }
     });
