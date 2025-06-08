@@ -59,14 +59,14 @@ public class Spaces implements Serializable {
         actualizar(dto);
     }
 
-    public void actualizar(SpacesDto dto) {
-        this.name = dto.getNombre();
-        this.capacity = dto.getCapacidad();
-        this.rowIndex = dto.getRowIndex();
-        this.columnIndex = dto.getColumnIndex();
-        this.rowSpan = dto.getRowSpan();
-        this.colSpan = dto.getColSpan();
-    }
+ public void actualizar(SpacesDto dto) {
+    this.name = dto.getNombre();
+    this.capacity = dto.getCapacidad();
+    this.rowIndex = dto.getRowIndex();
+    this.columnIndex = dto.getColumnIndex();
+    this.rowSpan = dto.getRowSpan();
+    this.colSpan = dto.getColSpan();
+}
 
     // Getters y Setters
     public Long getId() {

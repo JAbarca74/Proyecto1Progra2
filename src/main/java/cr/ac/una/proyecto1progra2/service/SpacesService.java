@@ -255,6 +255,8 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
     }
     
     
+    
+    
     public List<CoworkingSpaces> obtenerCoworkingSpacesPorSpaceIds(List<Long> spaceIds) {
     EntityManager em = emf.createEntityManager();
     List<CoworkingSpaces> lista = new ArrayList<>();
