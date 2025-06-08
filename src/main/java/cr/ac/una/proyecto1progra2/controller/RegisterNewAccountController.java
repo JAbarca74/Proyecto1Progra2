@@ -27,7 +27,7 @@ public class RegisterNewAccountController extends Controller implements Initiali
     @FXML private TextField txtName;
     @FXML private TextField txtLastName;      // <-- asegúrate de tener este fx:id en el FXML
     @FXML private Button btnCrearCuenta;
-    @FXML private Button btnRegresar;
+    
 
     // inyectamos el servicio
     private final UsuariosService usuariosService = new UsuariosService();
@@ -103,38 +103,6 @@ private void onActionBtnCrearCuenta(ActionEvent event) {
 
 }
 
-@FXML
-private void onActionBtnRegresar(ActionEvent event) {
-    boolean camposLlenos =
-        !txtUsername.getText().trim().isEmpty() ||
-        !txtEmail.getText().trim().isEmpty() ||
-        !txtPassword.getText().isEmpty() ||
-        !txtPasswordConfirm.getText().isEmpty() ||
-        !txtName.getText().trim().isEmpty() ||
-        !txtLastName.getText().trim().isEmpty();
-
-    if (camposLlenos) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmar regreso");
-        confirm.setHeaderText("¿Cancelar creación del usuario?");
-        confirm.setContentText("Perderás los datos ingresados.");
-
-        ButtonType si = new ButtonType("Sí");
-        ButtonType no = new ButtonType("No");
-        confirm.getButtonTypes().setAll(si, no);
-
-        if (confirm.showAndWait().orElse(no) != si) {
-            return;
-        }
-    }
-
-        limpiarFormulario();
-    
- Stage thisStage = (Stage) btnRegresar.getScene().getWindow();
-    thisStage.close();
-    
-
-}
 
 private void limpiarFormulario() {
     txtUsername.clear();
@@ -254,10 +222,7 @@ private boolean marcarInvalido(TextField campo, boolean condicion) {
 
 
 
-   private void closeWindow() {
-    Stage s = (Stage) btnRegresar.getScene().getWindow();
-    s.close();
-}
+   
 
 
     private void showError(String msg) {

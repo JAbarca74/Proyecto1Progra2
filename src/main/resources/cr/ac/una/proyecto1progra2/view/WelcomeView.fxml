@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@welcome-alt.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.WelcomeViewController">
+
+    <!-- ENCABEZADO -->
+    <top>
+        <HBox fx:id="headerPane" alignment="CENTER_LEFT" spacing="15" styleClass="header-pane">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <ImageView fx:id="imgAvatar" fitHeight="50" fitWidth="50" pickOnBounds="true" preserveRatio="true" styleClass="avatar" />
+
+            <VBox spacing="5">
+                <Label styleClass="header-title" text="¡Hola, Administrador!" />
+                <Label styleClass="header-subtitle" text="Bienvenido de nuevo" />
+            </VBox>
+        </HBox>
+    </top>
+
+    <!-- MÉTRICAS -->
+    <center>
+        <FlowPane fx:id="metricsPane" alignment="TOP_CENTER" hgap="20" vgap="20">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <StackPane fx:id="card1" styleClass="card-alt">
+                <VBox alignment="CENTER" spacing="8">
+                    <Label styleClass="metric-value-alt" text="12" />
+                    <Label styleClass="metric-label-alt" text="Reservas Hoy" />
+                </VBox>
+            </StackPane>
+
+            <StackPane fx:id="card2" styleClass="card-alt">
+                <VBox alignment="CENTER" spacing="8">
+                    <Label styleClass="metric-value-alt" text="7" />
+                    <Label styleClass="metric-label-alt" text="Espacios Únicos" />
+                </VBox>
+            </StackPane>
+
+            <StackPane fx:id="card3" styleClass="card-alt">
+                <VBox alignment="CENTER" spacing="8">
+                    <Label styleClass="metric-value-alt" text="154" />
+                    <Label styleClass="metric-label-alt" text="Usuarios" />
+                </VBox>
+            </StackPane>
+
+            <StackPane fx:id="card4" styleClass="card-alt">
+                <VBox alignment="CENTER" spacing="8">
+                    <Label styleClass="metric-value-alt" text="92 %" />
+                    <Label styleClass="metric-label-alt" text="Ocupación" />
+                </VBox>
+            </StackPane>
+        </FlowPane>
+    </center>
+
+    <!-- PIE -->
+    <bottom>
+        <HBox fx:id="footerPane" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets bottom="10" left="20" right="20" top="10" />
+            </padding>
+            <Label fx:id="lblLastUpdate" styleClass="last-update-alt" text="8 de junio de 2025, 09:58:25  |  Última actualización" wrapText="true" />
+        </HBox>
+    </bottom>
+</BorderPane>

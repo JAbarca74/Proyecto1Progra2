@@ -44,15 +44,22 @@ public class PrincipalViewController extends Controller implements Initializable
     private Button btnSalir1;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        if (UserManager.isAdmin()) {
-            VBoxMenuAdmin.setVisible(true);          // Admin NO reserva
-            VBoxMenuUsuario.setVisible(false); 
-        } else if (UserManager.isRegularUser()) {
-            VBoxMenuUsuario.setVisible(true);           // Usuario SÍ reserva
-               VBoxMenuAdmin.setVisible(false);
-        }
+public void initialize(URL url, ResourceBundle rb) {
+    if (UserManager.isAdmin()) {
+        VBoxMenuAdmin.setVisible(true);
+        VBoxMenuUsuario.setVisible(false);
+
+        // Evita el error usando Platform.runLater
+        javafx.application.Platform.runLater(() -> {
+            FlowController.getInstance().goView("WelcomeView");
+        });
+
+    } else if (UserManager.isRegularUser()) {
+        VBoxMenuUsuario.setVisible(true);
+        VBoxMenuAdmin.setVisible(false);
     }
+}
+
 
     @FXML
     private void onActionBtnEditarUsuario(ActionEvent event) {
