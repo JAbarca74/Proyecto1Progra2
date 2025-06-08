@@ -23,6 +23,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.Node;
+import javafx.scene.control.skin.DatePickerSkin;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 
 public class NewReservationController extends Controller implements Initializable {
@@ -65,6 +68,8 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
     // 4) Listeners para recargar y ajustar fin automáticamente
+    // O cuando se selecciona el DatePicker:
+configurarColoresCalendario();
     DatePickerDIasDIasReservaciones.valueProperty().addListener((obs, o, n) -> buscarEspacios());
     ComboBoxHoraFin1.valueProperty().addListener((obs, o, n) -> buscarEspacios());
 
@@ -85,6 +90,7 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
 
     // 6) Carga inicial
     buscarEspacios();
+    
 }
 
 private void reproducirSonido(String nombreArchivo) {
@@ -131,6 +137,7 @@ private void cargarContadoresPorPiso(int piso) {
 
     cargarContadoresPorPiso(pisoActual); // 🔸 mostrar cantidades
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+
 }
     @FXML
 private void guardarReserva() {
@@ -286,6 +293,56 @@ Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Re
     private int obtenerPisoSeleccionado() {
         return ComboBoxPiso.getSelectionModel().getSelectedIndex();
     }
+    
+    
+
+private void configurarColoresCalendario() {
+    DatePickerDIasDIasReservaciones.setDayCellFactory(picker -> new DateCell() {
+        @Override
+        public void updateItem(LocalDate date, boolean empty) {
+            super.updateItem(date, empty);
+
+            if (empty || date == null) {
+                setStyle("");
+                return;
+            }
+
+            double ocupacion = calcularPorcentajeOcupacion(date);
+
+            if (ocupacion >= 0.8) {
+                setStyle("-fx-background-color: #ffcccc;"); // rojo
+            } else if (ocupacion >= 0.4) {
+                setStyle("-fx-background-color: #fff0b3;"); // amarillo
+            } else {
+                setStyle("-fx-background-color: #ccffcc;"); // verde
+            }
+        }
+    });
+}
+
+// Paso 2: Crear el método auxiliar que calcula la ocupación
+private double calcularPorcentajeOcupacion(LocalDate fecha) {
+    int totalEspacios = (int) spacesService.obtenerEspaciosConPosicion().stream()
+            .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+            .count();
+
+    List<Long> ocupados = reservationsService.obtenerEspaciosOcupados(fecha,
+            LocalTime.of(7, 0), LocalTime.of(21, 0));
+
+    long ocupadosEnPiso = ocupados.stream()
+            .filter(id -> spacesService.obtenerEspaciosConPosicion().stream()
+                    .anyMatch(e -> e.getSpace().getId().equals(id) &&
+                            e.getSpace().getNombre().contains("P" + pisoActual)))
+            .count();
+
+    if (totalEspacios == 0) return 0.0;
+    return (double) ocupadosEnPiso / totalEspacios;
+}
+
+// Paso 3: Llamar este método cada vez que se cambie de piso o se abra el calendario
+// Por ejemplo, dentro de buscarEspacios()
+// colorearCalendario();
+
 
     @Override
     public void initialize() {
