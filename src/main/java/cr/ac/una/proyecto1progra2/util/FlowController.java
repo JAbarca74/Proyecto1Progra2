@@ -83,7 +83,6 @@ public class FlowController {
         }
     }
 
-    
     public void goView(String viewName) {
         goView(viewName, "Center", null);
     }

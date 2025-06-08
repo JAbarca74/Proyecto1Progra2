@@ -27,15 +27,8 @@ public class PrimaryController extends Controller {
 
     @Override
     public void initialize() {
-     txtUsuario.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
-    txtContraseña.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
-}
-    
-    private void validarCampos() {
-    boolean habilitar = !txtUsuario.getText().trim().isEmpty()
-                     && !txtContraseña.getText().trim().isEmpty();
-    btnInicioSesion.setDisable(!habilitar);
-}
+        // Inicialización si es necesaria
+    }
 
     @FXML
     private void onActionBtnInicioSesion(ActionEvent event) {
@@ -72,12 +65,6 @@ public class PrimaryController extends Controller {
             mostrarError("No se pudo determinar el rol del usuario.");
         }
     }
-    
-    @FXML
-private void onActionBtnAcercaDe(ActionEvent event) {
-        FlowController.getInstance().goViewInWindowModal("AboutUs", getStage(), true);
-}
-
 
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
