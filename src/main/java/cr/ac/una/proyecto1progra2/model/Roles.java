@@ -11,7 +11,7 @@ import javax.persistence.QueryHint;
     @NamedQuery(name = "Roles.findAll",  query = "SELECT r FROM Roles r"),
     @NamedQuery(name = "Roles.findById", query = "SELECT r FROM Roles r WHERE r.id = :id"),
     @NamedQuery(
-      name = "Roles.findByName",
+      name = "Roles.findByNombre",
       query = "SELECT r FROM Roles r WHERE UPPER(r.name) = :name",
       hints = @QueryHint(name = "eclipselink.refresh", value = "true")
     )
