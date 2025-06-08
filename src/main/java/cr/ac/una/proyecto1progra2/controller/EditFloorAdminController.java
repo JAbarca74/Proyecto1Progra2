@@ -113,10 +113,10 @@ public StackPane crearCeldaEspacio(SpaceVisual espacio) {
     rect.getStyleClass().add("celda-rect");
 
     String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
-    if (nombre.contains("sala")) rect.setFill(Color.CRIMSON);
-    else if (nombre.contains("área")) rect.setFill(Color.DARKGREEN);
-    else if (nombre.contains("libre")) rect.setFill(Color.web("#7f8c8d")); // gris oscuro
-    else if (nombre.contains("e")) rect.setFill(Color.DODGERBLUE);
+    if (nombre.contains("sala")) rect.setFill(Color.web("#2196F3"));
+    else if (nombre.contains("área")) rect.setFill(Color.web("#9C27B0"));
+    else if (nombre.contains("libre")) rect.setFill(Color.web("#4CAF50")); // gris oscuro
+    else if (nombre.contains("e")) rect.setFill(Color.web("#FF5722"));
     else rect.setFill(Color.LIGHTGRAY);
 
 Text text = new Text(espacio.getSpace().getNombre());
