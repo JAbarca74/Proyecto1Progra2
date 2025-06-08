@@ -5,59 +5,122 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="800" spacing="15" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController">
-
-    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
-
-    <Label fx:id="LabelNombreUsuario" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Usuario: " />
-   <VBox prefHeight="98.0" prefWidth="760.0">
-      <children>
-         <HBox prefHeight="37.0" prefWidth="760.0">
+<VBox alignment="TOP_CENTER" prefHeight="713.0" prefWidth="800" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.NewReservationController">
+   <ScrollPane prefHeight="780.0" prefWidth="800.0">
+     <content>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="780.0" prefWidth="799.0">
             <children>
-                 <Label text="Fecha:">
-                  <HBox.margin>
-                     <Insets left="60.0" />
-                  </HBox.margin>
-               </Label>
-         
-                       <Label text="Inicio:">
-                  <HBox.margin>
-                     <Insets left="120.0" />
-                  </HBox.margin>
-               </Label>
-         
-                             <Label text="Fin:">
-                  <HBox.margin>
-                     <Insets left="140.0" />
-                  </HBox.margin>
-               </Label>
-         
-                                      <Label text="Piso:">
-                  <HBox.margin>
-                     <Insets left="150.0" />
-                  </HBox.margin>
-               </Label>
+               <VBox prefHeight="777.0" prefWidth="767.0" AnchorPane.bottomAnchor="-219.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <children>
+                  
+                                                                <Label fx:id="LabelNombreUsuario" prefHeight="42.0" prefWidth="754.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Usuario: " />
+                     <VBox prefHeight="480.0" prefWidth="799.0">
+                        <children>
+                           <HBox prefHeight="52.0" prefWidth="760.0">
+                              <children>
+                                   <Label text="Fecha:">
+                                    <HBox.margin>
+                                       <Insets left="60.0" />
+                                    </HBox.margin>
+                                 </Label>
+                           
+                                                                                         <Label text="Inicio:">
+                                    <HBox.margin>
+                                       <Insets left="120.0" />
+                                    </HBox.margin>
+                                 </Label>
+                           
+                                                                                               <Label text="Fin:">
+                                    <HBox.margin>
+                                       <Insets left="140.0" />
+                                    </HBox.margin>
+                                 </Label>
+                           
+                                                                                                        <Label text="Piso:">
+                                    <HBox.margin>
+                                       <Insets left="150.0" />
+                                    </HBox.margin>
+                                 </Label>
+                              </children>
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
+                           </HBox>
+                        
+                                                                            <HBox prefHeight="57.0" prefWidth="760.0" spacing="15">
+                                <DatePicker fx:id="DatePickerDIasDIasReservaciones" />
+                                <ComboBox fx:id="ComboBoxHoraIncio1" prefHeight="28.0" prefWidth="158.0" />
+                                <ComboBox fx:id="ComboBoxHoraFin1" prefHeight="28.0" prefWidth="161.0" />
+                                <ComboBox fx:id="ComboBoxPiso" prefHeight="28.0" prefWidth="162.0" />
+                            </HBox>
+                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="799.0" styleClass="panel-blanco-sombra">
+                              <children>
+                              
+                                                                      <GridPane fx:id="gridMatrix" hgap="10" style="-fx-background-color: #eeeeee;" vgap="10" />
+                              </children>
+                           </VBox>
+                           <VBox alignment="CENTER" prefHeight="84.0" prefWidth="799.0">
+                              <children>
+                              
+                                                                                                    <Button onAction="#guardarReserva" prefHeight="50.0" prefWidth="178.0" text="Reservar Piso Completo" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </VBox>
+                     <HBox alignment="CENTER_LEFT" prefHeight="230.0" prefWidth="767.0" styleClass="panel-blanco-sombra">
+                        <children>
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                              <children>
+                                 <Label fx:id="LabelPiso" minHeight="30.0" minWidth="100.0" style="-fx-padding: 5 10 5 10; -fx-font-size: 20px; -fx-font-weight: bold;" styleClass="label-fijo" text="Piso 0">
+                                    <VBox.margin>
+                                       <Insets top="10.0" />
+                                    </VBox.margin>
+                                 </Label>
+                              </children>
+                           </VBox>
+                           <VBox layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+                              <children>
+                                 <Label fx:id="LabelCanEscritorios" prefHeight="18.0" prefWidth="118.0" styleClass="color-escritorios" text="0" />
+                                 <Label prefHeight="34.0" prefWidth="70.0" styleClass="label-estadistica-texto" text="Escritorios" />
+                              </children>
+                              <HBox.margin>
+                                 <Insets left="100.0" />
+                              </HBox.margin>
+                           </VBox>
+                           <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+                              <children>
+                                 <Label fx:id="LabelCanSalasComunes" prefHeight="18.0" prefWidth="125.0" styleClass="color-areas" text="0" />
+                                 <Label prefHeight="34.0" prefWidth="71.0" styleClass="label-estadistica-texto" text="Salas" />
+                              </children>
+                           </VBox>
+                           <VBox prefHeight="200.0" prefWidth="100.0">
+                              <children>
+                                 <Label fx:id="LabelCantAreasComunes" prefHeight="18.0" prefWidth="134.0" styleClass="color-areas" text="0" />
+                                 <Label prefHeight="34.0" prefWidth="103.0" styleClass="label-estadistica-texto" text="Areas Comunes" />
+                              </children>
+                              <HBox.margin>
+                                 <Insets />
+                              </HBox.margin>
+                           </VBox>
+                           <VBox layoutX="210.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+                              <children>
+                                 <Label fx:id="LabelCantEspaciosLibres" prefHeight="18.0" prefWidth="90.0" styleClass="color-libres" text="0" />
+                                 <Label prefHeight="34.0" prefWidth="106.0" styleClass="label-estadistica-texto" text="Espacios Libres " />
+                              </children>
+                           </VBox>
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
             </children>
-            <VBox.margin>
-               <Insets />
-            </VBox.margin>
-         </HBox>
-      
-          <HBox spacing="15">
-              <DatePicker fx:id="DatePickerDIasDIasReservaciones" />
-              <ComboBox fx:id="ComboBoxHoraIncio1" prefHeight="28.0" prefWidth="158.0" />
-              <ComboBox fx:id="ComboBoxHoraFin1" prefHeight="28.0" prefWidth="161.0" />
-              <ComboBox fx:id="ComboBoxPiso" prefHeight="28.0" prefWidth="162.0" />
-          </HBox>
-      </children>
-   </VBox>
-
-    <Button onAction="#guardarReserva" text="Reservar Piso Completo" />
-
-    <GridPane fx:id="gridMatrix" hgap="10" style="-fx-background-color: #eeeeee;" vgap="10" />
+         </AnchorPane>
+     </content>
+   </ScrollPane>
 
 </VBox>
