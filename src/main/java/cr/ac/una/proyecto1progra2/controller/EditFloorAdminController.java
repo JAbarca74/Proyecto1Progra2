@@ -6,6 +6,8 @@ import cr.ac.una.proyecto1progra2.service.SpacesService;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 import cr.ac.una.proyecto1progra2.util.SpaceVisual;
 import cr.ac.una.proyecto1progra2.util.Utilities;
+import javafx.scene.media.AudioClip;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -23,8 +25,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
-import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -146,6 +146,17 @@ private void activarClickFueraParaCancelarSeleccion() {
         }
     });
 }
+
+
+private void reproducirSonido(String nombreArchivo) {
+    try {
+        AudioClip sonido = new AudioClip(getClass().getResource("/cr/ac/una/proyecto1progra2/resources/" + nombreArchivo).toExternalForm());
+        sonido.play();
+    } catch (Exception e) {
+        System.out.println("Error al reproducir sonido: " + e.getMessage());
+    }
+}
+
 private void llenarCeldasLibres() {
     int numCols = 4;
     int numRows = 4;
@@ -247,6 +258,8 @@ private void limpiarCeldasDisponibles() {
     gridMatrix.getChildren().removeAll(nodosAEliminar);
     celdasDisponibles.clear();
 }
+
+
 private void mostrarCeldasDisponibles(SpaceVisual espacio) {
     limpiarCeldasDisponibles();
     int filas = 4;
@@ -500,6 +513,7 @@ private void resaltarTemporal(StackPane celda) {
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
           actualizarCapacidadTotalDelPiso();
+          reproducirSonido("mech-keyboard-02-102918.wav");
     } else {
         System.out.println("No hay espacio para más escritorios.");
     }
@@ -512,12 +526,12 @@ private void resaltarTemporal(StackPane celda) {
     if (nuevo != null) {
         salasPorPiso.put(pisoActual, current + 1);
         LabelCanSalasComunes.setText(String.valueOf(current + 1));
-
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
-          resaltarTemporal(celda);
-          actualizarCapacidadTotalDelPiso();
+        resaltarTemporal(celda);
+        actualizarCapacidadTotalDelPiso();
+        reproducirSonido("mech-keyboard-02-102918.wav");
     } else {
         System.out.println("No hay espacio para más salas.");
     }
@@ -638,6 +652,7 @@ private void onAgregarAreasComunes() {
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
           actualizarCapacidadTotalDelPiso();
+          reproducirSonido("mech-keyboard-02-102918.wav");
     } else {
         System.out.println("No hay espacio para más áreas comunes.");
     }
@@ -656,6 +671,7 @@ private void onAgregarAreasComunes() {
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
           resaltarTemporal(celda);
           actualizarCapacidadTotalDelPiso();
+          reproducirSonido("mech-keyboard-02-102918.wav");
     } else {
         System.out.println("No hay espacio para más espacios libres.");
     }
