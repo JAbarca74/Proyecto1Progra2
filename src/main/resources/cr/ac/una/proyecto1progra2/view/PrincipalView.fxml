@@ -28,7 +28,7 @@
                <children>
                   <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
-                        <Image url="@usuario.png" />
+                        <Image url="@../controller/Images/usuario.png" />
                      </image>
                   </ImageView>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido ">
@@ -52,11 +52,11 @@
                </padding>
             </VBox>
 
-            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" styleClass="menu-lateral" stylesheets="@styles.css" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
+            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" prefHeight="517.0" prefWidth="218.0" styleClass="menu-lateral" stylesheets="@styles.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
                <children>
                   <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
-                        <Image url="@usuario.png" />
+                        <Image url="@../controller/Images/usuario.png" />
                      </image>
                   </ImageView>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-form" text="Bienvenido administrador">
