@@ -11,41 +11,65 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController">
     <center>
-        <VBox alignment="TOP_CENTER" spacing="20">
+        <VBox alignment="TOP_CENTER" prefHeight="335.0" prefWidth="325.0">
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <HBox alignment="CENTER" prefHeight="374.0" prefWidth="492.0" spacing="20">
+            <HBox alignment="CENTER" prefHeight="462.0" prefWidth="308.0" VBox.vgrow="ALWAYS">
 
                 <!-- Panel de login -->
-                <VBox alignment="CENTER" prefHeight="150.0" prefWidth="329.0" spacing="15">
+                <VBox alignment="CENTER" prefHeight="386.0" prefWidth="278.0" styleClass="panel-blanco-sombra" HBox.hgrow="ALWAYS">
                <ImageView fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@aa.png" />
                   </image>
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
                </ImageView>
+               <Label styleClass="label-link-gris" text="Ingresa a tu cuenta " />
+               <Label styleClass="label-link-gris" text="Usuario">
+                  <VBox.margin>
+                     <Insets right="130.0" />
+                  </VBox.margin>
+               </Label>
 
-                    <TextField fx:id="txtUsuario" maxWidth="200" prefHeight="25.0" prefWidth="133.0" promptText="Usuario" />
+                    <TextField fx:id="txtUsuario" maxWidth="200" prefHeight="25.0" prefWidth="133.0" promptText="Ingresar Usuario" />
+               <Label styleClass="label-link-gris" text="Contraseña">
+                  <VBox.margin>
+                     <Insets right="130.0" />
+                  </VBox.margin>
+               </Label>
 
-                    <PasswordField fx:id="txtContraseña" maxWidth="200" promptText="Contraseña" />
+                    <PasswordField fx:id="txtContraseña" maxWidth="200" promptText="Ingresar Contraseña">
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin></PasswordField>
 
                     <!-- Label para mostrar mensaje de error -->
                     <Label fx:id="lblErrorLogin" maxWidth="200" textFill="red" wrapText="true" />
          
-                    <Button fx:id="btnInicioSesion" maxWidth="200" onAction="#onActionBtnInicioSesion" prefHeight="25.0" prefWidth="117.0" text="Iniciar sesión" />
+                    <Button fx:id="btnInicioSesion" maxWidth="200" onAction="#onActionBtnInicioSesion" prefHeight="25.0" prefWidth="117.0" styleClass="boton-menu-activo" text="Iniciar sesión">
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin></Button>
+               <Button fx:id="BtnRegistrarUsuario" mnemonicParsing="false" onAction="#onActionBtnRegistrarUsuario" styleClass="boton-link-verde" text="¿No tienes cuenta? Regístrate aquí">
+                  <VBox.margin>
+                     <Insets bottom="50.0" top="10.0" />
+                  </VBox.margin>
+               </Button>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
                 </VBox>
 
             </HBox>
-         <Button fx:id="BtnRegistrarUsuario" mnemonicParsing="false" onAction="#onActionBtnRegistrarUsuario" text="Registrar usuario">
-            <VBox.margin>
-               <Insets bottom="50.0" />
-            </VBox.margin></Button>
         </VBox>
     </center>
    <left>
-      <ImageView fitHeight="403.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@Login.png" />
          </image>

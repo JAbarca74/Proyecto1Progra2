@@ -31,6 +31,8 @@ public class NewReservationController extends Controller implements Initializabl
     @FXML private ComboBox<String> ComboBoxPiso;
     @FXML private GridPane gridMatrix;
     @FXML private Label LabelNombreUsuario;
+    
+    
 
     private ReservationsService reservationsService = new ReservationsService();
     private SpacesService spacesService = new SpacesService();
