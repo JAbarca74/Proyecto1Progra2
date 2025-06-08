@@ -210,11 +210,15 @@
 }/* ============================= */
 /*      PANEL DE BÚSQUEDA       */
 /* ============================= */
-.panel-busqueda {
-    -fx-background-color: white;
-    -fx-background-radius: 15;
-    -fx-padding: 25;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 12, 0, 0, 4);
+.textfield-verde-borde-azul {
+    -fx-background-color: #E8F5E9; /* verde claro */
+    -fx-border-color: #3f51b5;     /* azul */
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-prompt-text-fill: #9e9e9e;
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
 }
 
 /* ============================= */
@@ -287,4 +291,55 @@
 }
 .usuario-correo {
     -fx-text-fill: #1976D2;
+}
+.boton-simple {
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: #333333;
+    -fx-background-radius: 10;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-padding:  16px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 1);
+}
+.boton-simple:hover {
+    -fx-background-color: #E0E0E0;
+    -fx-cursor: hand;
+}
+
+/* Estilo base */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Título principal "Registrar Usuario" */
+.titulo-registro {
+    -fx-text-fill: #6D3B00; /* café oscuro */
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+/* Labels como "Usuario:", "E-mail:", etc. */
+.label-form {
+    -fx-text-fill: #6D3B00;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* TextFields y PasswordFields */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+/* Efecto al enfocar los campos */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #8D6E63;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
 }
