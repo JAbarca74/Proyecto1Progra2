@@ -24,11 +24,11 @@
 .header-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1b5e20;
+    -fx-text-fill: #4A102A;
 }
 .header-subtitle {
     -fx-font-size: 14px;
-    -fx-text-fill: #2e7d32;
+    -fx-text-fill: #4A102A;
 }
 
 /* Tarjetas métricas en degradado verde oscuro */
@@ -61,7 +61,7 @@
 }
 .metric-label-alt {
     -fx-font-size: 13px;
-    -fx-text-fill: #e8f5e9;
+    -fx-text-fill: #4A102A;
 }
 
 /* Label de última actualización */
