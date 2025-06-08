@@ -23,6 +23,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.media.AudioClip;
 
 public class NewReservationController extends Controller implements Initializable {
     @FXML private DatePicker DatePickerDIasDIasReservaciones;
@@ -86,7 +87,14 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
     buscarEspacios();
 }
 
-
+private void reproducirSonido(String nombreArchivo) {
+    try {
+        AudioClip sonido = new AudioClip(getClass().getResource("/cr/ac/una/proyecto1progra2/resources/" + nombreArchivo).toExternalForm());
+        sonido.play();
+    } catch (Exception e) {
+        System.out.println("Error al reproducir sonido: " + e.getMessage());
+    }
+}
 private void cargarContadoresPorPiso(int piso) {
     List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
         .stream()
@@ -174,7 +182,8 @@ private void guardarReserva() {
         reservationsService.guardarReserva(userId, cs.getId(), fecha, horaInicio, horaFin);
     }
 
-    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
+   reproducirSonido("intro-sound-bell-269297-_1_.wav");
+Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
     private void cargarMatrizDeEspaciosDisponibles() {
@@ -259,7 +268,9 @@ private void guardarReserva() {
         }
         boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
         if (guardado) {
-            Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva exitosa", "Reserva registrada correctamente.");
+            reproducirSonido("intro-sound-bell-269297-_1_.wav");
+Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
+            
             cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
         } else {
             Utilities.showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar la reserva.");
