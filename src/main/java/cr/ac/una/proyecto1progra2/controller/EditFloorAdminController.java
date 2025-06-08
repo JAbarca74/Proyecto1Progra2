@@ -4,6 +4,7 @@ import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
 import cr.ac.una.proyecto1progra2.service.SpacesService;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 import cr.ac.una.proyecto1progra2.util.SpaceVisual;
+import cr.ac.una.proyecto1progra2.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,9 +22,15 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class EditFloorAdminController extends Controller implements Initializable {
 
@@ -35,9 +42,13 @@ public class EditFloorAdminController extends Controller implements Initializabl
     @FXML private ComboBox<String> ComboBoxPiso;
     @FXML private TextField TexFieldAgregarPrecio;
     @FXML private GridPane gridMatrix;
-    @FXML private Label LabelCapacidadTotal;
-
-
+    @FXML private Label LabelCapacidadTotal;@FXML private StackPane rootPane;
+    private Rectangle celdaResaltada;
+    
+    private StackPane stackSeleccionado = null;
+private SpaceVisual espacioSeleccionado = null;
+private double offsetX;
+private double offsetY;
     private SpacesService spacesService;
     private List<SpaceVisual> espaciosAgregados = new ArrayList<>();
     private int pisoActual = 0;
@@ -49,7 +60,7 @@ public class EditFloorAdminController extends Controller implements Initializabl
     private Map<Integer, Integer> salasPorPiso = new HashMap<>();
     private Map<Integer, Integer> areasPorPiso = new HashMap<>();
     private Map<Integer, Integer> libresPorPiso = new HashMap<>();
-
+private final List<Rectangle> celdasResaltadas = new ArrayList<>();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         spacesService = new SpacesService();
@@ -70,39 +81,139 @@ public class EditFloorAdminController extends Controller implements Initializabl
 
         cargarMatrizConEspacios();
     }
+public StackPane crearCeldaEspacio(SpaceVisual espacio) {
+    StackPane stack = new StackPane();
+    Rectangle rect = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
+    rect.setArcWidth(10);
+    rect.setArcHeight(10);
+    String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
+    if (nombre.contains("sala")) rect.setFill(Color.CRIMSON);
+    else if (nombre.contains("área")) rect.setFill(Color.DARKGREEN);
+    else if (nombre.contains("libre")) rect.setFill(Color.GOLD);
+    else if (nombre.contains("e")) rect.setFill(Color.DODGERBLUE);
+    else rect.setFill(Color.LIGHTGRAY);
+    rect.setStroke(Color.BLACK);
+
+    Text text = new Text(espacio.getSpace().getNombre());
+    text.setFill(Color.WHITE);
+    stack.getChildren().addAll(rect, text);
+
+    // Al hacer clic se selecciona para mover
+    stack.setOnMouseClicked(event -> {
+        espacioSeleccionado = espacio;
+        stackSeleccionado = stack;
+
+        // Agregar borde visual al seleccionado
+        stack.setStyle("-fx-border-color: yellow; -fx-border-width: 3; -fx-border-radius: 5;");
+        Utilities.mostrarMensaje("Movimiento activado", "Haz clic en un espacio vacío para moverlo.");
+        event.consume();
+    });
+
+    return stack;
+}
+private void llenarCeldasLibres() {
+    int numCols = 4;
+    int numRows = 4;
+
+    for (int row = 0; row < numRows; row++) {
+        for (int col = 0; col < numCols; col++) {
+            boolean ocupado = false;
+
+            for (SpaceVisual esp : espaciosAgregados) {
+                int r = esp.getRow();
+                int c = esp.getColumn();
+                int rs = esp.getRowSpan();
+                int cs = esp.getColSpan();
+
+                if (row >= r && row < r + rs && col >= c && col < c + cs) {
+                    ocupado = true;
+                    break;
+                }
+            }
+
+            if (!ocupado) {
+                StackPane celdaLibre = new StackPane();
+                celdaLibre.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+                celdaLibre.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-background-color: white;");
+
+                final int finalRow = row;
+                final int finalCol = col;
+
+                celdaLibre.setOnMouseClicked(event -> {
+                    if (espacioSeleccionado != null && stackSeleccionado != null) {
+                        int rowSpan = espacioSeleccionado.getRowSpan();
+                        int colSpan = espacioSeleccionado.getColSpan();
+
+                        boolean dentro = finalCol + colSpan <= 4 && finalRow + rowSpan <= 4;
+                        if (!dentro) {
+                            Utilities.mostrarMensaje("Posición inválida", "El espacio no cabe en esa posición.");
+                            return;
+                        }
+
+                        // Verificar si ya hay otro espacio en esa zona
+                        boolean ocupadoDestino = false;
+                        for (SpaceVisual esp : espaciosAgregados) {
+                            if (esp != espacioSeleccionado) {
+                                int r = esp.getRow();
+                                int c = esp.getColumn();
+                                int rs = esp.getRowSpan();
+                                int cs = esp.getColSpan();
+                                if (finalRow < r + rs && finalRow + rowSpan > r &&
+                                    finalCol < c + cs && finalCol + colSpan > c) {
+                                    ocupadoDestino = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (ocupadoDestino) {
+                            Utilities.mostrarMensaje("Espacio ocupado", "Ya hay otro espacio en esa posición.");
+                            return;
+                        }
+
+                        // Quitar visualmente el stack anterior
+                        gridMatrix.getChildren().remove(stackSeleccionado);
+
+                        // Actualizar modelo y DTO
+                        espacioSeleccionado.setRow(finalRow);
+                        espacioSeleccionado.setColumn(finalCol);
+                        SpacesDto dto = espacioSeleccionado.getSpace();
+                        dto.setRow(finalRow);
+                        dto.setColumn(finalCol);
+
+                        // Guardar en la base de datos
+                        Respuesta r = spacesService.guardarSpace(dto);
+                        if (!r.isSuccess()) {
+                            Utilities.mostrarMensaje("Error al guardar", r.getMensaje());
+                            return;
+                        }
+
+                        // Crear nuevo StackPane
+                        StackPane nuevoStack = crearCeldaEspacio(espacioSeleccionado);
+                        gridMatrix.add(nuevoStack, finalCol, finalRow, colSpan, rowSpan);
+
+                        // Actualizar vista
+                        llenarCeldasLibres();
+
+                        // Limpiar selección
+                        espacioSeleccionado = null;
+                        stackSeleccionado = null;
+
+                        event.consume();
+                    }
+                });
+
+                gridMatrix.add(celdaLibre, col, row);
+            }
+        }
+    }
+}
 
     private void cargarContadoresPorPiso(int piso) {
         LabelCanEscritorios.setText(String.valueOf(escritoriosPorPiso.getOrDefault(piso, 0)));
         LabelCanSalasComunes.setText(String.valueOf(salasPorPiso.getOrDefault(piso, 0)));
         LabelCantAreasComunes.setText(String.valueOf(areasPorPiso.getOrDefault(piso, 0)));
         LabelCantEspaciosLibres.setText(String.valueOf(libresPorPiso.getOrDefault(piso, 0)));
-    }
-
-    private void llenarCeldasLibres() {
-        int numCols = 4;
-        int numRows = 4;
-
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                boolean ocupado = false;
-                for (SpaceVisual esp : espaciosAgregados) {
-                    int r = esp.getRow();
-                    int c = esp.getColumn();
-                    int rs = esp.getRowSpan();
-                    int cs = esp.getColSpan();
-                    if (row >= r && row < r + rs && col >= c && col < c + cs) {
-                        ocupado = true;
-                        break;
-                    }
-                }
-                if (!ocupado) {
-                    StackPane celdaLibre = new StackPane();
-                    celdaLibre.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
-                    celdaLibre.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-background-color: white;");
-                    gridMatrix.add(celdaLibre, col, row);
-                }
-            }
-        }
     }
 
     private void configurarGrid() {
@@ -170,41 +281,15 @@ private void actualizarCapacidadTotalDelPiso() {
     spacesService.actualizarCapacidadCoworkingSpace(pisoActual, capacidadTotal);
 }
 
-    public StackPane crearCeldaEspacio(SpaceVisual espacio) {
-    StackPane stack = new StackPane();
-    Rectangle rect = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
-    rect.setArcWidth(10);
-    rect.setArcHeight(10);
 
-    String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
 
-    if (nombre.contains("sala")) {
-        rect.setFill(Color.CRIMSON);
-    } else if (nombre.contains("área")) {
-        rect.setFill(Color.DARKGREEN);
-    } else if (nombre.contains("libre")) {
-        rect.setFill(Color.GOLD); // Amarillo para libres
-    } else if (nombre.contains("e")) {
-        rect.setFill(Color.DODGERBLUE);
-    } else {
-        rect.setFill(Color.LIGHTGRAY);
+private void restaurarPosicionOriginal(StackPane stack, SpaceVisual espacio) {
+    if (stack.getParent() != null) {
+        ((Pane) stack.getParent()).getChildren().remove(stack);
     }
-
-    rect.setStroke(Color.BLACK);
-
-    Text text = new Text(espacio.getSpace().getNombre());
-    text.setFill(Color.WHITE);
-    stack.getChildren().addAll(rect, text);
-
-    // 👇 Aquí va el evento para editar al hacer doble clic
-    stack.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2) {
-            editarEspacio(espacio);
-        }
-    });
-
-    return stack;
+    gridMatrix.add(stack, espacio.getColumn(), espacio.getRow(), espacio.getColSpan(), espacio.getRowSpan());
 }
+
 private void resaltarTemporal(StackPane celda) {
     // Guarda el estilo original
     String estiloOriginal = celda.getStyle();

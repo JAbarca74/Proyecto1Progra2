@@ -12,4 +12,7 @@ public class Utilities {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+    public static void mostrarMensaje(String titulo, String mensaje) {
+    showAlert(AlertType.INFORMATION, titulo, mensaje);
+}
 }

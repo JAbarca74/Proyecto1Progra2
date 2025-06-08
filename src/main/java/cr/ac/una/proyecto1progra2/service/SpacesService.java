@@ -63,16 +63,17 @@ public class SpacesService {
     }
 
     public Respuesta guardarSpace(SpacesDto dto) {
+    EntityManager em = emf.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
     try {
-        et = em.getTransaction();
-        et.begin();
+        tx.begin();
         Spaces e;
         boolean nuevo = false;
 
         if (dto.getId() != null && dto.getId() > 0) {
             e = em.find(Spaces.class, dto.getId());
             if (e == null) {
-                et.rollback();
+                tx.rollback();
                 return new Respuesta(false, "No encontrado.", "");
             }
             e.actualizar(dto);
@@ -82,25 +83,26 @@ public class SpacesService {
             TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
             q.setParameter("name", dto.getNombre().toUpperCase());
             if (!q.getResultList().isEmpty()) {
-                et.rollback();
+                tx.rollback();
                 return new Respuesta(false, "Ya existe un espacio con ese nombre", "");
             }
             em.persist(e);
             nuevo = true;
         }
 
-        et.commit();
+        tx.commit();
 
-        // 🆕 Si es nuevo, crear CoworkingSpace automáticamente
         if (nuevo) {
             crearCoworkingSpaceSiNoExiste(e);
         }
 
         return new Respuesta(true, "", "", "Space", new SpacesDto(e));
     } catch (Exception ex) {
-        if (et.isActive()) et.rollback();
+        if (tx.isActive()) tx.rollback();
         Logger.getLogger(SpacesService.class.getName()).log(Level.SEVERE, null, ex);
         return new Respuesta(false, "Error guardando espacio.", ex.getMessage());
+    } finally {
+        em.close();
     }
 }
 private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
@@ -269,5 +271,5 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
     }
     return lista;
 }
-    
+
 }
