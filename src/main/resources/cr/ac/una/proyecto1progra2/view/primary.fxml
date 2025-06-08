@@ -23,7 +23,7 @@
                 <VBox alignment="CENTER" prefHeight="386.0" prefWidth="278.0" styleClass="panel-blanco-sombra" HBox.hgrow="ALWAYS">
                <ImageView fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@aa.png" />
+                     <Image url="@../controller/Images/aa.png" />
                   </image>
                   <VBox.margin>
                      <Insets />
@@ -71,7 +71,7 @@
    <left>
       <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@Login.png" />
+            <Image url="@../controller/Images/Login.png" />
          </image>
       </ImageView>
    </left>
