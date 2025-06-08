@@ -11,6 +11,7 @@ public class ReservationViewDto {
     private LocalDate reservationDate;
     private LocalTime startTime;
     private LocalTime endTime;
+    private Integer   floor;
 
     public ReservationViewDto(Reservations r) {
         this.id              = r.getId();
@@ -19,6 +20,9 @@ public class ReservationViewDto {
         this.reservationDate = r.getReservationDate();
         this.startTime       = r.getStartTime();
         this.endTime         = r.getEndTime();
+         this.floor           = r.getCoworkingSpaceId()
+                                 .getSpaceId()
+                                 .getFloor();
     }
 
     public Long getId()               { return id; }
@@ -30,13 +34,7 @@ public class ReservationViewDto {
 
     /** Extrae “P0”–“P3” del nombre del CoworkingSpace */
     public String getPiso() {
-        if (spaceName == null) return "";
-        String up = spaceName.toUpperCase();
-        if (up.contains("P0")) return "P0";
-        if (up.contains("P1")) return "P1";
-        if (up.contains("P2")) return "P2";
-        if (up.contains("P3")) return "P3";
-        return "";
+      return floor!=null ? "P"+floor : "";
     }
 
     /** Estado estático (si no manejas cancelación) */

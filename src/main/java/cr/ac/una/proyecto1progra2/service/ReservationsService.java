@@ -134,55 +134,54 @@ public class ReservationsService {
         }
     }
 
-    /**
-     * Lista todas las reservas formateadas para la vista (DTO).
-     */
-    public List<ReservationViewDto> listarTodasView() {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            TypedQuery<Reservations> q = em.createQuery(
-                "SELECT r FROM Reservations r", Reservations.class
-            );
-            return q.getResultList().stream()
-                    .map(ReservationViewDto::new)
-                    .collect(Collectors.toList());
-        } finally {
-            em.close();
-        }
+ // dentro de ReservationsService
+
+public List<ReservationViewDto> listarTodasView() {
+    var em = JPAUtil.getEntityManager();
+    try {
+        TypedQuery<Reservations> q = em.createQuery(
+          "SELECT r FROM Reservations r", Reservations.class
+        );
+        return q.getResultList().stream()
+                .map(ReservationViewDto::new)
+                .collect(Collectors.toList());
+    } finally {
+        em.close();
     }
+}
 
-    /**
-     * Lista las reservas filtrando por fecha, userId y/o nombre de coworking (piso).
-     * Parámetros nulos o vacíos se ignoran.
-     */
-    public List<ReservationViewDto> listarPorFiltros(LocalDate fecha,
-                                                     Long userId,
-                                                     String piso) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            StringBuilder sb = new StringBuilder("SELECT r FROM Reservations r WHERE 1=1");
-            if (fecha  != null) sb.append(" AND r.reservationDate = :fecha");
-            if (userId != null) sb.append(" AND r.userId.id = :userId");
-            if (piso   != null && !piso.isEmpty())
-                sb.append(" AND UPPER(r.coworkingSpaceId.name) LIKE :piso");
-
-            TypedQuery<Reservations> q = em.createQuery(sb.toString(), Reservations.class);
-            if (fecha  != null) q.setParameter("fecha",  fecha);
-            if (userId != null) q.setParameter("userId", userId);
-            if (piso   != null && !piso.isEmpty())
-                q.setParameter("piso", "%" + piso.toUpperCase() + "%");
-
-            return q.getResultList().stream()
-                    .map(ReservationViewDto::new)
-                    .collect(Collectors.toList());
-        } finally {
-            em.close();
+public List<ReservationViewDto> listarPorFiltros(LocalDate fecha,
+                                                 Long userId,
+                                                 String piso) {
+    var em = JPAUtil.getEntityManager();
+    try {
+        StringBuilder sb = new StringBuilder("SELECT r FROM Reservations r WHERE 1=1");
+        if (fecha  != null)   sb.append(" AND r.reservationDate = :fecha");
+        if (userId != null)   sb.append(" AND r.userId.id        = :uid");
+        if (piso   != null && !piso.isEmpty()) {
+            // extraemos el número (0–3) y comparamos directo
+            sb.append(" AND r.coworkingSpaceId.spaceId.floor = :flr");
         }
-    }
 
-    /**
-     * Elimina la reserva con el ID dado.
-     */
+        TypedQuery<Reservations> q = em.createQuery(sb.toString(), Reservations.class);
+        if (fecha  != null)   q.setParameter("fecha", fecha);
+        if (userId != null)   q.setParameter("uid",    userId);
+        if (piso   != null && !piso.isEmpty()) {
+            int num = Integer.parseInt(piso.substring(1));
+            q.setParameter("flr", num);
+        }
+
+        return q.getResultList()
+                .stream()
+                .map(ReservationViewDto::new)
+                .collect(Collectors.toList());
+    } finally {
+        em.close();
+    }
+}
+
+    
+    
     public boolean eliminarReserva(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {

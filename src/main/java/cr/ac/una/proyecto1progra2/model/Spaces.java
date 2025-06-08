@@ -38,7 +38,14 @@ public class Spaces implements Serializable {
 
     @Column(name = "COL_SPAN")
     private Integer colSpan;
+    
+    
+    @Column(name = "FLOOR")
+private Integer floor;
 
+// 1.2  Getter / Setter
+public Integer getFloor() { return floor; }
+public void setFloor(Integer floor) { this.floor = floor; }
     // Relación con CoworkingSpaces (colección original)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spaceId", fetch = FetchType.LAZY)
     private Collection<CoworkingSpaces> coworkingSpacesCollection;
@@ -66,6 +73,7 @@ public class Spaces implements Serializable {
     this.columnIndex = dto.getColumnIndex();
     this.rowSpan = dto.getRowSpan();
     this.colSpan = dto.getColSpan();
+    this.floor      = dto.getFloor(); 
 }
 
     // Getters y Setters

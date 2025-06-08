@@ -25,6 +25,7 @@ public class SpacesDto {
         this.rowSpan = space.getRowSpan();
         this.colSpan = space.getColSpan();
         this.coworkingSpace = space.getCoworkingSpace(); // asignar si está presente
+        this.floor      = space.getFloor(); 
     }
 
     // Getters y Setters
@@ -51,6 +52,15 @@ public class SpacesDto {
     public void setCapacidad(Integer capacidad) {
         this.capacidad = capacidad;
     }
+    
+    private Integer floor;                // 2.1  Nuevo campo
+
+public Integer getFloor() {           // 2.2  Getter y
+    return floor;
+}
+public void setFloor(Integer floor) { //       Setter
+    this.floor = floor;
+}
 
     public Integer getRowIndex() {
         return rowIndex;

@@ -395,7 +395,8 @@ public void cargarMatrizConEspacios() {
     // Obtener espacios del piso actual
     List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
             .stream()
-            .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+            .filter(e -> Objects.equals(e.getSpace().getFloor(), pisoActual))
+
             .collect(Collectors.toList());
 
     for (SpaceVisual espacio : espacios) {
@@ -615,6 +616,7 @@ private boolean validarNombreDisponible(String nombre) {
                 nuevo.setColumn(col);
                 nuevo.setRowSpan(rowSpan);
                 nuevo.setColSpan(colSpan);
+                nuevo.setFloor(pisoActual);
 
                 Respuesta r = spacesService.guardarSpace(nuevo);
                 if (!r.getEstado()) {
