@@ -24,7 +24,7 @@
             <children>
 
                 <!-- Menú de usuario -->
-                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
                         <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
@@ -37,12 +37,33 @@
                         <Line endX="100" startX="0" />
                         <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefWidth="160" styleClass="boton-menu" text="Reservaciones">
                             <VBox.margin><Insets top="30" /></VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../controller/Images/icons8-event-accepted-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                         </Button>
                         <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefWidth="160" styleClass="boton-menu" text="Mini Juego">
                             <VBox.margin><Insets top="10" /></VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="43.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../controller/Images/icons8-game-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                         </Button>
                         <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1" prefWidth="160" styleClass="boton-menu" text="Cerrar sesión">
                             <VBox.margin><Insets top="30" /></VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="55.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../controller/Images/icons8-logout-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                         </Button>
                     </children>
                 </VBox>
