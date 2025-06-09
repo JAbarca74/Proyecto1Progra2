@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -55,7 +56,7 @@ public class ReportsController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarGraficoTiposEspacios();
-        cargarGraficoReservasPorCoworking();
+        cargarGraficoReservasPorMes();
         cargarTablaEspacios();
         cargarTablaUsuarios(); 
         cargarGraficoTiposEspacios();
@@ -162,14 +163,16 @@ public class ReportsController extends Controller implements Initializable {
         chartTiposEspacios.setData(lista);
     }
 
-    private void cargarGraficoReservasPorCoworking() {
-        Map<String, Long> datos = obtenerReservasPorCoworking();
-        ObservableList<PieChart.Data> lista = FXCollections.observableArrayList();
-        datos.forEach((coworkingName, cantidad) ->
-            lista.add(new PieChart.Data(coworkingName, cantidad))
-        );
-        chartReservasCoworking.setData(lista);
-    }
+    private void cargarGraficoReservasPorMes() {
+    Map<String, Long> datos = obtenerReservasPorMes();
+    ObservableList<PieChart.Data> lista = FXCollections.observableArrayList();
+    datos.forEach((mes, cantidad) ->
+        lista.add(new PieChart.Data(mes, cantidad))
+    );
+    chartReservasCoworking.setTitle("Reservas por Mes");
+    chartReservasCoworking.setData(lista);
+}
+
     
     private void cargarHorasPico() {
     EntityManager em = JPAUtil.getEMF().createEntityManager();
@@ -252,4 +255,32 @@ public class ReportsController extends Controller implements Initializable {
             em.close();
         }
     }
+    private Map<String, Long> obtenerReservasPorMes() {
+    EntityManager em = JPAUtil.getEMF().createEntityManager();
+    try {
+        // Extrae año-mes en formato "YYYY-MM" y cuenta las reservas
+        String sql =
+            "SELECT TO_CHAR(RESERVATION_DATE, 'YYYY-MM') AS mes, COUNT(ID) " +
+            "FROM TB_RESERVATIONS " +
+            "GROUP BY TO_CHAR(RESERVATION_DATE, 'YYYY-MM') " +
+            "ORDER BY mes";
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultados = em
+            .createNativeQuery(sql)
+            .getResultList();
+
+        return resultados.stream()
+                         .collect(Collectors.toMap(
+                             row -> (String) row[0],
+                             row -> ((Number) row[1]).longValue(),
+                             (a, b) -> a, // en caso de clave duplicada, aunque no debería
+                             LinkedHashMap::new // preservar orden por mes
+                         ));
+    } finally {
+        em.close();
+    }
 }
+
+}
+

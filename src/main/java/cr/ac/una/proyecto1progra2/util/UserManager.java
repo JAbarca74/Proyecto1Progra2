@@ -5,12 +5,27 @@ import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 public class UserManager {
 
     private static UsuariosDto currentUser;
+    private static String discountCode = null;
 
     /**
      * Guarda el usuario que ha iniciado sesión en el sistema.
      */
+    
+    
+    public static boolean hasDiscountCode() {
+        return discountCode != null;
+    }
+    
     public static void setCurrentUser(UsuariosDto user) {
         currentUser = user;
+    }
+    
+     /** Guarda el código (solo la primera vez) */
+    public static void assignDiscountCode(String code) {
+        if (discountCode == null) {
+            discountCode = code;
+            // Si quieres, aquí persistes en BD…
+        }
     }
 
     /**
