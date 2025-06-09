@@ -32,13 +32,13 @@
                            
                                                                                          <Label text="Inicio:">
                                     <HBox.margin>
-                                       <Insets left="120.0" />
+                                       <Insets left="180.0" />
                                     </HBox.margin>
                                  </Label>
                            
                                                                                                <Label text="Fin:">
                                     <HBox.margin>
-                                       <Insets left="140.0" />
+                                       <Insets left="160.0" />
                                     </HBox.margin>
                                  </Label>
                            
