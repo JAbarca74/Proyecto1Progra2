@@ -1,10 +1,15 @@
-/* Fondo general suave en tonos verdes oscuros */
+/* ──────────────────────────────────────────────
+   PALETA GENERAL
+   fondo degradado verde pastel + tipografía
+   ────────────────────────────────────────────── */
 .root {
     -fx-background-color: linear-gradient(to bottom, #c8e6c9, #a5d6a7);
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
-/* Encabezado */
+/* ──────────────────────────────────────────────
+   ENCABEZADO
+   ────────────────────────────────────────────── */
 .header-pane {
     -fx-background-color: linear-gradient(to right, #388e3c, #2e7d32);
     -fx-background-radius: 0 0 20 20;
@@ -12,7 +17,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 6);
 }
 
-/* Avatar */
 .avatar {
     -fx-background-radius: 100%;
     -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
@@ -20,18 +24,12 @@
     -fx-border-width: 2;
 }
 
-/* Textos del header */
-.header-title {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #4A102A;
-}
-.header-subtitle {
-    -fx-font-size: 14px;
-    -fx-text-fill: #4A102A;
-}
+.header-title    { -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #4A102A; }
+.header-subtitle { -fx-font-size: 14px;                 -fx-text-fill: #4A102A; }
 
-/* Tarjetas métricas en degradado verde oscuro */
+/* ──────────────────────────────────────────────
+   TARJETAS DE MÉTRICA
+   ────────────────────────────────────────────── */
 .card-alt {
     -fx-background-radius: 16;
     -fx-padding: 20;
@@ -41,33 +39,72 @@
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.3, 0, 8);
     -fx-background-insets: 0;
-
-    /* degradado verde oscuro */
     -fx-background-color: linear-gradient(to bottom right, #66bb6a, #388e3c);
     -fx-transition: all 0.3s ease-in-out;
 }
 .card-alt:hover {
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
-    /* degradado invertido al pasar el ratón */
     -fx-background-color: linear-gradient(to bottom right, #2e7d32, #66bb6a);
 }
 
-/* Textos dentro de las tarjetas */
-.metric-value-alt {
-    -fx-font-size: 30px;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-.metric-label-alt {
-    -fx-font-size: 13px;
-    -fx-text-fill: #4A102A;
-}
+.metric-value-alt { -fx-font-size: 30px; -fx-text-fill: white;  -fx-font-weight: bold; }
+.metric-label-alt { -fx-font-size: 13px; -fx-text-fill: #4A102A; }
 
-/* Label de última actualización */
+/* ──────────────────────────────────────────────
+   PIE DE PÁGINA (última actualización)
+   ────────────────────────────────────────────── */
 .last-update-alt {
     -fx-font-size: 12px;
     -fx-text-fill: #1b5e20;
     -fx-opacity: 0.9;
     -fx-padding: 5;
+}
+
+/* ──────────────────────────────────────────────
+   PANEL CLIMA + NOTICIAS
+   ────────────────────────────────────────────── */
+.news-weather-pane {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-background-radius: 10;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+}
+
+/* Clima */
+.weather-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2E7D32;
+}
+
+/* ─── ListView de noticias estilo “tarjeta mini” ─── */
+.news-list {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cell-size: 46px;          /* alto de cada tarjeta */
+}
+
+/* Scrollbar fino */
+.news-list .scroll-bar:vertical {
+    -fx-pref-width: 6;
+}
+
+/* Tarjeta individual */
+.news-list .list-cell {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10 14;
+    -fx-font-size: 13.5px;
+    -fx-text-fill: #455A64;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
+    -fx-margin: 3 0 3 0;          /* separación vertical */
+}
+
+/* Hover (aunque ListView es solo lectura, da efecto moderno) */
+.news-list .list-cell:hover {
+    -fx-background-color: rgba(120,20,20,0.15); /* rojizo translúcido */
+    -fx-text-fill: white;
 }
