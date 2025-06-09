@@ -9,20 +9,25 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@welcome-alt.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.WelcomeViewController">
+<BorderPane stylesheets="@welcome-alt.css" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.WelcomeViewController">
 
     <!-- ENCABEZADO -->
     <top>
-        <HBox fx:id="headerPane" alignment="CENTER_LEFT" spacing="15" styleClass="header-pane" BorderPane.alignment="TOP_CENTER">
+        <HBox fx:id="headerPane" alignment="CENTER_LEFT" spacing="15" styleClass="header-pane">
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
+                <Insets bottom="20" left="20" right="20" top="20"/>
             </padding>
 
-            <ImageView fx:id="imgAvatar" fitHeight="50" fitWidth="50" pickOnBounds="true" preserveRatio="true" styleClass="avatar" />
+            <ImageView fx:id="imgAvatar"
+                       fitHeight="50" fitWidth="50"
+                       pickOnBounds="true" preserveRatio="true"
+                       styleClass="avatar"/>
 
             <VBox spacing="5">
-                <Label styleClass="header-title" text="¡Hola, Administrador!" />
-                <Label styleClass="header-subtitle" text="Bienvenido de nuevo" />
+                <Label styleClass="header-title" text="¡Hola, Administrador!"/>
+                <Label styleClass="header-subtitle" text="Bienvenido de nuevo"/>
             </VBox>
         </HBox>
     </top>
@@ -31,38 +36,46 @@
     <center>
         <FlowPane alignment="TOP_CENTER" hgap="20" vgap="20">
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
+                <Insets bottom="20" left="20" right="20" top="20"/>
             </padding>
 
             <!-- Tarjeta 1: Reservas Hoy -->
             <StackPane styleClass="card-alt">
                 <VBox alignment="CENTER" spacing="8">
-                    <Label fx:id="lblReservasHoy" styleClass="metric-value-alt" text="0" />
-                    <Label styleClass="metric-label-alt" text="Reservas Hoy" />
+                    <Label fx:id="lblReservasHoy"
+                           styleClass="metric-value-alt"
+                           text="0"/>
+                    <Label styleClass="metric-label-alt" text="Reservas Hoy"/>
                 </VBox>
             </StackPane>
 
             <!-- Tarjeta 2: Espacios -->
             <StackPane styleClass="card-alt">
                 <VBox alignment="CENTER" spacing="8">
-                    <Label fx:id="lblEspacios" styleClass="metric-value-alt" text="0" />
-                    <Label styleClass="metric-label-alt" text="Espacios Únicos" />
+                    <Label fx:id="lblEspacios"
+                           styleClass="metric-value-alt"
+                           text="0"/>
+                    <Label styleClass="metric-label-alt" text="Espacios Únicos"/>
                 </VBox>
             </StackPane>
 
             <!-- Tarjeta 3: Usuarios -->
             <StackPane styleClass="card-alt">
                 <VBox alignment="CENTER" spacing="8">
-                    <Label fx:id="lblUsuarios" styleClass="metric-value-alt" text="0" />
-                    <Label styleClass="metric-label-alt" text="Usuarios" />
+                    <Label fx:id="lblUsuarios"
+                           styleClass="metric-value-alt"
+                           text="0"/>
+                    <Label styleClass="metric-label-alt" text="Usuarios"/>
                 </VBox>
             </StackPane>
 
             <!-- Tarjeta 4: Ocupación -->
             <StackPane styleClass="card-alt">
                 <VBox alignment="CENTER" spacing="8">
-                    <Label fx:id="lblOcupacion" styleClass="metric-value-alt" text="0 %" />
-                    <Label styleClass="metric-label-alt" text="Ocupación" />
+                    <Label fx:id="lblOcupacion"
+                           styleClass="metric-value-alt"
+                           text="0 %"/>
+                    <Label styleClass="metric-label-alt" text="Ocupación"/>
                 </VBox>
             </StackPane>
         </FlowPane>
@@ -72,9 +85,12 @@
     <bottom>
         <HBox fx:id="footerPane" alignment="CENTER_RIGHT">
             <padding>
-                <Insets bottom="10" left="20" right="20" top="10" />
+                <Insets bottom="10" left="20" right="20" top="10"/>
             </padding>
-            <Label fx:id="lblLastUpdate" styleClass="last-update-alt" text="–" wrapText="true" />
+            <Label fx:id="lblLastUpdate"
+                   styleClass="last-update-alt"
+                   text="–"
+                   wrapText="true"/>
         </HBox>
     </bottom>
 
