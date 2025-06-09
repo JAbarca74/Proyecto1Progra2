@@ -1,5 +1,7 @@
 package cr.ac.una.proyecto1progra2.controller;
 
+import cr.ac.una.proyecto1progra2.util.DiscountManager;
+import cr.ac.una.proyecto1progra2.util.UserManager;
 import cr.ac.una.proyecto1progra2.util.MusicManager;
 import cr.ac.una.proyecto1progra2.util.Sound;
 import javafx.animation.AnimationTimer;
@@ -16,6 +18,11 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 
 public class MiniGameController implements Initializable {
 
@@ -210,14 +217,42 @@ public class MiniGameController implements Initializable {
             case RIGHT: if (direction != Direction.LEFT) direction = Direction.RIGHT; break;
         }
     }
+private void endGame() {
+    // 1) Detén el juego
+    running = false;
+    if (gameLoop != null) gameLoop.stop();
 
-    private void endGame() {
-        running = false;
-        gameOverContainer.setVisible(true);
-        gameOverLabel.setVisible(true);
-        Label finalScore = (Label) gameOverContainer.getChildren().get(2);
-        finalScore.setText("PUNTOS: " + score);
+    // 2) Muestra tu panel Game Over
+    gameOverContainer.setVisible(true);
+    gameOverLabel.setVisible(true);
+    Label finalScore = (Label) gameOverContainer.getChildren().get(2);
+    finalScore.setText("PUNTOS: " + score);
+
+    // 3) Si toca el descuento
+    if (score >= 100 && !UserManager.hasDiscountCode()) {
+        String code = DiscountManager.generateCode(12);
+        UserManager.assignDiscountCode(code);
+
+        // 4) Programa el Alert para que se muestre DESPUÉS del frame actual
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("¡Has ganado un descuento!");
+            alert.setHeaderText("Felicidades: llegaste a " + score + " puntos");
+            // construimos un VBox para mezclar texto normal + negrita
+            Label line1 = new Label("Por ser un gran jugador, obtienes un 30% de descuento.");
+            Label codeLabel = new Label(code);
+            codeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #e76f51;");
+            Label line3 = new Label("Este código se canjeará UNA sola vez en el local al momento de cancelar.");
+            VBox content = new VBox(10, line1, codeLabel, line3);
+            content.setPadding(new Insets(10));
+            alert.getDialogPane().setContent(content);
+
+            alert.showAndWait();
+        });
     }
+}
+
+
 
     @FXML
     private void onActionReiniciar() {
