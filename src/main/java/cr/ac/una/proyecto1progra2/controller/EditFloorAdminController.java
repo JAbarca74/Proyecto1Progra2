@@ -574,32 +574,26 @@ private boolean validarNombreDisponible(String nombre) {
     }
 }
     
-   private SpaceVisual crearEspacioLibreConSpan(String nombre, int rowSpan, int colSpan) {
+  private SpaceVisual crearEspacioLibreConSpan(String nombre, int rowSpan, int colSpan) {
     int maxRows = 4;
     int maxCols = 4;
-
     for (int row = 0; row <= maxRows - rowSpan; row++) {
         for (int col = 0; col <= maxCols - colSpan; col++) {
             boolean ocupado = false;
-
             for (SpaceVisual esp : espaciosAgregados) {
                 int r = esp.getRow();
                 int c = esp.getColumn();
                 int rs = esp.getRowSpan();
                 int cs = esp.getColSpan();
-
                 boolean seCruzan = row < r + rs && row + rowSpan > r &&
                                    col < c + cs && col + colSpan > c;
-
                 System.out.println("Probando posicion fila: " + row + " columna: " + col + " para span " + rowSpan + "x" + colSpan);
-
                 if (seCruzan) {
                     System.out.println("🚫 Se cruza con: " + esp.getSpace().getNombre() + " en fila: " + r + " col: " + c);
                     ocupado = true;
                     break;
                 }
             }
-
             if (!ocupado) {
                 // 🔁 Generar nombre único si ya existe
                 String base = nombre + " P" + pisoActual;
@@ -620,9 +614,15 @@ private boolean validarNombreDisponible(String nombre) {
 
                 Respuesta r = spacesService.guardarSpace(nuevo);
                 if (!r.getEstado()) {
-                       reproducirSonido("BadReservaciones.wav");
+                    reproducirSonido("BadReservaciones.wav");
                     System.out.println("❌ Error al guardar: " + r.getMensaje());
                     return null;
+                }
+
+                // 🔁 Forzar recarga en NewReservationController si está activo
+                NewReservationController controller = Utilities.getNewReservationControllerIfActive();
+                if (controller != null) {
+                    controller.forzarRecargaEspacios();
                 }
 
                 SpacesDto actualizado = (SpacesDto) spacesService
@@ -634,7 +634,6 @@ private boolean validarNombreDisponible(String nombre) {
             }
         }
     }
-
     System.out.println("❌ No se encontró ninguna posición libre para " + nombre + " (" + rowSpan + "x" + colSpan + ")");
     return null;
 }

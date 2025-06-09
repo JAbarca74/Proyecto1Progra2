@@ -266,6 +266,21 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
         }
     }
 
+    
+    public CoworkingSpaces obtenerCoworkingSpacePorSpaceId(Long spaceId) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id = :id", CoworkingSpaces.class)
+            .setParameter("id", spaceId)
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+    } finally {
+        em.close();
+    }
+}
+    
     public Respuesta eliminarEspaciosPorPiso(int piso) {
         try {
             List<SpaceVisual> espacios = obtenerEspaciosConPosicion();
