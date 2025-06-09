@@ -230,7 +230,7 @@
 .menu-lateral {
     -fx-background-color: linear-gradient(to bottom, #2E7D32, #1B5E20);
     -fx-background-radius: 0 15 15 0;
-    -fx-padding: 30 20 20 20;
+    -fx-padding: 25 15 15 15;
 }
 
 /* ============================= */
@@ -526,4 +526,75 @@
     -fx-font-style: italic;
     -fx-font-size: 13px;
     -fx-cursor: hand;
+}.boton-escritorios {
+    -fx-background-color: #FF5722;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
+}
+.boton-escritorios:hover {
+    -fx-background-color: #e64a19;
+}
+
+.boton-salas {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
+}
+.boton-salas:hover {
+    -fx-background-color: #1976D2;
+}
+
+.boton-areas-comunes {
+    -fx-background-color: #9C27B0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding:  20px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
+}
+.boton-areas-comunes:hover {
+    -fx-background-color: #7B1FA2;
+}
+
+.boton-espacios-libres {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding:  20px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
+}
+.boton-espacios-libres:hover {
+    -fx-background-color: #388E3C;
+}
+
+.boton-borrar-todo {
+    -fx-background-color: #E53935;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
+}
+.boton-borrar-todo:hover {
+    -fx-background-color: #C62828;
+}.fondo-gris-oscuro {
+    -fx-background-color: #566063;
 }

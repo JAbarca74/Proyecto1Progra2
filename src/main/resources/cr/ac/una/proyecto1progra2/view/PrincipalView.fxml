@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,130 +12,89 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
+<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.PrincipalViewController">
 
    <center>
-      <VBox alignment="TOP_RIGHT" prefHeight="500.0" prefWidth="587.0"
-            BorderPane.alignment="CENTER_RIGHT">
+      <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="600.0" BorderPane.alignment="CENTER">
          <!-- contenido central -->
       </VBox>
    </center>
 
    <left>
-      <AnchorPane prefHeight="401.0" prefWidth="200.0"
-                  BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
 
             <!-- Menú de usuario -->
-            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER"
-                  prefHeight="545.0" prefWidth="100.0"
-                  styleClass="menu-lateral" stylesheets="@styles.css"
-                  AnchorPane.bottomAnchor="0.0"
-                  AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0"
-                  AnchorPane.topAnchor="0.0">
-               <padding>
-                  <Insets top="40.0"/>
-               </padding>
+            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="102.0"
-                             pickOnBounds="true" preserveRatio="true"
-                             styleClass="icono-transparente">
+                  <ImageView fitHeight="100.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
-                        <Image url="@../controller/Images/usuario.png"/>
+                        <Image url="@../controller/Images/usuario.png" />
                      </image>
                   </ImageView>
                   <Text fill="WHITE" text="Bienvenido ">
-                     <font><Font size="15.0"/></font>
-                     <VBox.margin><Insets bottom="8.0" top="8.0"/></VBox.margin>
+                     <font><Font size="15.0" /></font>
+                     <VBox.margin><Insets bottom="8.0" top="8.0" /></VBox.margin>
                   </Text>
-                  <Line startX="-100.0" endX="61.29" endY="0.79"/>
-                  <Button fx:id="btnReservar" onAction="#onActionBtnReservar"
-                          prefHeight="38.0" prefWidth="128.0"
-                          styleClass="boton-menu" text="Reservaciones">
-                     <VBox.margin><Insets bottom="30.0" top="30.0"/></VBox.margin>
+                  <Line endX="61.29" endY="0.79" startX="-100.0" />
+                  <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="38.0" prefWidth="128.0" styleClass="boton-menu" text="Reservaciones">
+                     <VBox.margin><Insets bottom="30.0" top="30.0" /></VBox.margin>
                   </Button>
 
                   <!-- NUEVO: Mini Juego para usuario -->
-                  <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego"
-                          prefHeight="38.0" prefWidth="128.0"
-                          styleClass="boton-menu" text="Mini Juego">
-                     <VBox.margin><Insets bottom="30.0"/></VBox.margin>
+                  <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefHeight="38.0" prefWidth="128.0" styleClass="boton-menu" text="Mini Juego">
+                     <VBox.margin><Insets bottom="30.0" /></VBox.margin>
                   </Button>
 
-                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1"
-                          prefHeight="24.0" prefWidth="123.0"
-                          styleClass="boton-menu" text="Cerrar sesión"/>
+                  <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1" prefHeight="24.0" prefWidth="123.0" styleClass="boton-menu" text="Cerrar sesión" />
                </children>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
             </VBox>
 
             <!-- Menú de admin -->
-            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER"
-                  layoutX="-3.0" layoutY="-1.6"
-                  prefHeight="517.0" prefWidth="218.0"
-                  styleClass="menu-lateral" stylesheets="@styles.css"
-                  AnchorPane.bottomAnchor="1.0"
-                  AnchorPane.leftAnchor="-3.0"
-                  AnchorPane.rightAnchor="-2.0"
-                  AnchorPane.topAnchor="-2.0">
+            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" maxWidth="200.0" prefHeight="610.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <padding>
-                  <Insets top="40.0"/>
+                  <Insets top="40.0" />
                </padding>
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="102.0"
-                             pickOnBounds="true" preserveRatio="true"
-                             styleClass="icono-transparente">
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
                      <image>
-                        <Image url="@../controller/Images/usuario.png"/>
+                        <Image url="@../controller/Images/usuario.png" />
                      </image>
                   </ImageView>
-                  <Text fill="WHITE" text="Bienvenido administrador">
-                     <font><Font size="15.0"/></font>
-                     <VBox.margin><Insets bottom="20.0" top="8.0"/></VBox.margin>
-                  </Text>
-                  <Line startX="-100.0" endX="61.29" endY="0.79"/>
+                  <Label alignment="CENTER" text="Bienvenido administrador" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Line endX="61.29" endY="0.79" startX="-100.0" />
 
-                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso"
-                          prefHeight="36.0" prefWidth="142.0"
-                          styleClass="boton-menu" text="Editar Piso">
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="36.0" prefWidth="142.0" styleClass="boton-menu" text="Editar Piso">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario"
-                          prefHeight="36.0" prefWidth="143.0"
-                          styleClass="boton-menu" text="Editar Usuario">
-                     <font><Font size="13.0"/></font>
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Editar Usuario">
+                     <font><Font size="13.0" /></font>
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount"
-                          prefHeight="36.0" prefWidth="143.0"
-                          styleClass="boton-menu" text="Agregar Cuenta">
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Agregar Cuenta">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnGestionReservas" onAction="#onGestionReservas"
-                          prefHeight="36.0" prefWidth="143.0"
-                          styleClass="boton-menu" text="Gestión de reservas">
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Gestión de reservas">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnStatistics" onAction="#onStatistics"
-                          prefHeight="36.0" prefWidth="143.0"
-                          styleClass="boton-menu" text="Estadísticas">
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Estadísticas">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
 
                   <!-- NUEVO: Mini Juego para admin -->
-                  <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego"
-                          prefHeight="36.0" prefWidth="143.0"
-                          styleClass="boton-menu" text="Mini Juego">
-                     <VBox.margin><Insets top="10.0"/></VBox.margin>
+                  <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Mini Juego">
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
 
-                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir"
-                          prefHeight="36.0" prefWidth="142.0"
-                          styleClass="boton-cerrar-sesion" text="Cerrar sesión">
-                     <VBox.margin><Insets top="75.0"/></VBox.margin>
+                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="boton-cerrar-sesion" text="Cerrar sesión">
+                     <VBox.margin><Insets top="75.0" /></VBox.margin>
                   </Button>
                </children>
             </VBox>
