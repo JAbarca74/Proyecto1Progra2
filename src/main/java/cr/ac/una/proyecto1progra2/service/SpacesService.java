@@ -112,21 +112,41 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
     try {
         em.getTransaction().begin();
 
+        // Verificar si existen tipos de espacio, si no, los crea
+        List<String> tipos = Arrays.asList("Oficina Privada", "Sala de Reuniones", "Área Común");
+        for (String nombreTipo : tipos) {
+            TypedQuery<cr.ac.una.proyecto1progra2.model.SpaceTypes> q = em.createQuery(
+                "SELECT t FROM SpaceTypes t WHERE UPPER(t.typeName) = :nombre", 
+                cr.ac.una.proyecto1progra2.model.SpaceTypes.class);
+            q.setParameter("nombre", nombreTipo.toUpperCase());
+            if (q.getResultList().isEmpty()) {
+                cr.ac.una.proyecto1progra2.model.SpaceTypes nuevoTipo = new cr.ac.una.proyecto1progra2.model.SpaceTypes();
+                nuevoTipo.setTypeName(nombreTipo);
+                em.persist(nuevoTipo);
+            }
+        }
+
+        // Comprobar si ya existe el coworking space para este espacio
         TypedQuery<CoworkingSpaces> query = em.createQuery(
             "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id = :spaceId", CoworkingSpaces.class);
         query.setParameter("spaceId", espacio.getId());
         List<CoworkingSpaces> resultado = query.getResultList();
 
         if (resultado.isEmpty()) {
+            // Buscar tipo por defecto, aquí usamos "Oficina Privada"
+            TypedQuery<cr.ac.una.proyecto1progra2.model.SpaceTypes> tipoQuery = em.createQuery(
+                "SELECT t FROM SpaceTypes t WHERE UPPER(t.typeName) = :nombre", 
+                cr.ac.una.proyecto1progra2.model.SpaceTypes.class);
+            tipoQuery.setParameter("nombre", "OFICINA PRIVADA");
+            cr.ac.una.proyecto1progra2.model.SpaceTypes tipo = tipoQuery.getSingleResult();
+
             CoworkingSpaces nuevo = new CoworkingSpaces();
-            nuevo.setId(espacio.getId()); // mismo ID que Space
+            nuevo.setId(espacio.getId());
             nuevo.setName("Espacio " + espacio.getId());
             nuevo.setCapacity(1);
             nuevo.setVersion(1L);
             nuevo.setSpaceId(espacio);
-
-            // Establecer TYPE_ID por defecto (puede ajustarse si tenés lógica distinta)
-            nuevo.setTypeId(em.find(cr.ac.una.proyecto1progra2.model.SpaceTypes.class, 1L));
+            nuevo.setTypeId(tipo); // 👈 Ya no será null
 
             em.persist(nuevo);
         }
