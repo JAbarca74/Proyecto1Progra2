@@ -534,4 +534,45 @@
     -fx-text-fill: white;
 }
 
+/* ——— Estilo para el calendario ——— */
+
+.calendar-pane {
+  -fx-background-color: linear-gradient(
+    from 0% 0% to 100% 100%,
+    rgba(170, 210, 170, 0.85),  /* verde pastel claro */
+    rgba(130, 190, 130, 0.85)   /* verde pastel más oscuro */
+  );
+  -fx-background-radius: 12;
+  -fx-border-color: rgba(110, 160, 110, 0.7);  /* borde verde suave */
+  -fx-border-radius: 12;
+  -fx-border-width: 2;
+  -fx-padding: 16;
+}
+
+
+
+.calendar-pane Label {
+  -fx-font-weight: bold;
+  -fx-text-fill: #BF360C;
+}
+
+.calendar-grid {
+  -fx-background-color: white;
+  -fx-background-radius: 8;
+  -fx-padding: 8;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(120, 20, 20, 0.3);  /* rojo oscuro translúcido */
+    -fx-text-fill: white;  /* texto blanco al seleccionar */
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: red;
+}
+
+.table-view .table-row-cell:focused {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+}
 
