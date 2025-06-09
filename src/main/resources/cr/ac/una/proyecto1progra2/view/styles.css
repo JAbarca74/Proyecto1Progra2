@@ -5,6 +5,12 @@
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
+.snake-game-over-panel {
+    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-padding: 20px;
+    -fx-background-radius: 10px;
+}
+
 /* ============================= */
 /*    TEXTFIELD Y PROMPTS       */
 /* ============================= */
