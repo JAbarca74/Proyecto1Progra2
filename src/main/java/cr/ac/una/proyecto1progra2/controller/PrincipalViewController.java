@@ -66,10 +66,6 @@ public void initialize(URL url, ResourceBundle rb) {
         FlowController.getInstance().goView("EditDeleteUser");
     }
 
-    @FXML
-    private void onRegisterNewAccount(ActionEvent event) {
-        FlowController.getInstance().goView("RegisterNewAccount");
-    }
 
     @FXML
     private void onRegisterAdminAccount(ActionEvent event) {

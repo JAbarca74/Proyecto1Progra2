@@ -80,10 +80,7 @@
                      <font><Font size="13.0" /></font>
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
-                  <Button fx:id="btnAgregarUsuario" onAction="#onRegisterNewAccount" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Agregar Usuario" textAlignment="CENTER">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                  </Button>
-                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Agregar Admin">
+                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Agregar Cuenta ">
                      <VBox.margin><Insets top="10.0" /></VBox.margin>
                   </Button>
                   <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefHeight="36.0" prefWidth="143.0" styleClass="boton-menu" text="Gestión de reservas">

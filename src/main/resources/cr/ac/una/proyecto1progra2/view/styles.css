@@ -1,4 +1,4 @@
-/* ============================= */
+    /* ============================= */
 /*   ESTILO GENERAL Y FUENTE    */
 /* ============================= */
 .root {
@@ -20,6 +20,14 @@
     -fx-text-fill: #333333;
     -fx-prompt-text-fill: #a9a9a9;
 }
+
+
+.invalid {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-background-color: #ffe5e5;
+}
+
 
 .text-field {
     -fx-border-color: #ccc;

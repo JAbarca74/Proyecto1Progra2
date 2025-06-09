@@ -6,14 +6,18 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 
 public class AboutUsController extends Controller implements Initializable {
 
-    @FXML
-    private void onActionBtnVolver(ActionEvent event) {
-  FlowController.getInstance().goViewInWindow("Primary");
+   @FXML
+private void onActionBtnVolver(ActionEvent event) {
+    // Cierra la ventana actual
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    stage.close();
+}
 
-    }
 
     @FXML
     private void onActionBtnJefferson(ActionEvent event) {
@@ -32,7 +36,6 @@ public class AboutUsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Si necesitás lógica de carga inicial, ponela aquí
     }
 
     @Override
