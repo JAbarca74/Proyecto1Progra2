@@ -29,7 +29,6 @@
          <children>
 
             <!-- Menú de usuario -->
-<<<<<<< Updated upstream
             <VBox fx:id="VBoxMenuUsuario" alignment="CENTER"
                   prefHeight="545.0" prefWidth="100.0"
                   styleClass="menu-lateral" stylesheets="@styles.css"
@@ -40,9 +39,6 @@
                <padding>
                   <Insets top="40.0"/>
                </padding>
-=======
-            <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="545.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
->>>>>>> Stashed changes
                <children>
                   <ImageView fitHeight="100.0" fitWidth="102.0"
                              pickOnBounds="true" preserveRatio="true"
@@ -76,7 +72,6 @@
             </VBox>
 
             <!-- Menú de admin -->
-<<<<<<< Updated upstream
             <VBox fx:id="VBoxMenuAdmin" alignment="CENTER"
                   layoutX="-3.0" layoutY="-1.6"
                   prefHeight="517.0" prefWidth="218.0"
@@ -85,9 +80,6 @@
                   AnchorPane.leftAnchor="-3.0"
                   AnchorPane.rightAnchor="-2.0"
                   AnchorPane.topAnchor="-2.0">
-=======
-            <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" layoutX="-3.0" layoutY="-1.6" maxWidth="200.0" prefHeight="600.0" prefWidth="227.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
->>>>>>> Stashed changes
                <padding>
                   <Insets top="40.0"/>
                </padding>
@@ -105,7 +97,6 @@
                   </Text>
                   <Line startX="-100.0" endX="61.29" endY="0.79"/>
 
-<<<<<<< Updated upstream
                   <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso"
                           prefHeight="36.0" prefWidth="142.0"
                           styleClass="boton-menu" text="Editar Piso">
@@ -144,81 +135,6 @@
                           prefHeight="36.0" prefWidth="142.0"
                           styleClass="boton-cerrar-sesion" text="Cerrar sesión">
                      <VBox.margin><Insets top="75.0"/></VBox.margin>
-=======
-                  <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="44.0" prefWidth="163.0" styleClass="boton-menu" text="Editar Piso">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-skyscrapers-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefHeight="40.0" prefWidth="165.0" styleClass="boton-menu" text="Editar Usuario">
-                     <font><Font size="13.0" /></font>
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-account-settings-32.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="36.0" prefWidth="164.0" styleClass="boton-menu" text="Agregar Cuenta">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-add-user-female-32.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefHeight="38.0" prefWidth="196.0" styleClass="boton-menu" text="Gestión de reservas">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-event-accepted-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="36.0" prefWidth="168.0" styleClass="boton-menu" text="Estadísticas">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-statistic-64.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-
-                  <!-- NUEVO: Mini Juego para admin -->
-                  <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefHeight="36.0" prefWidth="176.0" styleClass="boton-menu" text="Mini Juego">
-                     <VBox.margin><Insets top="10.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-game-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-
-                  <Button fx:id="btnSalir" onAction="#onActionBtnSalir" prefHeight="36.0" prefWidth="142.0" styleClass="boton-cerrar-sesion" text="Cerrar sesión">
-                     <VBox.margin><Insets top="75.0" /></VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../controller/Images/icons8-logout-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
->>>>>>> Stashed changes
                   </Button>
                </children>
             </VBox>
