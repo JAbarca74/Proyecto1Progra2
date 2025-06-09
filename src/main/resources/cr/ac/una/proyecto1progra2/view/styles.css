@@ -20,6 +20,157 @@
     -fx-text-fill: #333333;
     -fx-prompt-text-fill: #a9a9a9;
 }
+/* Fondo general */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+}
+
+/* Área de juego */
+.snake-game-area {
+    -fx-background-color: #222;
+    -fx-border-color: #555;
+    -fx-border-width: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 10,0,0,2);
+}
+
+/* Líneas de la cuadrícula */
+.snake-grid-overlay {
+    -fx-background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 19px,
+            rgba(255,255,255,0.1) 19px,
+            rgba(255,255,255,0.1) 20px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 19px,
+            rgba(255,255,255,0.1) 19px,
+            rgba(255,255,255,0.1) 20px
+        );
+}
+
+/* Cuerpo y comida */
+.snake-body {
+    -fx-fill: linear-gradient(to right, #76b852, #8DC26F);
+    -fx-stroke: #333;
+    -fx-stroke-width: 1px;
+    -fx-arc-width: 6px;
+    -fx-arc-height: 6px;
+}
+
+.snake-food {
+    -fx-fill: radial-gradient(radius 50%, #ff4e50, #fc913a);
+    -fx-stroke: #222;
+    -fx-stroke-width: 1px;
+    -fx-arc-width: 8px;
+    -fx-arc-height: 8px;
+}
+
+/* Panel de control */
+.snake-control-panel {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-padding: 20;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8,0,0,2);
+}
+
+/* Título */
+.snake-title {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 28px;
+    -fx-text-fill: #333;
+}
+
+/* Puntuación */
+.snake-score {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 16px;
+    -fx-text-fill: #555;
+}
+
+/* Botones */
+.snake-restart-button, .snake-button {
+    -fx-background-color: linear-gradient(to bottom, #ececec, #d4d4d4);
+    -fx-border-color: #bbb;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+}
+.snake-restart-button:hover, .snake-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+}
+
+/* Instrucciones */
+.snake-instructions {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: #444;
+    -fx-padding: 0 10 0 10;
+}
+
+/* Panel de Game Over */
+.snake-game-over-panel {
+    -fx-background-color: rgba(0,0,0,0.7);
+    -fx-padding: 30;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.snake-game-over {
+    -fx-font-family: "Impact";
+    -fx-font-size: 32px;
+    -fx-text-fill: #ff5555;
+}
+
+/* Decoraciones laterales */
+.snake-decoration {
+    -fx-font-size: 36px;
+    -fx-opacity: 0.3;
+}
+
+/* Suelo de madera */
+.wooden-hbox {
+    -fx-background-image: url("/cr/ac/una/proyecto1progra2/images/wood_texture.jpg");
+    -fx-background-repeat: repeat;
+    -fx-opacity: 0.2;
+}
+
+/* área de juego */
+.snake-game-area {
+  -fx-background-color: #000;           /* fondo negro */
+  -fx-border-color: #333;               /* borde gris oscuro */
+}
+
+/* la “rejilla” detrás, opcional */
+.snake-grid-overlay {
+  -fx-background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  -fx-background-size: 20px 20px;
+}
+
+/* cuerpo de la serpiente */
+.snake-body {
+  -fx-fill: #4CAF50; /* verde */
+}
+
+/* comida */
+.snake-food {
+  -fx-fill: #F44336; /* rojo */
+}
+
+/* panel “Game Over” */
+.snake-game-over-panel {
+  -fx-background-color: rgba(0,0,0,0.7);
+  -fx-padding: 20;
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+}
 
 
 .invalid {
