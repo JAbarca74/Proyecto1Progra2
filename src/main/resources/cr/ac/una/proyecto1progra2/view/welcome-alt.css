@@ -1,0 +1,73 @@
+/* Fondo general suave en tonos verdes oscuros */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #c8e6c9, #a5d6a7);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Encabezado */
+.header-pane {
+    -fx-background-color: linear-gradient(to right, #388e3c, #2e7d32);
+    -fx-background-radius: 0 0 20 20;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 6);
+}
+
+/* Avatar */
+.avatar {
+    -fx-background-radius: 100%;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+    -fx-border-color: #1b5e20;
+    -fx-border-width: 2;
+}
+
+/* Textos del header */
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A102A;
+}
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4A102A;
+}
+
+/* Tarjetas métricas en degradado verde oscuro */
+.card-alt {
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-min-width: 180;
+    -fx-min-height: 110;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.3, 0, 8);
+    -fx-background-insets: 0;
+
+    /* degradado verde oscuro */
+    -fx-background-color: linear-gradient(to bottom right, #66bb6a, #388e3c);
+    -fx-transition: all 0.3s ease-in-out;
+}
+.card-alt:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    /* degradado invertido al pasar el ratón */
+    -fx-background-color: linear-gradient(to bottom right, #2e7d32, #66bb6a);
+}
+
+/* Textos dentro de las tarjetas */
+.metric-value-alt {
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.metric-label-alt {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4A102A;
+}
+
+/* Label de última actualización */
+.last-update-alt {
+    -fx-font-size: 12px;
+    -fx-text-fill: #1b5e20;
+    -fx-opacity: 0.9;
+    -fx-padding: 5;
+}

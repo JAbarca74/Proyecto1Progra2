@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="cr.ac.una.proyecto1progra2.controller.PrimaryController"
+           stylesheets="@styles.css"
+           prefWidth="820" prefHeight="620">
+
+    <!-- Panel blanco que se expande automáticamente y distribuye los elementos con más espacio -->
+    <VBox styleClass="panel-blanco-sombra" VBox.vgrow="ALWAYS" alignment="TOP_CENTER" spacing="20">
+        <padding>
+            <Insets top="60" bottom="60" left="120" right="120"/>
+        </padding>
+
+        <Region VBox.vgrow="ALWAYS" />
+
+        <ImageView fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
+            <image>
+                <Image url="@../controller/Images/aa.png" />
+            </image>
+        </ImageView>
+
+        <Label text="FlexSpace" style="-fx-font-size: 32px; -fx-text-fill: green; -fx-font-weight: bold;" />
+        <Label text="Ingresa a tu cuenta" styleClass="label-link-gris" />
+
+        <VBox spacing="12" alignment="CENTER">
+            <Label text="Usuario" styleClass="label-link-gris" />
+            <TextField fx:id="txtUsuario" promptText="Ingresar Usuario" maxWidth="400" />
+
+            <Label text="Contraseña" styleClass="label-link-gris" />
+            <PasswordField fx:id="txtContraseña" promptText="Ingresar Contraseña" maxWidth="400" />
+
+            <Label fx:id="lblErrorLogin" textFill="red" wrapText="true" maxWidth="400" />
+
+            <Button fx:id="btnInicioSesion" text="Iniciar sesión" onAction="#onActionBtnInicioSesion"
+                    maxWidth="400" styleClass="boton-menu-activo" disable="true" />
+
+            <Button fx:id="BtnRegistrarUsuario" text="¿No tienes cuenta? Regístrate aquí"
+                    onAction="#onActionBtnRegistrarUsuario" styleClass="boton-link-verde" />
+
+            <Button fx:id="btnAcercaDe" text="Acerca de"
+                    onAction="#onActionBtnAcercaDe" styleClass="boton-link-verde" />
+        </VBox>
+
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+</StackPane>
