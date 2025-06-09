@@ -8,6 +8,30 @@ public class MusicManager {
 
     private static MediaPlayer backgroundPlayer;
     private static MediaPlayer effectPlayer;
+    
+    
+    /** Reproduce un efecto una vez (loop=false) o en bucle (loop=true). */
+    public static void playEffect(String filename, boolean loop) {
+        stopEffect();
+        try {
+            String resourcePath = "/cr/ac/una/proyecto1progra2/mp3/" + filename;
+            URL url = MusicManager.class.getResource(resourcePath);
+            Media media = new Media(url.toExternalForm());
+            effectPlayer = new MediaPlayer(media);
+            if (loop) effectPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            effectPlayer.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+      public static void stopEffect() {
+        if (effectPlayer != null) {
+            effectPlayer.stop();
+            effectPlayer.dispose();
+            effectPlayer = null;
+        }
+    }
 
     /** Llama esto al arrancar la app para música de fondo. */
     public static void playBackground(String fileName) {
@@ -37,29 +61,6 @@ public class MusicManager {
         if (backgroundPlayer != null) {
             backgroundPlayer.stop();
             backgroundPlayer = null;
-        }
-    }
-
-    /** Efecto puntual (come, muerte, etc). */
-    public static void playEffect(String fileName, boolean loop) {
-        stopEffect();
-        URL res = MusicManager.class.getResource(
-            "/cr/ac/una/proyecto1progra2/mp3/" + fileName
-        );
-        if (res == null) {
-            System.err.println("No encontré efecto: " + fileName);
-            return;
-        }
-        Media m = new Media(res.toExternalForm());
-        effectPlayer = new MediaPlayer(m);
-        effectPlayer.setCycleCount(loop ? MediaPlayer.INDEFINITE : 1);
-        effectPlayer.play();
-    }
-
-    public static void stopEffect() {
-        if (effectPlayer != null) {
-            effectPlayer.stop();
-            effectPlayer = null;
         }
     }
 }

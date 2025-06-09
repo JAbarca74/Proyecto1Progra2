@@ -9,8 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.AboutUsController">
-
+<BorderPane 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="cr.ac.una.proyecto1progra2.controller.AboutUsController"
+    stylesheets="@/cr/ac/una/proyecto1progra2/view/styles.css">
     <!-- Botón Volver arriba a la izquierda -->
     <top>
         <HBox alignment="CENTER_LEFT">

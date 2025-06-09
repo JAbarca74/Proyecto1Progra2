@@ -1,6 +1,7 @@
 package cr.ac.una.proyecto1progra2.controller;
 
 import cr.ac.una.proyecto1progra2.util.FlowController;
+import cr.ac.una.proyecto1progra2.util.MusicManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -19,20 +20,16 @@ private void onActionBtnVolver(ActionEvent event) {
 }
 
 
-    @FXML
-    private void onActionBtnJefferson(ActionEvent event) {
-        System.out.println("Jefferson clickeado");
-    }
+  @FXML private void onActionBtnJefferson() {
+    MusicManager.playEffect("jefferson.mp3", false);
+}
+@FXML private void onActionBtnHarold() {
+    MusicManager.playEffect("harold.mp3", false);
+}
+@FXML private void onActionBtnCristhian() {
+    MusicManager.playEffect("cristhian.mp3", false);
+}
 
-    @FXML
-    private void onActionBtnHarold(ActionEvent event) {
-        System.out.println("Harold clickeado");
-    }
-
-    @FXML
-    private void onActionBtnCristhian(ActionEvent event) {
-        System.out.println("Cristhian clickeado");
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
