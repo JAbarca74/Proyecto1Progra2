@@ -7,119 +7,107 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root"
-            focusTraversable="true"
-            prefHeight="550.0"
-            prefWidth="750.0"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cr.ac.una.proyecto1progra2.controller.MiniGameController"
-            stylesheets="@styles.css">
+<AnchorPane fx:id="root" focusTraversable="true" prefHeight="550.0" prefWidth="750.0" stylesheets="@styles.css, @MiniGame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.MiniGameController">
     <children>
-      <VBox layoutX="20.0" layoutY="15.0" prefHeight="177.0" prefWidth="712.0" spacing="12.0" styleClass="snake-control-panel">
-         <children>
-            <Label styleClass="snake-title" text=" S N A K E   G A M E">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <HBox spacing="10.0">
-               <children>
-                  <VBox spacing="15.0">
-                     <children>
-                        <HBox alignment="CENTER" spacing="20.0">
-                           <children>
-                              <Label fx:id="scoreLabel" styleClass="snake-score" text="PUNTOS: 0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>                       
-                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                           <children>
-                              <Button fx:id="restartButton" onAction="#onActionReiniciar" prefHeight="42.0" prefWidth="162.0" styleClass="snake-restart-button" text="Reiniciar">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Button>
-                                    <Button fx:id="closeButton" onAction="#onActionCerrarMiniJuego" prefHeight="42.0" prefWidth="152.0" styleClass="snake-button" text="Salir">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox spacing="8.0" styleClass="snake-instructions">
-                     <children>
-                        <Label prefHeight="18.0" prefWidth="128.0" styleClass="snake-instruction-title" text="CONTROLES:">
+
+        <!-- Control Panel -->
+        <VBox layoutX="20.0" layoutY="15.0" prefHeight="177.0" prefWidth="712.0" spacing="12.0" styleClass="snake-control-panel">
+            <children>
+                <Label styleClass="snake-title" text=" S N A K E   G A M E">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <HBox spacing="10.0">
+                    <children>
+                        <VBox spacing="15.0">
+                            <children>
+                                <HBox alignment="CENTER" spacing="20.0">
+                                    <children>
+                                        <Label fx:id="scoreLabel" styleClass="snake-score" text="PUNTOS: 0">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <children>
+                                        <Button fx:id="restartButton" onAction="#onActionReiniciar" prefHeight="42.0" prefWidth="162.0" styleClass="snake-restart-button" text="Reiniciar">
+                                            <font><Font size="12.0" /></font>
+                                        </Button>
+                                        <Button fx:id="closeButton" onAction="#onActionCerrarMiniJuego" prefHeight="42.0" prefWidth="152.0" styleClass="snake-button" text="Salir">
+                                            <font><Font size="12.0" /></font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox spacing="8.0" styleClass="snake-instructions">
+                            <children>
+                                <Label prefHeight="18.0" prefWidth="128.0" styleClass="snake-instruction-title" text="CONTROLES:">
+                                    <font><Font size="13.0" /></font>
+                                </Label>
+                                <Label prefHeight="18.0" prefWidth="291.0" text="- Usa las flechas para dirigir">
+                                    <font><Font size="11.0" /></font>
+                                </Label>
+                                <Label text="- Espacio para reiniciar">
+                                    <font><Font size="11.0" /></font>
+                                </Label>
+                                <Label text="- Come la comida para crecer">
+                                    <font><Font size="11.0" /></font>
+                                </Label>
+                                <Label style="-fx-font-style: italic; -fx-font-size: 11px;" text=" Consigue 150+ pts y gana un 30% de descuento" textFill="#eb0000">
                            <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="18.0" prefWidth="291.0" text="-Usa las flechas para direccion">
-                           <font>
-                              <Font size="11.0" />
-                           </font>
-                        </Label>
-                        <Label text="-Espacio para Reiniciar">
-                           <font>
-                              <Font size="11.0" />
-                           </font>
-                        </Label>
-                        <Label text="-Come el puntp para crecer">
-                           <font>
-                              <Font size="11.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <AnchorPane layoutX="50.0" layoutY="220.0" prefHeight="400.0" prefWidth="600.0" styleClass="wooden-hbox">
-      </AnchorPane>
-      <VBox fx:id="gameOverContainer" alignment="CENTER" layoutX="150.0" layoutY="350.0" spacing="20.0" styleClass="snake-game-over-panel" visible="false">
-         <children>
-            <Label fx:id="gameOverLabel" styleClass="snake-game-over" text="☠ GAME OVER ☠" visible="false">
-               <font>
-                  <Font size="26.0" />
-               </font>
-            </Label>
-            <Label styleClass="snake-instructions" text="Presiona ESPACIO para reiniciar">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label styleClass="snake-score" text="Puntaje Final: 0">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
-      <Label layoutX="694.0" layoutY="456.0" styleClass="snake-decoration" text="🏆">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>     
-      <Label layoutX="698.0" layoutY="391.0" styleClass="snake-decoration" text="⚡">
-         <font>
-            <Font size="28.0" />
-         </font>
-      </Label>  
-      <Label layoutX="694.0" layoutY="318.0" styleClass="snake-decoration" text="🎮">
-         <font>
-            <Font size="28.0" />
-         </font>
-      </Label>
-      <Label layoutX="497.0" layoutY="630.0" styleClass="snake-instructions" text="▶️ COME • CRECE• SOBREVIVE◀️">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-   </children>
+                              <Font name="System Bold" size="24.0" />
+                           </font></Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Game Area Placeholder -->
+        <AnchorPane layoutX="50.0" layoutY="220.0" prefHeight="400.0" prefWidth="600.0" styleClass="wooden-hbox" />
+
+        <!-- Game Over Panel -->
+        <VBox fx:id="gameOverContainer" alignment="CENTER" layoutX="150.0" layoutY="350.0" spacing="20.0" styleClass="snake-game-over-panel" visible="false">
+            <children>
+                <Label fx:id="gameOverLabel" styleClass="snake-game-over" text="☠ GAME OVER ☠" visible="false">
+                    <font><Font size="26.0" /></font>
+                </Label>
+                <Label styleClass="snake-instructions" text="Presiona ESPACIO para reiniciar">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <Label styleClass="snake-score" text="Puntaje Final: 0">
+                    <font><Font size="16.0" /></font>
+                </Label>
+            </children>
+        </VBox>
+
+        <!-- Trophy Icon (lights up at ≥150 pts) -->
+        <Label fx:id="trophyIcon" layoutX="694.0" layoutY="456.0" styleClass="snake-decoration" text="🏆">
+            <font><Font size="32.0" /></font>
+        </Label>
+
+        <!-- Lightning Icon (lights up on eating) -->
+        <Label fx:id="lightningIcon" layoutX="698.0" layoutY="391.0" styleClass="snake-decoration" text="⚡">
+            <font><Font size="28.0" /></font>
+        </Label>
+
+        <!-- Console Control Panel (highlights on key press) -->
+        <HBox fx:id="consoleControl" layoutX="50.0" layoutY="190.0" spacing="5.0" styleClass="console-panel">
+            <children>
+                <Label styleClass="console-arrow" text="◀" />
+                <Label styleClass="console-arrow" text="▶" />
+            </children>
+        </HBox>
+
+        <!-- Decorative Gamepad Icon -->
+        <Label layoutX="694.0" layoutY="318.0" styleClass="snake-decoration" text="🎮">
+            <font><Font size="28.0" /></font>
+        </Label>
+
+    </children>
 </AnchorPane>

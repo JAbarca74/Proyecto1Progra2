@@ -1,0 +1,196 @@
+/* MiniGame.css */
+
+/* ==============================================
+   Root & background
+   ============================================== */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #f4f4f4, #e0e0e0);
+}
+
+.active {
+  -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 0, 0.8), 15, 0, 0, 0);
+}
+
+/* Afinaciones opcionales por fx:id */
+#trophyIcon.active {
+  -fx-text-fill: gold;
+}
+#lightningIcon.active {
+  -fx-text-fill: deepskyblue;
+}
+#gamepadIcon.active {
+  -fx-text-fill: limegreen;
+}
+
+/* Clase que ilumina un icono */
+.lit {
+    -fx-effect: dropshadow( gaussian , rgba(255,255,0,0.8) , 20,0.0,0,0 );
+}
+
+/* Clase para el control iluminado al presionar flecha */
+.lit-control {
+    -fx-background-color: rgba(231,111,81,0.5);
+    -fx-border-color: #e76f51;
+    -fx-border-width: 2px;
+}
+
+/* grises por defecto */
+.icon-console, .icon-lightning, .icon-trophy {
+  -fx-opacity: 0.3;
+}
+/* cuando quieras “iluminar” desde el controlador */
+.icon-console.active    { -fx-opacity: 1; }
+.icon-lightning.active  { -fx-opacity: 1; }
+.icon-trophy.active     { -fx-opacity: 1; }
+
+.lit { -fx-opacity: 1; }          /* para iconos */
+.lit-control { -fx-background-color: #abcdef; }  /* o el estilo deseado */
+
+
+/* ==============================================
+   Área de juego: tablero y rejilla
+   ============================================== */
+.snake-game-area {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #888;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.25) , 8, 0.0 , 2 , 2 );
+}
+
+.snake-grid-overlay {
+    /* líneas de rejilla muy sutiles */
+    -fx-background-image:
+        linear-gradient(to right, rgba(200,200,200,0.2) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(200,200,200,0.2) 1px, transparent 1px);
+    -fx-background-size: 20px 20px; /* coincide con UNIT_SIZE */
+}
+
+/* ==============================================
+   Cuerpo de la serpiente y comida
+   ============================================== */
+.snake-body {
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #66bb6a, #388e3c);
+    -fx-arc-width: 6;
+    -fx-arc-height: 6;
+    -fx-stroke: #2e7d32;
+    -fx-stroke-width: 1;
+}
+
+.snake-food {
+    -fx-fill: #e53935;
+    -fx-arc-width: 10;
+    -fx-arc-height: 10;
+    -fx-effect: innershadow( gaussian , rgba(0,0,0,0.4) , 4, 0.0 , 0 , 2 );
+}
+
+/* ==============================================
+   Panel de controles (arriba)
+   ============================================== */
+.snake-control-panel {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-color: #bbb;
+    -fx-border-width: 1;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+}
+
+/* Título grande */
+.snake-title {
+    -fx-text-fill: #333;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+}
+
+/* Puntuación */
+.snake-score {
+    -fx-text-fill: #1e88e5;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Botones */
+.snake-restart-button,
+.snake-button {
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-weight: semi-bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.snake-restart-button:hover,
+.snake-button:hover {
+    -fx-background-color: #1565c0;
+}
+
+/* ==============================================
+   Instrucciones & mensajes extra
+   ============================================== */
+.snake-instructions,
+.snake-instruction-title {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-text-fill: #555;
+}
+
+.snake-instruction-title {
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+/* Bonus: leyenda de descuento */
+.snake-instruction-bonus {
+    -fx-text-fill: #c62828;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-padding: 6 0 0 0;
+}
+
+/* ==============================================
+   Panel GAME OVER
+   ============================================== */
+.snake-game-over-panel {
+    -fx-background-color: rgba(33, 33, 33, 0.8);
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+}
+
+.snake-game-over {
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 4, 0.0 , 2 , 2 );
+}
+
+/* Decoraciones (emojis) */
+.snake-decoration {
+    -fx-font-size: 28px;
+}
+
+/* ==============================================
+   Estilo “madera” para contenedor inferior
+   ============================================== */
+.wooden-hbox {
+    -fx-background-image: url("wood_texture.jpg"); /* pon tu textura aquí */
+    -fx-background-size: cover;
+    -fx-border-color: #5d4037;
+    -fx-border-width: 3;
+}
+
+/* ==============================================
+   Paleta general coherente con el proyecto
+   ============================================== */
+/* Ajusta estos colores según tu styles.css principal */
+:root {
+    /* azules y verdes de la app */
+    --primary-blue: #1e88e5;
+    --accent-red:   #e53935;
+    --text-dark:    #333333;
+    --bg-light:     #f4f4f4;
+}
+

@@ -5,8 +5,11 @@ import cr.ac.una.proyecto1progra2.util.UserManager;
 import cr.ac.una.proyecto1progra2.util.MusicManager;
 import cr.ac.una.proyecto1progra2.util.Sound;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -15,53 +18,43 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 import java.net.URL;
 import java.util.*;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.layout.HBox;
 
 public class MiniGameController implements Initializable {
 
-    @FXML
-    private AnchorPane root;
-    @FXML
-    private Label scoreLabel;
-    @FXML
-    private Button restartButton;
-    @FXML
-    private Button closeButton;
-    @FXML
-    private VBox gameOverContainer;
-    @FXML
-    private Label gameOverLabel;
+    @FXML private AnchorPane root;
+    @FXML private Label scoreLabel;
+    @FXML private Button restartButton;
+    @FXML private Button closeButton;
+    @FXML private VBox gameOverContainer;
+    @FXML private Label gameOverLabel;
+        @FXML private Label trophyIcon;
+    @FXML private Label lightningIcon;
+    @FXML private HBox consoleControl;
+
 
     private AnchorPane gameArea;
-    private final int UNIT_SIZE = 20;
-    private final int WIDTH = 600;
-    private final int HEIGHT = 400;
-
+    private final int UNIT_SIZE = 20, WIDTH = 600, HEIGHT = 400;
     private List<Rectangle> snake = new ArrayList<>();
     private Rectangle food;
     private Direction direction = Direction.RIGHT;
-    private boolean running = false;
-    private int score = 0;
+    private boolean running;
+    private int score;
     private AnimationTimer gameLoop;
-    private long lastUpdate = 0;
+    private long lastUpdate;
     private Stage stage;
     private Random random = new Random();
 
-    private enum Direction {
-        UP, DOWN, LEFT, RIGHT
-    }
+    private enum Direction { UP, DOWN, LEFT, RIGHT }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        MusicManager.pauseBackgroundMusic(); 
-        MusicManager.playEffect("gaming.mp3",true);
+    public void initialize(URL url, ResourceBundle rb) {
+        MusicManager.pauseBackgroundMusic();
+        MusicManager.playEffect("gaming.mp3", true);
 
         gameArea = new AnchorPane();
         gameArea.setPrefSize(WIDTH, HEIGHT);
@@ -80,42 +73,50 @@ public class MiniGameController implements Initializable {
     }
 
     private void startGame() {
-        snake.clear();
-        gameArea.getChildren().clear();
-        direction = Direction.RIGHT;
-        running = true;
-        score = 0;
-        updateScore();
-        gameOverContainer.setVisible(false);
-        gameOverLabel.setVisible(false);
+    // 1) Reiniciar estado
+    snake.clear();
+    gameArea.getChildren().clear();
+    direction = Direction.RIGHT;
+    running = true;
+    score = 0;
+    updateScore();
 
-        Rectangle head = createRectangle(3 * UNIT_SIZE, 0, "snake-body");
-        snake.add(head);
-        gameArea.getChildren().add(head);
+    // 2) Ocultar los paneles de Game Over
+    gameOverContainer.setVisible(false);
+    gameOverLabel.setVisible(false);
 
-        for (int i = 1; i < 3; i++) {
-            Rectangle body = createRectangle((3 - i) * UNIT_SIZE, 0, "snake-body");
-            snake.add(body);
-            gameArea.getChildren().add(body);
-        }
+    // 3) NO QUITAR la clase "lit" del trofeo: así, una vez iluminado,
+    //    permanecerá encendido durante toda la sesión para este usuario.
 
-        spawnFood();
-
-        gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (now - lastUpdate > 150_000_000) {
-                    if (running) {
-                        move();
-                        checkCollision();
-                        checkFood();
-                    }
-                    lastUpdate = now;
-                }
-            }
-        };
-        gameLoop.start();
+    // 4) Crear la cabeza y el cuerpo inicial de la serpiente
+    Rectangle head = createRectangle(3 * UNIT_SIZE, 0, "snake-body");
+    snake.add(head);
+    gameArea.getChildren().add(head);
+    for (int i = 1; i < 3; i++) {
+        Rectangle body = createRectangle((3 - i) * UNIT_SIZE, 0, "snake-body");
+        snake.add(body);
+        gameArea.getChildren().add(body);
     }
+
+    // 5) Colocar la primera comida
+    spawnFood();
+
+    // 6) Arrancar el bucle de animación
+    gameLoop = new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+            if (now - lastUpdate > 150_000_000) {
+                if (running) {
+                    move();
+                    checkCollision();
+                    // La lógica de comer está dentro de move()
+                }
+                lastUpdate = now;
+            }
+        }
+    };
+    gameLoop.start();
+}
 
     private Rectangle createRectangle(double x, double y, String styleClass) {
         Rectangle rect = new Rectangle(UNIT_SIZE, UNIT_SIZE);
@@ -127,13 +128,11 @@ public class MiniGameController implements Initializable {
 
     private void move() {
         Rectangle head = snake.get(0);
-        double x = head.getLayoutX();
-        double y = head.getLayoutY();
-
+        double x = head.getLayoutX(), y = head.getLayoutY();
         switch (direction) {
-            case UP: y -= UNIT_SIZE; break;
-            case DOWN: y += UNIT_SIZE; break;
-            case LEFT: x -= UNIT_SIZE; break;
+            case UP:    y -= UNIT_SIZE; break;
+            case DOWN:  y += UNIT_SIZE; break;
+            case LEFT:  x -= UNIT_SIZE; break;
             case RIGHT: x += UNIT_SIZE; break;
         }
 
@@ -141,12 +140,16 @@ public class MiniGameController implements Initializable {
         gameArea.getChildren().add(newHead);
         snake.add(0, newHead);
 
-        head.getStyleClass().remove("snake-body");
-        head.getStyleClass().add("snake-body");
-
         if (food != null && newHead.getBoundsInParent().intersects(food.getBoundsInParent())) {
             gameArea.getChildren().remove(food);
             Sound.playEatPoint();
+
+            // ilumina rayo
+            lightningIcon.getStyleClass().add("lit");
+            PauseTransition flash = new PauseTransition(Duration.millis(200));
+            flash.setOnFinished(e -> lightningIcon.getStyleClass().remove("lit"));
+            flash.play();
+
             spawnFood();
             score += 10;
             updateScore();
@@ -158,47 +161,35 @@ public class MiniGameController implements Initializable {
 
     private void checkCollision() {
         Rectangle head = snake.get(0);
-        double x = head.getLayoutX();
-        double y = head.getLayoutY();
-
-        if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT ||
-                snake.stream().skip(1).anyMatch(part -> part.getLayoutX() == x && part.getLayoutY() == y)) {
+        double x = head.getLayoutX(), y = head.getLayoutY();
+        boolean selfHit = snake.stream()
+                .skip(1)
+                .anyMatch(p -> p.getLayoutX() == x && p.getLayoutY() == y);
+        if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT || selfHit) {
             endGame();
             Sound.playLose();
         }
     }
 
-    private void checkFood() {
-        if (food == null) return;
-        Rectangle head = snake.get(0);
-        if (head.getBoundsInParent().intersects(food.getBoundsInParent())) {
-
-            }
-        }
-
     private void spawnFood() {
-    int cols = WIDTH / UNIT_SIZE;
-    int rows = HEIGHT / UNIT_SIZE;
-    int x, y;
-    boolean valid;
-
-    do {
-        x = random.nextInt(cols) * UNIT_SIZE;
-        y = random.nextInt(rows) * UNIT_SIZE;
-        valid = true;
-
-        for (Rectangle part : snake) {
-            if (part.getLayoutX() == x && part.getLayoutY() == y) {
-                valid = false;
-                break;
+        int cols = WIDTH / UNIT_SIZE, rows = HEIGHT / UNIT_SIZE;
+        int x, y;
+        boolean valid;
+        do {
+            x = random.nextInt(cols) * UNIT_SIZE;
+            y = random.nextInt(rows) * UNIT_SIZE;
+            valid = true;
+            for (Rectangle part : snake) {
+                if (part.getLayoutX() == x && part.getLayoutY() == y) {
+                    valid = false;
+                    break;
+                }
             }
-        }
-    } while (!valid);
+        } while (!valid);
 
-    food = createRectangle(x, y, "snake-food");
-    gameArea.getChildren().add(food);
-}
-
+        food = createRectangle(x, y, "snake-food");
+        gameArea.getChildren().add(food);
+    }
 
     private void updateScore() {
         scoreLabel.setText("PUNTOS: " + score);
@@ -210,64 +201,75 @@ public class MiniGameController implements Initializable {
             return;
         }
         if (!running) return;
+
+        // ilumina control
+        consoleControl.getStyleClass().add("lit-control");
+        PauseTransition t = new PauseTransition(Duration.millis(100));
+        t.setOnFinished(e -> consoleControl.getStyleClass().remove("lit-control"));
+        t.play();
+
         switch (event.getCode()) {
-            case UP: if (direction != Direction.DOWN) direction = Direction.UP; break;
-            case DOWN: if (direction != Direction.UP) direction = Direction.DOWN; break;
-            case LEFT: if (direction != Direction.RIGHT) direction = Direction.LEFT; break;
-            case RIGHT: if (direction != Direction.LEFT) direction = Direction.RIGHT; break;
+            case UP:    if (direction != Direction.DOWN)  direction = Direction.UP;    break;
+            case DOWN:  if (direction != Direction.UP)    direction = Direction.DOWN;  break;
+            case LEFT:  if (direction != Direction.RIGHT) direction = Direction.LEFT;  break;
+            case RIGHT: if (direction != Direction.LEFT)  direction = Direction.RIGHT; break;
+            default: break;
         }
     }
-private void endGame() {
-    // 1) Detén el juego
-    running = false;
-    if (gameLoop != null) gameLoop.stop();
 
-    // 2) Muestra tu panel Game Over
-    gameOverContainer.setVisible(true);
-    gameOverLabel.setVisible(true);
-    Label finalScore = (Label) gameOverContainer.getChildren().get(2);
-    finalScore.setText("PUNTOS: " + score);
+    private void endGame() {
+        running = false;
+        if (gameLoop != null) gameLoop.stop();
 
-    // 3) Si toca el descuento
-    if (score >= 100 && !UserManager.hasDiscountCode()) {
-        String code = DiscountManager.generateCode(12);
-        UserManager.assignDiscountCode(code);
+        gameOverContainer.setVisible(true);
+        gameOverLabel.setVisible(true);
+        Label finalScore = (Label) gameOverContainer.getChildren().get(2);
+        finalScore.setText("PUNTOS: " + score);
 
-        // 4) Programa el Alert para que se muestre DESPUÉS del frame actual
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("¡Has ganado un descuento!");
-            alert.setHeaderText("Felicidades: llegaste a " + score + " puntos");
-            // construimos un VBox para mezclar texto normal + negrita
-            Label line1 = new Label("Por ser un gran jugador, obtienes un 30% de descuento.");
-            Label codeLabel = new Label(code);
-            codeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #e76f51;");
-            Label line3 = new Label("Este código se canjeará UNA sola vez en el local al momento de cancelar.");
-            VBox content = new VBox(10, line1, codeLabel, line3);
-            content.setPadding(new Insets(10));
-            alert.getDialogPane().setContent(content);
+        // ilumina trofeo al superar 150
+        if (score >= 150) {
+            trophyIcon.getStyleClass().add("lit");
+        }
 
-            alert.showAndWait();
-        });
+        // decide descuento
+        int discount = score >= 150 ? 30 : (score >= 100 ? 15 : 0);
+        if (discount > 0 && !UserManager.hasDiscountCode()) {
+            String raw = DiscountManager.generateCode(12);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < raw.length(); i++) {
+                if (i > 0 && i % 4 == 0) sb.append('-');
+                sb.append(raw.charAt(i));
+            }
+            String code = sb.toString();
+            UserManager.assignDiscountCode(code);
+
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("¡Descuento " + discount + "%!");
+                alert.setHeaderText("¡Felicidades! Alcanzaste " + score + " puntos");
+                Label l1 = new Label("Obtienes un " + discount + "% de descuento.");
+                Label c  = new Label(code);
+                c.setStyle("-fx-font-weight:bold; -fx-font-size:16px; -fx-text-fill:#e76f51;");
+                Label l3 = new Label("No lo pierdas. Canjéalo una sola vez al cancelar.");
+                VBox vb = new VBox(10, l1, c, l3);
+                vb.setPadding(new Insets(10));
+                alert.getDialogPane().setContent(vb);
+                alert.showAndWait();
+            });
+        }
     }
-}
 
-
-
-    @FXML
-    private void onActionReiniciar() {
+    @FXML private void onActionReiniciar() {
         startGame();
         root.requestFocus();
     }
-
-    @FXML
-    private void onActionCerrarMiniJuego() {
+    @FXML private void onActionCerrarMiniJuego() {
         if (stage == null && closeButton != null) {
             stage = (Stage) closeButton.getScene().getWindow();
         }
         if (stage != null) {
-             MusicManager.stopEffect();  
-        MusicManager.resumeBackgroundMusic();
+            MusicManager.stopEffect();
+            MusicManager.resumeBackgroundMusic();
             stage.close();
         }
     }
