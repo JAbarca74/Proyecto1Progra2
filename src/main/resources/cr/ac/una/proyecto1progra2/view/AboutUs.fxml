@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cr.ac.una.proyecto1progra2.controller.AboutUsController"
-            stylesheets="@styles.css">
+<BorderPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.AboutUsController">
 
     <!-- Botón Volver arriba a la izquierda -->
     <top>
         <HBox alignment="CENTER_LEFT">
-            <padding><Insets top="15" left="15" /></padding>
-            <Button fx:id="btnVolver" text="← Volver" onAction="#onActionBtnVolver" styleClass="boton-menu-activo" />
+            <padding><Insets left="15" top="15" /></padding>
+            <Button fx:id="btnVolver" onAction="#onActionBtnVolver" styleClass="boton-menu-activo" text="← Volver">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin></Button>
         </HBox>
     </top>
 
     <!-- Contenido principal en el centro -->
     <center>
         <VBox alignment="TOP_CENTER" spacing="18.0">
-            <padding><Insets top="30" bottom="30" left="40" right="40"/></padding>
+            <padding><Insets bottom="30.0" left="40.0" right="40.0" /></padding>
+         <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../controller/Images/aa.png" />
+            </image>
+         </ImageView>
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Sistema de Reservas" />
+            <Label styleClass="texto-version" text="Versión 1.0.0" />
 
-            <Label text="FlexSpace" style="-fx-font-size: 28px; -fx-text-fill: green; -fx-font-weight: bold;" />
-            <Label text="Sistema de Reservas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <Label text="Versión 1.0.0" styleClass="texto-version" />
+            <Label maxWidth="480" styleClass="texto-parrafo" text="Esta aplicación fue desarrollada como parte del curso de Programación II en la Universidad Nacional. Su objetivo es facilitar la gestión de espacios de coworking mediante una interfaz amigable y moderna." textAlignment="CENTER" wrapText="true" />
 
-            <Label text="Esta aplicación fue desarrollada como parte del curso de Programación II en la Universidad Nacional. Su objetivo es facilitar la gestión de espacios de coworking mediante una interfaz amigable y moderna."
-                   wrapText="true" maxWidth="480" styleClass="texto-parrafo" />
+            <Label style="-fx-font-weight: bold;" styleClass="subtitulo" text="Misión" />
+            <Label maxWidth="480" styleClass="texto-parrafo" text="Brindar una solución eficiente y accesible para la administración de espacios de trabajo compartido, promoviendo la productividad y el orden institucional." textAlignment="CENTER" wrapText="true" />
 
-            <Label text="Misión" style="-fx-font-weight: bold;" styleClass="subtitulo" />
-            <Label text="Brindar una solución eficiente y accesible para la administración de espacios de trabajo compartido, promoviendo la productividad y el orden institucional."
-                   wrapText="true" maxWidth="480" styleClass="texto-parrafo" />
+            <Label style="-fx-font-weight: bold;" styleClass="subtitulo" text="Visión" />
+            <Label maxWidth="480" styleClass="texto-parrafo" text="Ser una herramienta referencial para la reserva de espacios a nivel universitario, impulsando la transformación digital en los entornos académicos." textAlignment="CENTER" wrapText="true" />
 
-            <Label text="Visión" style="-fx-font-weight: bold;" styleClass="subtitulo" />
-            <Label text="Ser una herramienta referencial para la reserva de espacios a nivel universitario, impulsando la transformación digital en los entornos académicos."
-                   wrapText="true" maxWidth="480" styleClass="texto-parrafo" />
+            <Label style="-fx-font-weight: bold;" styleClass="subtitulo" text="Valores" />
+            <Label maxWidth="480" styleClass="texto-parrafo" text="Responsabilidad, eficiencia, accesibilidad, respeto y mejora continua." textAlignment="CENTER" wrapText="true" />
 
-            <Label text="Valores" style="-fx-font-weight: bold;" styleClass="subtitulo" />
-            <Label text="Responsabilidad, eficiencia, accesibilidad, respeto y mejora continua."
-                   wrapText="true" maxWidth="480" styleClass="texto-parrafo" />
-
-            <Label text="Autores" style="-fx-font-weight: bold;" styleClass="subtitulo" />
+            <Label style="-fx-font-weight: bold;" styleClass="subtitulo" text="Autores" />
             <HBox alignment="CENTER" spacing="16">
-                <Button fx:id="btnJefferson" text="Jefferson Abarca" onAction="#onActionBtnJefferson" styleClass="boton-link-verde" />
-                <Button fx:id="btnHarold" text="Harold Avila" onAction="#onActionBtnHarold" styleClass="boton-link-verde" />
-                <Button fx:id="btnCristhian" text="Cristhian Cordero" onAction="#onActionBtnCristhian" styleClass="boton-link-verde" />
+                <Button fx:id="btnJefferson" onAction="#onActionBtnJefferson" styleClass="boton-link-verde" text="Jefferson Abarca" />
+                <Button fx:id="btnHarold" onAction="#onActionBtnHarold" styleClass="boton-link-verde" text="Harold Avila" />
+                <Button fx:id="btnCristhian" onAction="#onActionBtnCristhian" styleClass="boton-link-verde" text="Cristhian Cordero" />
             </HBox>
         </VBox>
     </center>
