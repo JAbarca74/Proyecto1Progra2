@@ -527,3 +527,11 @@
     -fx-font-size: 13px;
     -fx-cursor: hand;
 }
+
+/* Para el botón de admin */
+.boton-cerrar-sesion {
+    -fx-background-color: #E53935; /* rojo medio */
+    -fx-text-fill: white;
+}
+
+

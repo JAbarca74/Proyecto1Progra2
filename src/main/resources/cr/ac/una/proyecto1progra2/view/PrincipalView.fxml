@@ -24,7 +24,7 @@
             <children>
 
                 <!-- Menú de usuario -->
-                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
                         <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
@@ -55,7 +55,7 @@
                         </ImageView>
                      </graphic>
                         </Button>
-                        <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1" prefWidth="160" styleClass="boton-menu" text="Cerrar sesión">
+                        <Button fx:id="btnSalir1" onAction="#onActionBtnSalir1" prefWidth="160" styleClass="boton-cerrar-sesion" text="Cerrar sesión">
                             <VBox.margin><Insets top="30" /></VBox.margin>
                      <graphic>
                         <ImageView fitHeight="55.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
@@ -69,7 +69,7 @@
                 </VBox>
 
                 <!-- Menú de admin -->
-                <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
                         <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
