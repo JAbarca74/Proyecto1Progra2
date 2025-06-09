@@ -45,32 +45,42 @@ public class ReservationsService {
     /**
      * Persiste una nueva reserva en la BD.
      */
-    public boolean guardarReserva(Long userId,
-                                  Long coworkingSpaceId,
-                                  LocalDate fecha,
-                                  LocalTime horaInicio,
-                                  LocalTime horaFin) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            Reservations r = new Reservations();
-            r.setUserId(em.getReference(Usuarios.class, userId));
-            r.setCoworkingSpaceId(em.getReference(CoworkingSpaces.class, coworkingSpaceId));
-            r.setReservationDate(fecha);
-            r.setStartTime(horaInicio);
-            r.setEndTime(horaFin);
-            em.persist(r);
-            em.getTransaction().commit();
-            return true;
-        } catch (Exception ex) {
-            if (em.getTransaction().isActive()) em.getTransaction().rollback();
-            ex.printStackTrace();
-            return false;
-        } finally {
-            em.close();
-        }
+   public boolean guardarReserva(Long userId,
+                              Long coworkingSpaceId,
+                              LocalDate fecha,
+                              LocalTime horaInicio,
+                              LocalTime horaFin) {
+    if (userId == null || coworkingSpaceId == null || fecha == null ||
+        horaInicio == null || horaFin == null || !horaInicio.isBefore(horaFin)) {
+        return false;
     }
 
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        // Validar traslape antes de guardar
+        List<Reservations> existentes = buscarReservasTraslapadas(coworkingSpaceId, fecha, horaInicio, horaFin);
+        if (!existentes.isEmpty()) {
+            return false; // ya existe una reserva en ese horario
+        }
+
+        em.getTransaction().begin();
+        Reservations r = new Reservations();
+        r.setUserId(em.getReference(Usuarios.class, userId));
+        r.setCoworkingSpaceId(em.getReference(CoworkingSpaces.class, coworkingSpaceId));
+        r.setReservationDate(fecha);
+        r.setStartTime(horaInicio);
+        r.setEndTime(horaFin);
+        em.persist(r);
+        em.getTransaction().commit();
+        return true;
+    } catch (Exception ex) {
+        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+        ex.printStackTrace();
+        return false;
+    } finally {
+        em.close();
+    }
+}
     /**
      * Devuelve la lista de IDs de espacios que están ocupados en un rango dado.
      */

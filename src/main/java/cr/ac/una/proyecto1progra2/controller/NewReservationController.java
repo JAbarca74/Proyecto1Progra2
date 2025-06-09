@@ -230,69 +230,7 @@ Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Re
         }
     }
 
-    private StackPane crearCeldaEspacio(SpaceVisual espacio, boolean estaOcupado) {
-    StackPane stack = new StackPane();
-    stack.getStyleClass().add("stack-celda");
-
-    Rectangle rect = new Rectangle(100 * espacio.getColSpan(), 70 * espacio.getRowSpan());
-    rect.setArcWidth(40);
-    rect.setArcHeight(40);
-    rect.setStroke(Color.TRANSPARENT);
-    rect.getStyleClass().add("celda-rect");
-
-    if (estaOcupado) {
-        rect.setFill(Color.GRAY);
-    } else {
-        String nombre = espacio.getSpace().getNombre().toLowerCase();
-        if (nombre.contains("sala")) rect.setFill(Color.web("#2196F3"));
-    else if (nombre.contains("área")) rect.setFill(Color.web("#9C27B0"));
-    else if (nombre.contains("libre")) rect.setFill(Color.web("#4CAF50")); // gris oscuro
-    else if (nombre.contains("e")) rect.setFill(Color.web("#FF5722"));
-        else rect.setFill(Color.LIGHTGRAY);
-    }
-
-    Text text = new Text(espacio.getSpace().getNombre());
-    text.setFill(Color.WHITE);
-    text.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-
-    stack.getChildren().addAll(rect, text);
-
-    // Comportamiento al hacer clic
-    stack.setOnMouseClicked(event -> {
-        if (estaOcupado) {
-             reproducirSonido("correct-cbt.wav");
-            Utilities.showAlert(Alert.AlertType.WARNING, "Espacio ocupado", "Este espacio ya está reservado.");
-            return;
-        }
-        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
-        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
-        LocalTime horaFin = ComboBoxHoraFin1.getValue();
-        Long userId = UserManager.getCurrentUser().getId();
-        if (fecha == null || horaInicio == null || horaFin == null) {
-            Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
-            return;
-        }
-        CoworkingSpaces coworking = espacio.getSpace().getCoworkingSpace();
-        if (coworking == null) {
-            reproducirSonido("correct-cbt.wav");
-            Utilities.showAlert(Alert.AlertType.ERROR, "Error", "Este espacio no tiene CoworkingSpace asociado.");
-            return;
-        }
-        boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
-        if (guardado) {
-            reproducirSonido("intro-sound-bell-269297-_1_.wav"); 
-          
-Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
-            
-            cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
-        } else {
-            reproducirSonido("correct-cbt.wav");
-            Utilities.showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar la reserva.");
-        }
-    });
-
-    return stack;
-}
+   
     private int obtenerPisoSeleccionado() {
         return ComboBoxPiso.getSelectionModel().getSelectedIndex();
     }
@@ -346,6 +284,84 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
 // Por ejemplo, dentro de buscarEspacios()
 // colorearCalendario();
 
+
+  private StackPane crearCeldaEspacio(SpaceVisual espacio, boolean estaOcupado) {
+    StackPane stack = new StackPane();
+    stack.getStyleClass().add("stack-celda");
+
+    Rectangle rect = new Rectangle(100 * espacio.getColSpan(), 70 * espacio.getRowSpan());
+    rect.setArcWidth(40);
+    rect.setArcHeight(40);
+    rect.setStroke(Color.TRANSPARENT);
+    rect.getStyleClass().add("celda-rect");
+
+    if (estaOcupado) {
+        rect.setFill(Color.GRAY);
+    } else {
+        String nombre = espacio.getSpace().getNombre().toLowerCase();
+        if (nombre.contains("sala")) rect.setFill(Color.web("#2196F3"));
+        else if (nombre.contains("área")) rect.setFill(Color.web("#9C27B0"));
+        else if (nombre.contains("libre")) rect.setFill(Color.web("#4CAF50"));
+        else if (nombre.contains("e")) rect.setFill(Color.web("#FF5722"));
+        else rect.setFill(Color.LIGHTGRAY);
+    }
+
+    Text text = new Text(espacio.getSpace().getNombre());
+    text.setFill(Color.WHITE);
+    text.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+    stack.getChildren().addAll(rect, text);
+
+    // Evento al hacer clic en la celda
+    stack.setOnMouseClicked(event -> {
+        if (estaOcupado) {
+            reproducirSonido("correct-cbt.wav");
+            Utilities.showAlert(Alert.AlertType.WARNING, "Espacio ocupado", "Este espacio ya está reservado.");
+            return;
+        }
+
+        LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
+        LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
+        LocalTime horaFin = ComboBoxHoraFin1.getValue();
+        Long userId = UserManager.getCurrentUser().getId();
+
+        if (fecha == null || horaInicio == null || horaFin == null) {
+            Utilities.showAlert(Alert.AlertType.WARNING, "Datos incompletos", "Complete todos los campos para reservar.");
+            return;
+        }
+
+        // Obtener el coworking correctamente desde la base
+        CoworkingSpaces coworking = spacesService.obtenerCoworkingSpacePorSpaceId(espacio.getSpace().getId());
+
+        if (coworking == null) {
+            reproducirSonido("correct-cbt.wav");
+            Utilities.showAlert(Alert.AlertType.ERROR, "Error", "Este espacio no tiene CoworkingSpace asociado.");
+            return;
+        }
+
+        boolean traslape = !reservationsService
+                .buscarReservasTraslapadas(coworking.getId(), fecha, horaInicio, horaFin)
+                .isEmpty();
+
+        if (traslape) {
+            reproducirSonido("correct-cbt.wav");
+            Utilities.showAlert(Alert.AlertType.WARNING, "Horario en conflicto", "Ya existe una reserva para este espacio en ese horario.");
+            return;
+        }
+
+        boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
+
+        if (guardado) {
+            reproducirSonido("intro-sound-bell-269297-_1_.wav");
+            Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada correctamente!");
+            cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+        } else {
+            reproducirSonido("correct-cbt.wav");
+            Utilities.showAlert(Alert.AlertType.ERROR, "Error inesperado", "No se pudo registrar la reserva. Intente nuevamente.");
+        }
+    });
+
+    return stack;
+}
 
     @Override
     public void initialize() {
