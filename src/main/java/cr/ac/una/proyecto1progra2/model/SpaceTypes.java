@@ -13,34 +13,27 @@ import javax.persistence.*;
 public class SpaceTypes implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "space_types_seq_gen")
+    @SequenceGenerator(name = "space_types_seq_gen", sequenceName = "SPACE_TYPES_SEQ", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
 
     @Column(name = "TYPE_NAME")
     private String typeName;
 
-
     public SpaceTypes() {}
 
-    /** Para crear desde un DTO */
     public SpaceTypes(SpaceTypesDto dto) {
         this.id = dto.getId();
         actualizar(dto);
     }
 
-    /** Actualiza campos desde el DTO */
     public void actualizar(SpaceTypesDto dto) {
         this.typeName = dto.getTypeName();
-      
     }
 
-    // Getters / setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getTypeName() { return typeName; }
     public void setTypeName(String typeName) { this.typeName = typeName; }
-
- 
 }
