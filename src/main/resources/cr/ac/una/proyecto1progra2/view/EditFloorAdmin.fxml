@@ -76,7 +76,7 @@
                                        <children>
                                                   <Label minHeight="30.0" minWidth="100.0" style="-fx-padding: 5 10 5 10; -fx-font-size: 20px; -fx-font-weight: bold;" styleClass="label-fijo" text="Editar">
                                                       <VBox.margin>
-                                                        <Insets right="250.0" top="50.0" />
+                                                        <Insets right="450.0" top="50.0" />
                                                       </VBox.margin>
                                                   </Label>
                                        </children>
@@ -110,7 +110,7 @@
                                        </VBox.margin>
                                     </VBox>
 
-                                            <VBox alignment="CENTER" prefHeight="381.0" prefWidth="818.0">
+                                            <VBox alignment="CENTER" prefHeight="394.0" prefWidth="888.0">
                                                 <children>
                                                     <HBox alignment="CENTER" prefHeight="31.0" prefWidth="320.0">
                                                         <children>
@@ -141,7 +141,7 @@
                                              </VBox.margin>
                                                     </Button>
 
-                                                <VBox alignment="CENTER_LEFT" prefHeight="146.0" prefWidth="698.0" styleClass="panel-blanco-sombra">
+                                                <VBox alignment="CENTER_LEFT" prefHeight="214.0" prefWidth="573.0" styleClass="panel-blanco-sombra">
                                                     <children>
                                                         <Label fx:id="LabelCapacidadTotal" style="-fx-text-fill: black; -fx-font-size: 16px;" text="Capacidad total: 0">
                                                    <VBox.margin>
@@ -159,7 +159,7 @@
                                                         </TextField>
                                                     </children>
                                              <VBox.margin>
-                                                <Insets left="120.0" top="50.0" />
+                                                <Insets left="100.0" right="100.0" top="50.0" />
                                              </VBox.margin>
                                                 </VBox>
                                                 </children>
@@ -176,6 +176,8 @@
                             </HBox>
                         </children>
                     </AnchorPane>
+                  <Label layoutX="187.0" layoutY="1026.0" text="FlexSpace v2.3.1 es una plataforma integral de gestión de espacios colaborativos." />
+                  <Label layoutX="8.0" layoutY="1055.0" prefHeight="15.0" prefWidth="796.0" text="Diseñada bajo la Ley N°8427 de Optimización Espacial y Bienestar Laboral, permite la organización flexible, visual y eficiente de oficinas compartidas." />
                </children>
             </AnchorPane>
         </content>

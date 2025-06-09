@@ -182,21 +182,21 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
     }
 }
 
-    public List<SpaceVisual> obtenerEspaciosConPosicion() {
+   public List<SpaceVisual> obtenerEspaciosConPosicion() {
     EntityManager em = emf.createEntityManager();
     List<SpaceVisual> listaVisual = new ArrayList<>();
     try {
-        List<Spaces> espacios = em.createQuery("SELECT s FROM Spaces s", Spaces.class).getResultList();
+        List<Spaces> espacios = em.createQuery(
+            "SELECT s FROM Spaces s JOIN FETCH s.coworkingSpace", Spaces.class
+        ).getResultList();
+
         for (Spaces space : espacios) {
             SpacesDto dto = new SpacesDto(space);
-            // 👇 Relación directa desde Spaces al CoworkingSpaces
-            dto.setCoworkingSpace(space.getCoworkingSpace());
-
+            dto.setCoworkingSpace(space.getCoworkingSpace()); // ya viene cargado
             int fila = dto.getRow();
             int columna = dto.getColumn();
             int rowSpan = dto.getRowSpan() != null && dto.getRowSpan() > 0 ? dto.getRowSpan() : 1;
             int colSpan = dto.getColSpan() != null && dto.getColSpan() > 0 ? dto.getColSpan() : 1;
-
             listaVisual.add(new SpaceVisual(dto, fila, columna, rowSpan, colSpan));
         }
     } catch (Exception e) {
