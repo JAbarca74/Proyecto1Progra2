@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -23,7 +22,6 @@ import javafx.stage.Stage;
 
 public class PrincipalViewController extends Controller implements Initializable {
 
-    // --- Botones existentes ---
     @FXML private Button btnEditarUsuario;
     @FXML private Button btnRegisterNewAccount;
     @FXML private Button btnRegisterAdminAccount;
@@ -32,11 +30,7 @@ public class PrincipalViewController extends Controller implements Initializable
     @FXML private Button btnReservar;
     @FXML private Button btnStatistics;
     @FXML private Button btnSalir1;
-    // --------------------------
-
-    // --- NUEVO: Mini Juego (compartido para usuario y admin) ---
     @FXML private Button btnMiniJuego;
-    // ----------------------------------------------------------
 
     @FXML private VBox VBoxMenuAdmin;
     @FXML private VBox VBoxMenuUsuario;
@@ -46,7 +40,10 @@ public class PrincipalViewController extends Controller implements Initializable
         if (UserManager.isAdmin()) {
             VBoxMenuAdmin.setVisible(true);
             VBoxMenuUsuario.setVisible(false);
-            Platform.runLater(() -> FlowController.getInstance().goView("WelcomeView"));
+            Platform.runLater(() -> {
+                FlowController.getInstance().limpiarLoader("WelcomeView");
+                FlowController.getInstance().goView("WelcomeView");
+            });
         } else if (UserManager.isRegularUser()) {
             VBoxMenuUsuario.setVisible(true);
             VBoxMenuAdmin.setVisible(false);
@@ -55,21 +52,25 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private void onActionBtnEditarUsuario(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("EditDeleteUser");
         FlowController.getInstance().goView("EditDeleteUser");
     }
 
     @FXML
     private void onRegisterAdminAccount(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("RegisterNewAdmin");
         FlowController.getInstance().goView("RegisterNewAdmin");
     }
 
     @FXML
     private void onActionBtnReservar(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("NewReservation");
         FlowController.getInstance().goView("NewReservation");
     }
 
     @FXML
     private void onActionBtnEditarPiso(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("EditFloorAdmin");
         FlowController.getInstance().goView("EditFloorAdmin");
     }
 
@@ -91,6 +92,7 @@ public class PrincipalViewController extends Controller implements Initializable
 
     @FXML
     private void onStatistics(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("Reports");
         FlowController.getInstance().goView("Reports");
     }
 
@@ -99,47 +101,43 @@ public class PrincipalViewController extends Controller implements Initializable
         FlowController.getInstance().limpiarLoader("ReservationManagement");
         FlowController.getInstance().goView("ReservationManagement");
     }
-@FXML
-private void onActionMiniJuego(ActionEvent event) {
-    try {
-        // 1) Cargamos el FXML del mini-juego
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("/cr/ac/una/proyecto1progra2/view/MiniGame.fxml")
-        );
-        Parent miniRoot = loader.load();
 
-        // 2) Creamos un Stage modal
-        Stage miniStage = new Stage();
-        // Lo parentizamos sobre la ventana que disparó el evento
-        Stage owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        miniStage.initOwner(owner);
-        miniStage.initModality(Modality.APPLICATION_MODAL);
-        miniStage.setTitle("Mini Juego");
-        miniStage.setScene(new Scene(miniRoot));
+    @FXML
+    private void onActionMiniJuego(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/cr/ac/una/proyecto1progra2/view/MiniGame.fxml")
+            );
+            Parent miniRoot = loader.load();
 
-        // 3) Le pasamos el Stage al controlador
-        MiniGameController ctrl = loader.getController();
-        ctrl.setStage(miniStage);
+            Stage miniStage = new Stage();
+            Stage owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            miniStage.initOwner(owner);
+            miniStage.initModality(Modality.APPLICATION_MODAL);
+            miniStage.setTitle("Mini Juego");
+            miniStage.setScene(new Scene(miniRoot));
 
-        // 4) Mostramos y esperamos hasta que se cierre
-        miniStage.showAndWait();
+            MiniGameController ctrl = loader.getController();
+            ctrl.setStage(miniStage);
 
-    } catch (IOException ex) {
-        ex.printStackTrace();
-        mostrarAlerta("No se pudo cargar el mini-juego:\n" + ex.getMessage());
+            miniStage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            mostrarAlerta("No se pudo cargar el mini-juego:\n" + ex.getMessage());
+        }
     }
-}
-
 
     @Override
     public void initialize() {
-        
+        // No usado
     }
+
     private void mostrarAlerta(String mensaje) {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(null);
-    alert.setContentText(mensaje);
-    alert.showAndWait();
-}
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }
