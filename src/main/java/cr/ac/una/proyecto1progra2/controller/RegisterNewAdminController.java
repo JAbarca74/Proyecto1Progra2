@@ -1,5 +1,8 @@
 package cr.ac.una.proyecto1progra2.controller;
 
+import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
+import cr.ac.una.proyecto1progra2.service.UsuariosService;
+import cr.ac.una.proyecto1progra2.util.Respuesta;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -21,18 +24,60 @@ public class RegisterNewAdminController extends Controller implements Initializa
     @FXML private Button btnCrearCuenta;
  
 
-    @FXML public void initialize() {
+    @FXML@Override
+ public void initialize() {
     }
 
-    @FXML private void onActionBtnCrearCuenta(ActionEvent event) {
-        if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
-            new Alert(Alert.AlertType.ERROR, "Las contraseñas no coinciden").show();
-            return;
-        }
-        // TODO: persiste administrador con rol ADMIN
-        new Alert(Alert.AlertType.INFORMATION, "Administrador creado con éxito").show();
-        
+    @FXML
+
+private void onActionBtnCrearCuenta(ActionEvent event) {
+    // Verificar que las contraseñas coincidan
+    if (!txtPassword.getText().equals(txtPasswordConfirm.getText())) {
+        new Alert(Alert.AlertType.ERROR, "Las contraseñas no coinciden").show();
+        return;
     }
+
+    try {
+        // Construir el DTO
+        UsuariosDto dto = new UsuariosDto();
+        dto.setUsername(txtUsername.getText().trim());
+        dto.setCorreo(txtEmail.getText().trim());
+        dto.setContraseña(txtPassword.getText().trim());
+        dto.setNombre(txtName.getText().trim());
+        dto.setApellido(txtLastName.getText().trim());
+        dto.setRolId(1L);       // Rol ADMIN
+        dto.setEstado(true);    // Activo
+
+        // Guardar usuario (sin usar clase Respuesta)
+        UsuariosService userService = new UsuariosService();
+        userService.guardarUsuario(dto);  // Si lanza error, será capturado
+
+        new Alert(Alert.AlertType.INFORMATION, "Administrador creado con éxito").show();
+
+        // Limpiar campos
+        txtUsername.clear();
+        txtEmail.clear();
+        txtPassword.clear();
+        txtPasswordConfirm.clear();
+        txtName.clear();
+        txtLastName.clear();
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        new Alert(Alert.AlertType.ERROR, "Error al crear administrador:\n" + ex.getMessage()).show();
+    }
+}
+
+
+private void limpiarFormulario() {
+    txtUsername.clear();
+    txtEmail.clear();
+    txtPassword.clear();
+    txtPasswordConfirm.clear();
+    txtName.clear();
+    txtLastName.clear();
+}
+
 
  
     @Override
