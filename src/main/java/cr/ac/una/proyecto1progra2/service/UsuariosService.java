@@ -1,6 +1,4 @@
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// 3) Servicio: UsuariosService.java
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 package cr.ac.una.proyecto1progra2.service;
 
 import cr.ac.una.proyecto1progra2.model.Usuarios;

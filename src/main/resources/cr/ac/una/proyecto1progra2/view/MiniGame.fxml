@@ -10,7 +10,7 @@
 <AnchorPane fx:id="root" focusTraversable="true" prefHeight="550.0" prefWidth="750.0" stylesheets="@MiniGame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.MiniGameController">
     <children>
 
-        <!-- Control Panel -->
+        
         <VBox layoutX="20.0" layoutY="15.0" prefHeight="177.0" prefWidth="712.0" spacing="12.0" styleClass="snake-control-panel">
             <children>
                 <Label styleClass="snake-title" text=" S N A K E   G A M E">
@@ -68,10 +68,10 @@
             </children>
         </VBox>
 
-        <!-- Game Area Placeholder -->
+       
         <AnchorPane layoutX="50.0" layoutY="220.0" prefHeight="400.0" prefWidth="600.0" styleClass="wooden-hbox" />
 
-        <!-- Game Over Panel -->
+       
         <VBox fx:id="gameOverContainer" alignment="CENTER" layoutX="150.0" layoutY="350.0" spacing="20.0" styleClass="snake-game-over-panel" visible="false">
             <children>
                 <Label fx:id="gameOverLabel" styleClass="snake-game-over" text="☠ GAME OVER ☠" visible="false">
@@ -86,17 +86,17 @@
             </children>
         </VBox>
 
-        <!-- Trophy Icon (lights up at ≥150 pts) -->
+        
         <Label fx:id="trophyIcon" layoutX="694.0" layoutY="456.0" styleClass="snake-decoration" text="🏆">
             <font><Font size="32.0" /></font>
         </Label>
 
-        <!-- Lightning Icon (lights up on eating) -->
+        
         <Label fx:id="lightningIcon" layoutX="698.0" layoutY="391.0" styleClass="snake-decoration" text="⚡">
             <font><Font size="28.0" /></font>
         </Label>
 
-        <!-- Console Control Panel (highlights on key press) -->
+       
         <HBox fx:id="consoleControl" layoutX="50.0" layoutY="190.0" spacing="5.0" styleClass="console-panel">
             <children>
                 <Label styleClass="console-arrow" text="◀" />
@@ -104,7 +104,7 @@
             </children>
         </HBox>
 
-        <!-- Decorative Gamepad Icon -->
+       
         <Label layoutX="694.0" layoutY="318.0" styleClass="snake-decoration" text="🎮">
             <font><Font size="28.0" /></font>
         </Label>

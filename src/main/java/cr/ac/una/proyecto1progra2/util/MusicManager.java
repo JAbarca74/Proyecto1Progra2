@@ -10,7 +10,7 @@ public class MusicManager {
     private static MediaPlayer effectPlayer;
     
     
-    /** Reproduce un efecto una vez (loop=false) o en bucle (loop=true). */
+    
     public static void playEffect(String filename, boolean loop) {
         stopEffect();
         try {

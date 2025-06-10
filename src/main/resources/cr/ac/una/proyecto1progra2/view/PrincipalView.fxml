@@ -15,7 +15,7 @@
 
     <center>
         <VBox alignment="TOP_RIGHT" prefHeight="500.0" prefWidth="587.0" BorderPane.alignment="CENTER_RIGHT">
-            <!-- contenido central -->
+            
         </VBox>
     </center>
 
@@ -23,7 +23,7 @@
         <AnchorPane prefHeight="621.0" prefWidth="244.0" BorderPane.alignment="CENTER">
             <children>
 
-                <!-- Menú de usuario -->
+                
                 <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
@@ -35,17 +35,17 @@
                             <VBox.margin><Insets bottom="8" top="8" /></VBox.margin>
                         </Text>
                         <Line endX="100" startX="0" />
-                        <!-- Botón HOME para el usuario -->
-<Button onAction="#onActionBtnHome" prefWidth="160" styleClass="boton-menu" text="Inicio">
-    <graphic>
-        <ImageView fitHeight="25" fitWidth="71" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../controller/Images/icons8-home-48.png" />
-            </image>
-        </ImageView>
-    </graphic>
-    <VBox.margin><Insets top="10" /></VBox.margin>
-</Button>
+                       
+                        <Button onAction="#onActionBtnHome" prefWidth="160" styleClass="boton-menu" text="Inicio">
+                            <graphic>
+                                <ImageView fitHeight="25" fitWidth="71" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../controller/Images/icons8-home-48.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <VBox.margin><Insets top="10" /></VBox.margin>
+                        </Button>
 
                         <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="38.0" prefWidth="165.0" styleClass="boton-menu" text="Reservaciones">
                             <VBox.margin><Insets top="30" /></VBox.margin>
@@ -92,7 +92,7 @@
                     </children>
                 </VBox>
 
-                <!-- Menú de admin -->
+               
                 <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>

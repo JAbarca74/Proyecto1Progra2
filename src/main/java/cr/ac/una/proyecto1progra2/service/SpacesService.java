@@ -168,13 +168,13 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
         if (espacio == null)
             return new Respuesta(false, "No se encontró el espacio", "eliminarSpace NoResult");
 
-        // Paso 1: Obtener coworking asociado
+        
         CoworkingSpaces coworking = em.createQuery(
             "SELECT c FROM CoworkingSpaces c WHERE c.spaceId.id = :id", CoworkingSpaces.class)
             .setParameter("id", id)
             .getSingleResult();
 
-        // Paso 2: Eliminar reservas asociadas
+        
         List<Reservations> reservas = em.createQuery(
             "SELECT r FROM Reservations r WHERE r.coworkingSpaceId.id = :id", Reservations.class)
             .setParameter("id", coworking.getId())
@@ -184,10 +184,10 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
             em.remove(r);
         }
 
-        // Paso 3: Eliminar coworking space
+        
         em.remove(coworking);
 
-        // Paso 4: Eliminar space
+        
         em.remove(espacio);
 
         em.getTransaction().commit();
@@ -212,7 +212,7 @@ private void crearCoworkingSpaceSiNoExiste(Spaces espacio) {
 
         for (Spaces space : espacios) {
             SpacesDto dto = new SpacesDto(space);
-            dto.setCoworkingSpace(space.getCoworkingSpace()); // ya viene cargado
+            dto.setCoworkingSpace(space.getCoworkingSpace()); 
             int fila = dto.getRow();
             int columna = dto.getColumn();
             int rowSpan = dto.getRowSpan() != null && dto.getRowSpan() > 0 ? dto.getRowSpan() : 1;

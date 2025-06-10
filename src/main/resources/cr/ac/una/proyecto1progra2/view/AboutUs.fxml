@@ -14,7 +14,7 @@
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="cr.ac.una.proyecto1progra2.controller.AboutUsController"
     stylesheets="@/cr/ac/una/proyecto1progra2/view/styles.css">
-    <!-- Botón Volver arriba a la izquierda -->
+    
     <top>
         <HBox alignment="CENTER_LEFT">
             <padding><Insets left="15" top="15" /></padding>
@@ -25,7 +25,7 @@
         </HBox>
     </top>
 
-    <!-- Contenido principal en el centro -->
+   
     <center>
         <VBox alignment="TOP_CENTER" spacing="18.0">
             <padding><Insets bottom="30.0" left="40.0" right="40.0" /></padding>

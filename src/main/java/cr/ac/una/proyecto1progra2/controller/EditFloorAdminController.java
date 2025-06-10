@@ -568,7 +568,7 @@ private void resaltarTemporal(StackPane celda) {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
          mostrarTextoFlotante("+1 Salas agregado", 300, 50);
-           animarIngreso(celda); // ✅ aquí se aplica la animación
+           animarIngreso(celda); 
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -687,7 +687,7 @@ private void onAgregarAreasComunes() {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
          mostrarTextoFlotante("+1 Areas Comunes agregado", 300, 50);
-           animarIngreso(celda); // ✅ aquí se aplica la animación
+           animarIngreso(celda); 
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -705,7 +705,7 @@ private void onAgregarAreasComunes() {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
         mostrarTextoFlotante("+1 Espacio Libre agregado", 300, 50);
-           animarIngreso(celda); // ✅ aquí se aplica la animación
+           animarIngreso(celda); 
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -741,7 +741,7 @@ private void animarEliminacion(Node nodo) {
 }
     @FXML
 private void onBorrarTodo() {
-    // Paso 1: Confirmación visual
+    
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("Confirmación");
     alert.setHeaderText("¿Deseas borrar TODOS los espacios del piso " + pisoActual + "?");
@@ -749,7 +749,7 @@ private void onBorrarTodo() {
     Optional<ButtonType> result = alert.showAndWait();
 
     if (result.isPresent() && result.get() == ButtonType.OK) {
-        // Paso 2: Verificar si hay espacios en este piso
+        
         List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion();
         String filtro = "P" + pisoActual;
         boolean hayEspacios = espacios.stream()

@@ -52,7 +52,7 @@
                         <RowConstraints percentHeight="14.28" />
                         <RowConstraints percentHeight="14.28" />
                         <RowConstraints percentHeight="14.28" />
-                        <RowConstraints percentHeight="14.28" /> <!-- para el selector -->
+                        <RowConstraints percentHeight="14.28" /> 
                     </rowConstraints>
                     <children>
                         <Label styleClass="label-form" text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
@@ -73,7 +73,7 @@
                         <Label styleClass="label-form" text="Apellido:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                         <TextField fx:id="txtLastName" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-                        <!-- Nueva fila: selector de rol -->
+                        
                         <Label styleClass="label-form" text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
                             <children>

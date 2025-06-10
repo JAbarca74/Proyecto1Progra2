@@ -75,7 +75,7 @@ public class InvoiceController extends Controller implements Initializable {
     this.numeroFactura = generateInvoiceNumber();
 
 
-    // Crear y mostrar la factura con los datos ya cargados
+   
     Platform.runLater(() -> {
         detailsContainer.getChildren().clear();
         createInvoiceLayout();
@@ -87,7 +87,7 @@ public class InvoiceController extends Controller implements Initializable {
         mainContainer.setOpacity(0);
         mainContainer.setTranslateY(50);
         
-        // Configurar estilos base
+       
         mainContainer.setStyle(
             "-fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);" +
             "-fx-background-radius: 15;" +
@@ -142,7 +142,7 @@ public class InvoiceController extends Controller implements Initializable {
     private void createHeader() {
         headerContainer.getChildren().clear();
         
-        // Fondo con gradiente
+        
         Rectangle headerBg = new Rectangle(600, 120);
         LinearGradient gradient = new LinearGradient(0, 0, 1, 1, true, null,
             new Stop(0, Color.web("#667eea")),
@@ -152,13 +152,13 @@ public class InvoiceController extends Controller implements Initializable {
         headerBg.setArcWidth(15);
         headerBg.setArcHeight(15);
         
-        // Título principal
+        
         Text title = new Text("COMPROBANTE DE RESERVA");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         title.setFill(Color.WHITE);
         title.setTextAlignment(TextAlignment.CENTER);
         
-        // Número de factura
+       
         Text invoiceNum = new Text("N° " + (numeroFactura != null ? numeroFactura : "COMPROBANTE-001"));
         invoiceNum.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         invoiceNum.setFill(Color.web("#e8eaf6"));
@@ -174,7 +174,7 @@ public class InvoiceController extends Controller implements Initializable {
         VBox companyBox = new VBox(8);
         companyBox.setPadding(new Insets(20, 30, 10, 30));
         
-        // Logo y nombre de empresa
+      
         HBox logoRow = new HBox(15);
         logoRow.setAlignment(Pos.CENTER_LEFT);
         
@@ -197,7 +197,7 @@ public class InvoiceController extends Controller implements Initializable {
         companyDetails.getChildren().addAll(companyName, companyAddress, companyContact);
         logoRow.getChildren().addAll(logoStack, companyDetails);
         
-        // Línea separadora animada
+      
         Line separator = new Line(0, 0, 500, 0);
         separator.setStroke(Color.web("#dee2e6"));
         separator.setStrokeWidth(2);
@@ -211,7 +211,7 @@ public class InvoiceController extends Controller implements Initializable {
         detailsRow.setPadding(new Insets(20, 30, 20, 30));
         detailsRow.setAlignment(Pos.TOP_LEFT);
         
-        // Información del cliente
+       
         VBox clientInfo = createInfoBox("INFORMACIÓN DEL CLIENTE", Color.web("#e3f2fd"));
         UsuariosDto user = UserManager.getCurrentUser();
         if (user != null) {
@@ -222,7 +222,7 @@ public class InvoiceController extends Controller implements Initializable {
             );
         }
         
-        // Información de la reserva
+        
         VBox reservationInfo = createInfoBox("DETALLES DE LA RESERVA", Color.web("#f3e5f5"));
         reservationInfo.getChildren().addAll(
             createInfoRow("Fecha:", fechaReserva != null ? fechaReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "N/A"),
@@ -268,7 +268,7 @@ public class InvoiceController extends Controller implements Initializable {
         VBox tableContainer = new VBox(0);
         tableContainer.setPadding(new Insets(0, 30, 0, 30));
         
-        // Encabezado de tabla
+        
         HBox tableHeader = new HBox();
         tableHeader.setPadding(new Insets(15));
         tableHeader.setStyle(
@@ -285,7 +285,7 @@ public class InvoiceController extends Controller implements Initializable {
         
         tableHeader.getChildren().addAll(headers);
         
-        // Contenido de tabla
+        
         VBox tableContent = new VBox();
         tableContent.setStyle(
             "-fx-background-color: white;" +
@@ -325,18 +325,18 @@ public class InvoiceController extends Controller implements Initializable {
             row.setStyle("-fx-background-color: #f8f9fa;");
         }
         
-        // Obtener el nombre real del espacio desde SpaceId
-String nombreEspacio = espacio.getSpaceId().getName(); // ← Aquí accedés al nombre
-String tipoEspacio = determineSpaceType(nombreEspacio);  // ← Determina si es Escritorio, Sala, etc.
+        
+String nombreEspacio = espacio.getSpaceId().getName(); 
+String tipoEspacio = determineSpaceType(nombreEspacio); 
 
 Text[] cells = {
     createTableCellText(tipoEspacio, 200),
-};// Datos del espacio (simulados ya que no tienes la estructura completa)
+};
         
         
         row.getChildren().addAll(cells);
         
-        // Animación de entrada
+        
         row.setOpacity(0);
         row.setTranslateX(-50);
         
@@ -377,7 +377,7 @@ Text[] cells = {
     }
     
     private void startAnimations() {
-        // Animación principal de entrada
+        
         FadeTransition mainFade = new FadeTransition(Duration.millis(800), mainContainer);
         mainFade.setToValue(1);
         
@@ -388,7 +388,7 @@ Text[] cells = {
         ParallelTransition mainAnimation = new ParallelTransition(mainFade, mainSlide);
         mainAnimation.play();
         
-        // Animaciones de botones
+       
         animateButtons();
     }
     
@@ -415,7 +415,7 @@ Text[] cells = {
         }
     }
     
-    // Métodos de utilidad
+   
     private Text createStyledText(String content, double size, FontWeight weight, String color) {
         Text text = new Text(content);
         text.setFont(Font.font("Arial", weight, size));
@@ -462,7 +462,7 @@ private double calculateHours() {
     }
     
     private void updateInvoiceContent() {
-        // Este método se llamaría después de setReservationData para actualizar el contenido
+
         Platform.runLater(() -> {
             detailsContainer.getChildren().clear();
             createInvoiceLayout();
@@ -494,6 +494,6 @@ private double calculateHours() {
     
     @Override
     public void initialize() {
-        // Implementación requerida por la clase Controller base
+        
     }
 }

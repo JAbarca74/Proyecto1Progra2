@@ -1,15 +1,11 @@
-    /* ============================= */
-/*   ESTILO GENERAL Y FUENTE    */
-/* ============================= */
+    
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
 
 
-/* ============================= */
-/*    TEXTFIELD Y PROMPTS       */
-/* ============================= */
+
 .text-field,
 .text-field:focused,
 .text-field.invalid,
@@ -22,7 +18,7 @@
     -fx-text-fill: #333333;
     -fx-prompt-text-fill: #a9a9a9;
 }
-/* Fondo general */
+
 .root {
     -fx-background-color: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
 }
@@ -53,9 +49,7 @@
     -fx-border-width: 2;
 }
 
-/* ============================= */
-/*        BOTONES GENERALES     */
-/* ============================= */
+
 .button {
     -fx-background-color: linear-gradient(to bottom, #f0f0f0 0%, #dcdcdc 50%, #c8c8c8 100%);
     -fx-background-radius: 5;
@@ -75,18 +69,14 @@
     -fx-background-color: linear-gradient(to bottom, #c0c0c0 0%, #a8a8a8 100%);
 }
 
-/* ============================= */
-/*       MENÚ LATERAL           */
-/* ============================= */
+
 .menu-lateral {
     -fx-background-color: linear-gradient(to bottom, #2E7D32, #1B5E20);
     -fx-background-radius: 0 15 15 0;
     -fx-padding: 30 20 20 20;
 }
 
-/* ============================= */
-/*    BOTONES DEL MENÚ LATERAL  */
-/* ============================= */
+
 .boton-menu-activo {
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
@@ -112,9 +102,7 @@
     -fx-font-weight: bold;
 }
 
-/* ============================= */
-/*   EFECTOS HOVER Y FOCUS      */
-/* ============================= */
+
 .button:hover {
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 4);
@@ -126,9 +114,7 @@
     -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.3), 4, 0, 0, 0);
 }
 
-/* ============================= */
-/*         PANELES Y GRID       */
-/* ============================= */
+
 .grid-background {
     -fx-background-color: #f6f6f6;
     -fx-padding: 20;
@@ -149,9 +135,7 @@
     -fx-text-fill: white;
 }
 
-/* ============================= */
-/*           IMÁGENES           */
-/* ============================= */
+
 .icono-transparente {
     -fx-opacity: 0.5;
 }
@@ -170,9 +154,7 @@
     -fx-background-position: center center;
 }
 
-/* ============================= */
-/*     BOTÓN FLAT GENERAL       */
-/* ============================= */
+
 .button-flat {
     -fx-background-color: transparent;
     -fx-text-fill: black;
@@ -195,7 +177,7 @@
 
 .label-estadistica-numero {
     -fx-font-weight: bold;
-    -fx-font-size: 30px; /* antes 22px */
+    -fx-font-size: 30px; 
 }
 .panel-blanco-sombra {
     -fx-background-color: white;
@@ -203,7 +185,7 @@
     -fx-padding: 20;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 4);
 }
-/* Colores personalizados */
+
 .color-escritorios {
     -fx-text-fill: #FF5722;
     -fx-font-weight: bold;
@@ -223,12 +205,10 @@
     -fx-text-fill: #4CAF50;
     -fx-font-weight: bold;
     -fx-font-size: 22px;
-}/* ============================= */
-/*      PANEL DE BÚSQUEDA       */
-/* ============================= */
+}
 .textfield-verde-borde-azul {
-    -fx-background-color: #E8F5E9; /* verde claro */
-    -fx-border-color: #3f51b5;     /* azul */
+    -fx-background-color: #E8F5E9; 
+    -fx-border-color: #3f51b5;     
     -fx-border-width: 2;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
@@ -237,18 +217,14 @@
     -fx-padding: 8px;
 }
 
-/* ============================= */
-/*          TÍTULO              */
-/* ============================= */
+
 .titulo-busqueda {
     -fx-text-fill: #5D4037;
     -fx-font-weight: bold;
     -fx-font-size: 16px;
 }
 
-/* ============================= */
-/*       BOTÓN BUSCAR           */
-/* ============================= */
+
 .boton-buscar {
     -fx-background-color: #43A047;
     -fx-text-fill: white;
@@ -261,9 +237,7 @@
     -fx-cursor: hand;
 }
 
-/* ============================= */
-/*        TABLA DE USUARIOS     */
-/* ============================= */
+
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -294,9 +268,7 @@
     -fx-background-color: #E0F2F1;
 }
 
-/* ============================= */
-/*   COLORES PERSONALIZADOS     */
-/* ============================= */
+
 .usuario-nombre {
     -fx-text-fill: #EF6C00;
     -fx-font-weight: bold;
@@ -323,26 +295,26 @@
     -fx-cursor: hand;
 }
 
-/* Estilo base */
+
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
-/* Título principal "Registrar Usuario" */
+
 .titulo-registro {
-    -fx-text-fill: #6D3B00; /* café oscuro */
+    -fx-text-fill: #6D3B00; 
     -fx-font-size: 26px;
     -fx-font-weight: bold;
 }
 
-/* Labels como "Usuario:", "E-mail:", etc. */
+
 .label-form {
     -fx-text-fill: #6D3B00;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
-/* TextFields y PasswordFields */
+
 .text-field, .password-field {
     -fx-background-color: white;
     -fx-border-color: #dddddd;
@@ -354,24 +326,24 @@
     -fx-prompt-text-fill: #aaaaaa;
 }
 
-/* Efecto al enfocar los campos */
+
 .text-field:focused, .password-field:focused {
     -fx-border-color: #8D6E63;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
 }
 
 
-/* Texto verde con subrayado */
+
 .boton-link-verde {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #006400; /* verde oscuro */
+    -fx-text-fill: #006400; 
     -fx-underline: true;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-padding: 0;
 }
-/* Texto gris sin subrayado */
+
 .label-link-gris {
     -fx-text-fill: #666666;
     -fx-font-style: italic;
@@ -379,22 +351,22 @@
     -fx-cursor: hand;
 }
 
-/* Para el botón de admin */
+
 .boton-cerrar-sesion {
-    -fx-background-color: #E53935; /* rojo medio */
+    -fx-background-color: #E53935; 
     -fx-text-fill: white;
 }
 
-/* ——— Estilo para el calendario ——— */
+
 
 .calendar-pane {
   -fx-background-color: linear-gradient(
     from 0% 0% to 100% 100%,
-    rgba(170, 210, 170, 0.85),  /* verde pastel claro */
-    rgba(130, 190, 130, 0.85)   /* verde pastel más oscuro */
+    rgba(170, 210, 170, 0.85),  
+    rgba(130, 190, 130, 0.85)   
   );
   -fx-background-radius: 12;
-  -fx-border-color: rgba(110, 160, 110, 0.7);  /* borde verde suave */
+  -fx-border-color: rgba(110, 160, 110, 0.7);  
   -fx-border-radius: 12;
   -fx-border-width: 2;
   -fx-padding: 16;
@@ -414,8 +386,8 @@
 }
 
 .table-row-cell:selected {
-    -fx-background-color: rgba(120, 20, 20, 0.3);  /* rojo oscuro translúcido */
-    -fx-text-fill: white;  /* texto blanco al seleccionar */
+    -fx-background-color: rgba(120, 20, 20, 0.3); 
+    -fx-text-fill: white;  
 }
 
 .table-row-cell:selected .table-cell {
@@ -427,15 +399,13 @@
     -fx-background-color: transparent;
 }
 
-/* ============================= */
-/*    BOTÓN PEQUEÑO (small)     */
-/* ============================= */
+
 .boton-pequeno {
-    -fx-font-size: 12px;           /* tamaño de letra más pequeño */
-    -fx-padding: 4px 8px;          /* menos padding vertical y horizontal */
-    -fx-min-width: 0;              /* que no imponga un ancho mínimo */
-    -fx-min-height: 0;             /* que no imponga un alto mínimo */
-    -fx-background-radius: 4;      /* esquinas suaves */
+    -fx-font-size: 12px;           
+    -fx-padding: 4px 8px;          
+    -fx-min-width: 0;              
+    -fx-min-height: 0;             
+    -fx-background-radius: 4;      
     -fx-border-radius: 4;
 }
 

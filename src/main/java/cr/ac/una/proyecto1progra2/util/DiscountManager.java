@@ -6,7 +6,7 @@ public class DiscountManager {
     private static final String CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom rnd = new SecureRandom();
 
-    /** Genera una cadena alfanumérica de longitud `length` */
+    
     public static String generateCode(int length) {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {

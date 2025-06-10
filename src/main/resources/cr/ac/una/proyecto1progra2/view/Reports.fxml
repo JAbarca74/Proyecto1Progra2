@@ -26,7 +26,7 @@
                text="Reportes Estadísticos del Sistema" />
         <TabPane>
 
-            <!-- TAB 1: Espacios más reservados -->
+           
             <Tab text="Espacios más reservados">
                 <AnchorPane>
                     <TableView fx:id="tablaEspacios"
@@ -44,7 +44,7 @@
                 </AnchorPane>
             </Tab>
 
-            <!-- TAB 2: Usuarios con más reservas -->
+            
             <Tab text="Usuarios más activos">
                 <AnchorPane>
                     <TableView fx:id="tablaUsuarios"
@@ -62,7 +62,7 @@
                 </AnchorPane>
             </Tab>
 
-            <!-- TAB 3: Reservas por Mes -->
+          
             <Tab text="Reservas por Mes">
                 <AnchorPane>
                     <PieChart fx:id="chartReservasCoworking"
@@ -73,7 +73,7 @@
                 </AnchorPane>
             </Tab>
 
-            <!-- TAB 4: Horarios pico de uso -->
+            
             <Tab text="Horarios pico de uso">
                 <AnchorPane>
                     <BarChart fx:id="graficoHoras"

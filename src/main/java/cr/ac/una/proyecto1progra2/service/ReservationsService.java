@@ -15,9 +15,7 @@ import java.util.stream.Collectors;
 
 public class ReservationsService {
 
-    /**
-     * Busca todas las reservas que traslapan un rango de fecha/hora dado para un espacio.
-     */
+    
     public List<Reservations> buscarReservasTraslapadas(Long coworkingSpaceId,
                                                         LocalDate fecha,
                                                         LocalTime horaInicio,
@@ -42,9 +40,7 @@ public class ReservationsService {
         }
     }
 
-    /**
-     * Persiste una nueva reserva en la BD.
-     */
+    
    public boolean guardarReserva(Long userId,
                               Long coworkingSpaceId,
                               LocalDate fecha,
@@ -57,10 +53,10 @@ public class ReservationsService {
 
     EntityManager em = JPAUtil.getEntityManager();
     try {
-        // Validar traslape antes de guardar
+        
         List<Reservations> existentes = buscarReservasTraslapadas(coworkingSpaceId, fecha, horaInicio, horaFin);
         if (!existentes.isEmpty()) {
-            return false; // ya existe una reserva en ese horario
+            return false; 
         }
 
         em.getTransaction().begin();
@@ -81,9 +77,7 @@ public class ReservationsService {
         em.close();
     }
 }
-    /**
-     * Devuelve la lista de IDs de espacios que están ocupados en un rango dado.
-     */
+    
     public List<Long> obtenerEspaciosOcupados(LocalDate fecha,
                                               LocalTime horaInicio,
                                               LocalTime horaFin) {
@@ -106,16 +100,14 @@ public class ReservationsService {
         }
     }
 
-    /**
-     * Busca espacios disponibles con capacidad mínima en un rango dado.
-     */
+    
     public List<CoworkingSpaces> buscarEspaciosDisponibles(LocalDate fecha,
                                                            LocalTime horaInicio,
                                                            LocalTime horaFin,
                                                            int capacidadMinima) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            // IDs de los espacios ya reservados
+            
             TypedQuery<Long> q1 = em.createQuery(
                 "SELECT DISTINCT r.coworkingSpaceId.id " +
                 "FROM Reservations r " +
@@ -129,7 +121,7 @@ public class ReservationsService {
             q1.setParameter("horaFin",   horaFin);
             List<Long> ocupados = q1.getResultList();
 
-            // Recuperar todos los CoworkingSpaces que no estén en 'ocupados' y cumplan capacidad
+            
             TypedQuery<CoworkingSpaces> q2 = em.createQuery(
                 "SELECT c FROM CoworkingSpaces c " +
                 "WHERE c.spaceId.id NOT IN :ocupados " +
@@ -144,7 +136,7 @@ public class ReservationsService {
         }
     }
 
- // dentro de ReservationsService
+ 
 
 public List<ReservationViewDto> listarTodasView() {
     var em = JPAUtil.getEntityManager();
@@ -169,7 +161,7 @@ public List<ReservationViewDto> listarPorFiltros(LocalDate fecha,
         if (fecha  != null)   sb.append(" AND r.reservationDate = :fecha");
         if (userId != null)   sb.append(" AND r.userId.id        = :uid");
         if (piso   != null && !piso.isEmpty()) {
-            // extraemos el número (0–3) y comparamos directo
+            
             sb.append(" AND r.coworkingSpaceId.spaceId.floor = :flr");
         }
 
@@ -229,10 +221,7 @@ public List<ReservationViewDto> listarPorFiltros(LocalDate fecha,
         em.close();
     }
 }
-    /**
- * Devuelve true si hay otra reserva (distinta de id) en el mismo espacio
- * que solape la fecha y hora dadas.
- */
+   
 public boolean hayColision(Long reservationId,
                            LocalDate fecha,
                            LocalTime inicio,

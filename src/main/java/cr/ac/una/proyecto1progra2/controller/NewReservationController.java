@@ -338,7 +338,7 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
         boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
 if (guardado) {
     reproducirSonido("intro-sound-bell-269297-_1_.wav");
-    List<CoworkingSpaces> espacioIndividual = Arrays.asList(coworking); // NUEVO
+    List<CoworkingSpaces> espacioIndividual = Arrays.asList(coworking); 
     mostrarFactura(fecha, horaInicio, horaFin, espacioIndividual);
    
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);

@@ -107,7 +107,7 @@ public class FlowController {
                 ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
                 ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot());
                 break;
-            // Puedes agregar más casos si usas Top, Bottom, etc.
+            
             default:
                 break;
         }
@@ -180,6 +180,6 @@ public class FlowController {
     }
 
     public void goBack() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 }

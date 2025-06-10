@@ -87,7 +87,7 @@ public class ReservationManagementController extends Controller implements Initi
             }
         });
 
-        // Acción EDITAR: abre un diálogo sencillo para nueva fecha/hora
+        
         btnEditar.setOnAction(e -> {
             ReservationViewDto dto = getTableView().getItems().get(getIndex());
             showEditDialog(dto);
@@ -194,11 +194,11 @@ cbInicio.valueProperty().addListener((obs, oldTime, newTime) -> {
     }
 });
 
-// Evitar que fin sea menor que inicio+30min
+
 cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
     LocalTime inicio = cbInicio.getValue();
     if (newVal != null && (inicio == null || newVal.isBefore(inicio.plusMinutes(30)))) {
-        // forzamos fin = inicio + 30min
+        
         cbFin.setValue(inicio.plusMinutes(30));
     }
 });
@@ -221,7 +221,7 @@ cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
 
     dialog.getDialogPane().setContent(grid);
 
-    // 3) Procesar resultado
+  
     dialog.showAndWait().ifPresent(res -> {
     if (res == ButtonType.OK) {
         LocalDate newDate  = dp.getValue();
@@ -247,7 +247,7 @@ cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
     );
     reservas.setAll(allReservas);
 
-    // 2) actualizar el calendario en tiempo real
+    
     drawCalendar();
 } else {
     new Alert(Alert.AlertType.ERROR, "No se pudo actualizar").showAndWait();

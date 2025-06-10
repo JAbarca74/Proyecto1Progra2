@@ -250,8 +250,8 @@ public class MiniGameController extends Controller implements Initializable {
         startGame();
         root.requestFocus();
     }
-    @FXML private void onActionCerrarMiniJuego() { if (gameLoop != null) gameLoop.stop(); // Detiene el loop del juego
-    MusicManager.stopEffect();             // Detiene el efecto de sonido                      
+    @FXML private void onActionCerrarMiniJuego() { if (gameLoop != null) gameLoop.stop(); 
+    MusicManager.stopEffect();                                  
           if (getStage() != null) {
             getStage().close();
         }

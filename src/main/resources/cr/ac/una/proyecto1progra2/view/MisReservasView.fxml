@@ -12,7 +12,7 @@
             stylesheets="@styles.css"
             prefWidth="600" prefHeight="500">
 
-    <!-- Encabezado -->
+    
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10">
             <padding>
@@ -24,7 +24,7 @@
         </HBox>
     </top>
 
-    <!-- Lista de Reservas -->
+    
     <center>
         <ListView fx:id="lvReservas" BorderPane.alignment="CENTER"/>
     </center>

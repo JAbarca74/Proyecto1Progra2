@@ -18,9 +18,7 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-/**
- * Muestra las reservas del usuario actual y permite cancelarlas.
- */
+
 public class MisReservasViewController extends Controller implements Initializable {
 
     @FXML private ListView<ReservationViewDto> lvReservas;
@@ -32,7 +30,7 @@ public class MisReservasViewController extends Controller implements Initializab
         cargarReservas();
     }
 
-    @Override public void initialize() { /* requerido por Controller */ }
+    @Override public void initialize() { }
 
     private void cargarReservas() {
         long uid = UserManager.getCurrentUser().getId();
