@@ -74,7 +74,7 @@ public class ReservationManagementController extends Controller implements Initi
     {
         // Estilos
         btnEditar.getStyleClass().add("boton-pequeno");
-        btnEliminar.getStyleClass().add("boton-pequeni");
+        btnEliminar.getStyleClass().add("boton-pequeno");
 
         // Acción ELIMINAR (igual que antes)
         btnEliminar.setOnAction(e -> {
