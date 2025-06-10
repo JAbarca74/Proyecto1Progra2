@@ -58,7 +58,7 @@
                 <StackPane styleClass="card-alt">
                     <VBox alignment="CENTER" spacing="8">
                         <Label fx:id="lblEvento"       styleClass="metric-value-alt"
-                               text="Yoga al atardecer – Mié 6 p.m."/>
+                               text="Yoga al atardecer – Jueves 6 p.m."/>
                         <Label styleClass="metric-label-alt" text="Próximo evento"/>
                     </VBox>
                 </StackPane>
