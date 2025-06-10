@@ -548,6 +548,7 @@ private void resaltarTemporal(StackPane celda) {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+           animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -564,6 +565,7 @@ private void resaltarTemporal(StackPane celda) {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+           animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -681,6 +683,7 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+           animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -697,6 +700,7 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+           animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -798,6 +802,23 @@ private void editarEspacio(SpaceVisual espacio) {
             }
         }
     });
+}
+private void animarIngreso(StackPane celda) {
+    celda.setOpacity(0);
+    celda.setScaleX(0.5);
+    celda.setScaleY(0.5);
+
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(350), celda);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+
+    ScaleTransition scaleIn = new ScaleTransition(Duration.millis(350), celda);
+    scaleIn.setFromX(0.5);
+    scaleIn.setFromY(0.5);
+    scaleIn.setToX(1.0);
+    scaleIn.setToY(1.0);
+
+    new ParallelTransition(fadeIn, scaleIn).play();
 }
     @Override
     public void initialize() {
