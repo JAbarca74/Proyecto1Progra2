@@ -153,13 +153,13 @@ public class InvoiceController extends Controller implements Initializable {
         headerBg.setArcHeight(15);
         
         // Título principal
-        Text title = new Text("FACTURA DE RESERVA");
+        Text title = new Text("COMPROBANTE DE RESERVA");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         title.setFill(Color.WHITE);
         title.setTextAlignment(TextAlignment.CENTER);
         
         // Número de factura
-        Text invoiceNum = new Text("N° " + (numeroFactura != null ? numeroFactura : "FAC-001"));
+        Text invoiceNum = new Text("N° " + (numeroFactura != null ? numeroFactura : "COMPROBANTE-001"));
         invoiceNum.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         invoiceNum.setFill(Color.web("#e8eaf6"));
         
@@ -372,7 +372,7 @@ public class InvoiceController extends Controller implements Initializable {
         footerBox.setAlignment(Pos.CENTER);
         
         Text thankYou = createStyledText("¡Gracias por elegir FlexSpace!", 16, FontWeight.BOLD, "#2c3e50");
-        Text footerNote = createStyledText("Esta factura fue generada automáticamente el " + 
+        Text footerNote = createStyledText("Este comprobante fue generado automáticamente el " + 
                                          LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), 
                                          10, FontWeight.NORMAL, "#6c757d");
         
