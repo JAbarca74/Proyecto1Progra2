@@ -5,10 +5,14 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class App extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
         FlowController.getInstance().initializeFlow(stage, null);
+
+        // Establece el tamaño mínimo
+        stage.setMinWidth(1000);
+        stage.setMinHeight(700);
+
         FlowController.getInstance().goViewInWindow("primary");
     }
 

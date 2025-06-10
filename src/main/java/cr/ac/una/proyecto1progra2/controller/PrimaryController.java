@@ -25,9 +25,15 @@ public class PrimaryController extends Controller {
 
     private final UsuariosService usuariosService = new UsuariosService();
 
-    @Override
-    public void initialize() {
-     txtUsuario.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
+   
+ @Override
+public void initialize() {
+    javafx.application.Platform.runLater(() -> {
+        getStage().setMinWidth(1000);
+        getStage().setMinHeight(700);
+    });
+
+    txtUsuario.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
     txtContraseña.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
 }
     
