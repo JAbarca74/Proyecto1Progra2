@@ -551,7 +551,7 @@ private void resaltarTemporal(StackPane celda) {
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
          mostrarTextoFlotante("+1 Escritorios agregado", 300, 50);
-           animarIngreso(celda); // ✅ aquí se aplica la animación
+           animarIngreso(celda); 
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
@@ -748,9 +748,9 @@ private void onBorrarTodo() {
         new cr.ac.una.proyecto1progra2.service.ReservationsService();
     List<cr.ac.una.proyecto1progra2.DTO.ReservationViewDto> resPiso =
         rs.listarPorFiltros(
-            null,                               // sin fecha
-            null,                               // sin usuario
-            "P" + pisoActual                    // piso en formato "P0", "P1", …
+            null,                               
+            null,                               
+            "P" + pisoActual                    
         );
     if (!resPiso.isEmpty()) {
         Utilities.mostrarMensaje(
