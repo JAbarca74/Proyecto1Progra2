@@ -702,18 +702,26 @@ private void onAgregarAreasComunes() {
         reproducirSonido("mech-keyboard-02-102918.wav");
     }
 }
-
+private void animarEliminacion(Node nodo) {
+    FadeTransition fadeOut = new FadeTransition(Duration.millis(300), nodo);
+    fadeOut.setToValue(0);
+    ScaleTransition scaleOut = new ScaleTransition(Duration.millis(300), nodo);
+    scaleOut.setToX(0.1);
+    scaleOut.setToY(0.1);
+    ParallelTransition pt = new ParallelTransition(fadeOut, scaleOut);
+    pt.setOnFinished(e -> gridMatrix.getChildren().remove(nodo));
+    pt.play();
+}
     @FXML
- private void onBorrarTodo() {
+private void onBorrarTodo() {
     // Paso 1: Confirmación visual
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("Confirmación");
     alert.setHeaderText("¿Deseas borrar TODOS los espacios del piso " + pisoActual + "?");
     alert.setContentText("Esta acción no se puede deshacer.");
-
     Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == ButtonType.OK) {
 
+    if (result.isPresent() && result.get() == ButtonType.OK) {
         // Paso 2: Verificar si hay espacios en este piso
         List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion();
         String filtro = "P" + pisoActual;
@@ -721,7 +729,7 @@ private void onAgregarAreasComunes() {
             .anyMatch(esp -> esp.getSpace().getNombre().contains(filtro));
 
         if (!hayEspacios) {
-               reproducirSonido("BadReservaciones.wav");
+            reproducirSonido("BadReservaciones.wav");
             Alert info = new Alert(Alert.AlertType.INFORMATION);
             info.setTitle("Información");
             info.setHeaderText("No hay espacios para borrar");
@@ -730,8 +738,10 @@ private void onAgregarAreasComunes() {
             return;
         }
 
+        // Paso 3: Eliminar solo los del piso actual en la base de datos
         Respuesta resp = spacesService.eliminarEspaciosPorPiso(pisoActual);
         if (resp.isSuccess()) {
+            // Reiniciar contadores
             escritoriosPorPiso.put(pisoActual, 0);
             salasPorPiso.put(pisoActual, 0);
             areasPorPiso.put(pisoActual, 0);
@@ -743,10 +753,21 @@ private void onAgregarAreasComunes() {
             LabelCantAreasComunes.setText("0");
             LabelCantEspaciosLibres.setText("0");
 
-            gridMatrix.getChildren().clear();
-            cargarMatrizConEspacios();
+            // Paso 4: Animar la eliminación visual
+            for (Node nodo : new ArrayList<>(gridMatrix.getChildren())) {
+                animarEliminacion(nodo);
+            }
+
+            // Paso 5: Recargar después de la animación
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    javafx.application.Platform.runLater(() -> cargarMatrizConEspacios());
+                }
+            }, 350); // tiempo suficiente para la animación
+
         } else {
-               reproducirSonido("BadReservaciones.wav");
+            reproducirSonido("BadReservaciones.wav");
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("No se pudieron eliminar los espacios");
