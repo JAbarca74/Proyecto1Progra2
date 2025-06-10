@@ -72,11 +72,11 @@ public class ReservationManagementController extends Controller implements Initi
         private final HBox   box        = new HBox(5, btnEditar, btnEliminar);
 
     {
-        // Estilos
+       
         btnEditar.getStyleClass().add("boton-pequeno");
         btnEliminar.getStyleClass().add("boton-pequeno");
 
-        // Acción ELIMINAR (igual que antes)
+
         btnEliminar.setOnAction(e -> {
             ReservationViewDto dto = getTableView().getItems().get(getIndex());
             if (reservationsService.eliminarReserva(dto.getId())) {
