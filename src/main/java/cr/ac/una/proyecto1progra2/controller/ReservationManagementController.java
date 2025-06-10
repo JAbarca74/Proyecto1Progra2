@@ -16,12 +16,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.util.StringConverter;
+import javafx.geometry.Insets;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
+import java.time.LocalTime;
+import javafx.scene.control.ComboBox;
+
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.layout.HBox;
 
 public class ReservationManagementController extends Controller implements Initializable {
 
@@ -59,23 +67,39 @@ public class ReservationManagementController extends Controller implements Initi
         colFin    .setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getEndTime().toString()));
         colEstado .setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getEstado()));
         colAcciones.setCellFactory(col -> new TableCell<>() {
-            private final Button btn = new Button("Eliminar");
-            {
-                btn.setOnAction(e->{
-                    ReservationViewDto dto = getTableView().getItems().get(getIndex());
-                    if (reservationsService.eliminarReserva(dto.getId())) {
-                        reservas.remove(dto);
-                        drawCalendar(); 
-                    } else {
-                        new Alert(Alert.AlertType.ERROR, "No se pudo eliminar").showAndWait();
-                    }
-                });
-            }
-            @Override protected void updateItem(Void v, boolean empty){
-                super.updateItem(v, empty);
-                setGraphic(empty?null:btn);
+        private final Button btnEditar  = new Button("Editar");
+        private final Button btnEliminar = new Button("Eliminar");
+        private final HBox   box        = new HBox(5, btnEditar, btnEliminar);
+
+    {
+        // Estilos
+        btnEditar.getStyleClass().add("boton-editar");
+        btnEliminar.getStyleClass().add("boton-cerrar-sesion");
+
+        // Acción ELIMINAR (igual que antes)
+        btnEliminar.setOnAction(e -> {
+            ReservationViewDto dto = getTableView().getItems().get(getIndex());
+            if (reservationsService.eliminarReserva(dto.getId())) {
+                reservas.remove(dto);
+                drawCalendar();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "No se pudo eliminar").showAndWait();
             }
         });
+
+        // Acción EDITAR: abre un diálogo sencillo para nueva fecha/hora
+        btnEditar.setOnAction(e -> {
+            ReservationViewDto dto = getTableView().getItems().get(getIndex());
+            showEditDialog(dto);
+        });
+    }
+
+    @Override protected void updateItem(Void v, boolean empty) {
+        super.updateItem(v, empty);
+        setGraphic(empty ? null : box);
+    }
+});
+
         tablaReservas.setItems(reservas);
 
         comboUsuarios.setConverter(new StringConverter<UsuariosDto>() {
@@ -145,6 +169,108 @@ public class ReservationManagementController extends Controller implements Initi
         calendarGrid.add(b, col, row);
     }
 }
+    
+    
+   
+
+
+private void showEditDialog(ReservationViewDto dto) {
+    
+    DatePicker dp = new DatePicker(dto.getReservationDate());
+    ComboBox<LocalTime> cbInicio = new ComboBox<>(generarHoras());
+    ComboBox<LocalTime> cbFin    = new ComboBox<>(generarHoras());
+
+    cbInicio.setValue(dto.getStartTime());
+    cbFin   .setValue(dto.getEndTime());
+    
+    
+cbInicio.valueProperty().addListener((obs, oldTime, newTime) -> {
+    if (newTime != null) {
+        LocalTime siguiente = newTime.plusMinutes(30);
+        
+        if (cbFin.getItems().contains(siguiente)) {
+            cbFin.setValue(siguiente);
+        }
+    }
+});
+
+// Evitar que fin sea menor que inicio+30min
+cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
+    LocalTime inicio = cbInicio.getValue();
+    if (newVal != null && (inicio == null || newVal.isBefore(inicio.plusMinutes(30)))) {
+        // forzamos fin = inicio + 30min
+        cbFin.setValue(inicio.plusMinutes(30));
+    }
+});
+
+
+    
+  
+    Dialog<ButtonType> dialog = new Dialog<>();
+    dialog.setTitle("Editar Reserva");
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+    GridPane grid = new GridPane();
+    grid.setHgap(10); grid.setVgap(10); grid.setPadding(new Insets(20));
+    grid.add(new Label("Fecha:"), 0, 0);
+    grid.add(dp, 1, 0);
+    grid.add(new Label("Inicio:"), 0, 1);
+    grid.add(cbInicio, 1, 1);
+    grid.add(new Label("Fin:"), 0, 2);
+    grid.add(cbFin,    1, 2);
+
+    dialog.getDialogPane().setContent(grid);
+
+    // 3) Procesar resultado
+    dialog.showAndWait().ifPresent(res -> {
+    if (res == ButtonType.OK) {
+        LocalDate newDate  = dp.getValue();
+        LocalTime newStart = cbInicio.getValue();
+        LocalTime newEnd   = cbFin   .getValue();
+
+        
+        if (reservationsService.hayColision(dto.getId(), newDate, newStart, newEnd)) {
+            new Alert(Alert.AlertType.WARNING,
+                "Ya existe otra reserva ese día/hora").showAndWait();
+            return;  
+        }
+
+        
+        boolean ok = reservationsService.actualizarReserva(
+                        dto.getId(), newDate, newStart, newEnd);
+        if (ok) {
+    
+    allReservas = reservationsService.listarPorFiltros(
+        null,
+        comboUsuarios.getValue() != null ? comboUsuarios.getValue().getId() : null,
+        comboPiso.getValue()      != null ? comboPiso.getValue()       : ""
+    );
+    reservas.setAll(allReservas);
+
+    // 2) actualizar el calendario en tiempo real
+    drawCalendar();
+} else {
+    new Alert(Alert.AlertType.ERROR, "No se pudo actualizar").showAndWait();
+}
+
+    }
+});
+}
+
+/** Genera horas de 07:00 a 21:00 en intervalos de 30 minutos */
+private ObservableList<LocalTime> generarHoras() {
+    ObservableList<LocalTime> horas = FXCollections.observableArrayList();
+    LocalTime t = LocalTime.of(7, 0);
+    LocalTime fin = LocalTime.of(21, 0);
+    while (!t.isAfter(fin)) {
+        horas.add(t);
+        t = t.plusMinutes(30);
+    }
+    return horas;
+}
+
+
+    
     @FXML private void onPrevMonth(ActionEvent ev){
         currentYearMonth = currentYearMonth.minusMonths(1);
         drawCalendar();

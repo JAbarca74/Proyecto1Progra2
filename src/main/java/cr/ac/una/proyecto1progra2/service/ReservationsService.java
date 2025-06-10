@@ -207,5 +207,57 @@ public List<ReservationViewDto> listarPorFiltros(LocalDate fecha,
             em.close();
         }
     }
+    
+    public boolean actualizarReserva(Long id, LocalDate fecha,
+                                 LocalTime inicio, LocalTime fin) {
+    EntityManager em = JPAUtil.getEMF().createEntityManager();
+    try {
+        em.getTransaction().begin();
+        Reservations r = em.find(Reservations.class, id);
+        if (r == null) return false;
+        r.setReservationDate(fecha);
+        r.setStartTime(inicio);
+        r.setEndTime(fin);
+        em.merge(r);
+        em.getTransaction().commit();
+        return true;
+    } catch (Exception e) {
+        if (em.getTransaction().isActive())
+            em.getTransaction().rollback();
+        return false;
+    } finally {
+        em.close();
+    }
+}
+    /**
+ * Devuelve true si hay otra reserva (distinta de id) en el mismo espacio
+ * que solape la fecha y hora dadas.
+ */
+public boolean hayColision(Long reservationId,
+                           LocalDate fecha,
+                           LocalTime inicio,
+                           LocalTime fin) {
+    var em = JPAUtil.getEntityManager();
+    try {
+        TypedQuery<Reservations> q = em.createQuery(
+            "SELECT r FROM Reservations r " +
+            " WHERE r.coworkingSpaceId.id = (" +
+            "   SELECT r2.coworkingSpaceId.id FROM Reservations r2 WHERE r2.id = :rid" +
+            ") AND r.reservationDate = :fecha " +
+            " AND r.startTime < :fin AND r.endTime > :inicio " +
+            " AND r.id <> :rid",
+            Reservations.class
+        );
+        q.setParameter("rid", reservationId);
+        q.setParameter("fecha", fecha);
+        q.setParameter("inicio", inicio);
+        q.setParameter("fin", fin);
+        return !q.getResultList().isEmpty();
+    } finally {
+        em.close();
+    }
+}
+
+
 
 }
