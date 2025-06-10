@@ -31,6 +31,7 @@ public class PrincipalViewController extends Controller implements Initializable
     @FXML private Button btnSalir1;
     @FXML private Button btnMiniJuego;
     @FXML private Button btnBtnHome;
+    @FXML private Button btnMisReservas;
 
     @FXML private VBox VBoxMenuAdmin;
     @FXML private VBox VBoxMenuUsuario;
@@ -121,6 +122,12 @@ private void onActionBtnHome(ActionEvent event) {
         FlowController.getInstance().limpiarLoader("ReservationManagement");
         FlowController.getInstance().goView("ReservationManagement");
     }
+    
+    @FXML
+private void onMisReservas(ActionEvent ev) {
+    FlowController.getInstance().limpiarLoader("MisReservasView");
+    FlowController.getInstance().goView("MisReservasView");
+}
 
     @FXML
     private void onActionMiniJuego(ActionEvent event) {

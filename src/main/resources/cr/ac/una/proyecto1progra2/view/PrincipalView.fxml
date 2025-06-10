@@ -24,7 +24,7 @@
             <children>
 
                 <!-- Menú de usuario -->
-                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <VBox fx:id="VBoxMenuUsuario" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
                         <ImageView fitHeight="110.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
@@ -47,7 +47,7 @@
     <VBox.margin><Insets top="10" /></VBox.margin>
 </Button>
 
-                        <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefWidth="160" styleClass="boton-menu" text="Reservaciones">
+                        <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefHeight="38.0" prefWidth="165.0" styleClass="boton-menu" text="Reservaciones">
                             <VBox.margin><Insets top="30" /></VBox.margin>
                      <graphic>
                         <ImageView fitHeight="47.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -57,6 +57,18 @@
                         </ImageView>
                      </graphic>
                         </Button>
+                  <Button fx:id="btnMisReservas" mnemonicParsing="false" onAction="#onMisReservas" prefHeight="36.0" prefWidth="165.0" styleClass="boton-menu" text="Mis reservas">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="56.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../controller/Images/icons8-reserve-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                         <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefWidth="160" styleClass="boton-menu" text="Mini Juego">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                      <graphic>
@@ -81,7 +93,7 @@
                 </VBox>
 
                 <!-- Menú de admin -->
-                <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <VBox fx:id="VBoxMenuAdmin" alignment="CENTER" prefHeight="600.0" prefWidth="200.0" styleClass="menu-lateral" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <padding><Insets top="40" /></padding>
                     <children>
                         <ImageView fitHeight="125.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" styleClass="icono-transparente">
