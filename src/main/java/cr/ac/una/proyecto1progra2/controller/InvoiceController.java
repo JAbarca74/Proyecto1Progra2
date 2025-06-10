@@ -325,18 +325,14 @@ public class InvoiceController extends Controller implements Initializable {
             row.setStyle("-fx-background-color: #f8f9fa;");
         }
         
-        // Datos del espacio (simulados ya que no tienes la estructura completa)
-        String espacioNombre = "Espacio " + espacio.getId();
-      
-       
+        // Obtener el nombre real del espacio desde SpaceId
+String nombreEspacio = espacio.getSpaceId().getName(); // ← Aquí accedés al nombre
+String tipoEspacio = determineSpaceType(nombreEspacio);  // ← Determina si es Escritorio, Sala, etc.
+
+Text[] cells = {
+    createTableCellText(tipoEspacio, 200),
+};// Datos del espacio (simulados ya que no tienes la estructura completa)
         
-        
-        Text[] cells = {
-            createTableCellText(espacioNombre, 200),
-       
-        
-          
-        };
         
         row.getChildren().addAll(cells);
         

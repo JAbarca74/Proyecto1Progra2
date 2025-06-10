@@ -188,7 +188,7 @@ private void guardarReserva() {
     // ✅ USAMOS coworkingSpaces AQUÍ
     mostrarFactura(fecha, horaInicio, horaFin, coworkingSpaces);
 
-    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada para el piso completo!");
+    
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
     private void cargarMatrizDeEspaciosDisponibles() {
