@@ -14,7 +14,6 @@ public class AboutUsController extends Controller implements Initializable {
 
    @FXML
 private void onActionBtnVolver(ActionEvent event) {
-    // Cierra la ventana actual
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.close();
 }

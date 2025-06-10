@@ -94,8 +94,8 @@ private final List<Rectangle> celdasResaltadas = new ArrayList<>();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gridMatrix.getStyleClass().add("grid-background");
-        gridMatrix.setHgap(20); // separación horizontal entre celdas
-gridMatrix.setVgap(20); // separación vertical entre celdas
+        gridMatrix.setHgap(20); 
+gridMatrix.setVgap(20); 
         spacesService = new SpacesService();
         configurarGrid();
 
@@ -116,7 +116,7 @@ gridMatrix.setVgap(20); // separación vertical entre celdas
         activarClickFueraParaCancelarSeleccion();
         
         javafx.application.Platform.runLater(() -> {
-    if (scrollPane != null) scrollPane.setVvalue(0); // inicia arriba
+    if (scrollPane != null) scrollPane.setVvalue(0); 
 });
     }
     private boolean intersecta(int r1, int c1, int rs1, int cs1, int r2, int c2, int rs2, int cs2) {
@@ -131,13 +131,13 @@ public StackPane crearCeldaEspacio(SpaceVisual espacio) {
     Rectangle rect = new Rectangle(CELL_WIDTH * espacio.getColSpan(), CELL_HEIGHT * espacio.getRowSpan());
     rect.setArcWidth(40);
     rect.setArcHeight(40);
-    rect.setStroke(Color.TRANSPARENT);  // 🔸 Quita el borde negro
+    rect.setStroke(Color.TRANSPARENT);  
     rect.getStyleClass().add("celda-rect");
 
     String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
     if (nombre.contains("sala")) rect.setFill(Color.web("#2196F3"));
     else if (nombre.contains("área")) rect.setFill(Color.web("#9C27B0"));
-    else if (nombre.contains("libre")) rect.setFill(Color.web("#4CAF50")); // gris oscuro
+    else if (nombre.contains("libre")) rect.setFill(Color.web("#4CAF50")); 
     else if (nombre.contains("e")) rect.setFill(Color.web("#FF5722"));
     else rect.setFill(Color.LIGHTGRAY);
 
@@ -163,13 +163,12 @@ text.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 }
 private void activarClickFueraParaCancelarSeleccion() {
     rootPane.setOnMouseClicked(event -> {
-        // Si no hiciste clic sobre el gridMatrix directamente
         if (!event.getTarget().toString().contains("gridMatrix")) {
             if (espacioSeleccionado != null) {
                 limpiarCeldasDisponibles();
                 limpiarCuadrosDisponibles();
                 if (stackSeleccionado != null) {
-                    stackSeleccionado.setStyle(""); // quitar borde
+                    stackSeleccionado.setStyle(""); 
                 }
                 espacioSeleccionado = null;
                 stackSeleccionado = null;
@@ -208,7 +207,7 @@ private void llenarCeldasLibres() {
                 StackPane celdaLibre = new StackPane();
                 celdaLibre.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
                celdaLibre.setStyle("-fx-background-color: transparent;");
-                celdaLibre.setUserData("celdaLibre"); // ⚠️ importante para buscarlas luego
+                celdaLibre.setUserData("celdaLibre"); 
                 final int finalRow = row;
                 final int finalCol = col;
 
@@ -321,19 +320,17 @@ private void mostrarCeldasDisponibles(SpaceVisual espacio) {
                 celda.setPrefSize(CELL_WIDTH * spanCol, CELL_HEIGHT * spanRow);
 
                 Rectangle fondo = new Rectangle(CELL_WIDTH * spanCol, CELL_HEIGHT * spanRow);
-                fondo.setFill(Color.rgb(255, 255, 0, 0.4)); // Amarillo con transparencia
+                fondo.setFill(Color.rgb(255, 255, 0, 0.4)); 
                 fondo.setStroke(Color.YELLOW);
                 fondo.setArcWidth(10);
                 fondo.setArcHeight(10);
                 celda.getChildren().add(fondo);
 
-                // Posicionamiento
                 GridPane.setRowIndex(celda, row);
                 GridPane.setColumnIndex(celda, col);
                 GridPane.setRowSpan(celda, spanRow);
                 GridPane.setColumnSpan(celda, spanCol);
 
-                // Animación de entrada
                 celda.setOpacity(0);
                 celda.setScaleX(0.8);
                 celda.setScaleY(0.8);
@@ -408,13 +405,11 @@ public void cargarMatrizConEspacios() {
     espaciosAgregados.clear();
     gridMatrix.getChildren().clear();
 
-    // Reiniciar contadores
     escritoriosPorPiso.put(pisoActual, 0);
     salasPorPiso.put(pisoActual, 0);
     areasPorPiso.put(pisoActual, 0);
     libresPorPiso.put(pisoActual, 0);
 
-    // Obtener espacios del piso actual
     List<SpaceVisual> espacios = spacesService.obtenerEspaciosConPosicion()
             .stream()
             .filter(e -> Objects.equals(e.getSpace().getFloor(), pisoActual))
@@ -426,7 +421,6 @@ public void cargarMatrizConEspacios() {
         StackPane celda = crearCeldaEspacio(espacio);
         gridMatrix.add(celda, espacio.getColumn(), espacio.getRow(), espacio.getColSpan(), espacio.getRowSpan());
 
-        // Contar por tipo (según prefijo del nombre)
         String nombre = espacio.getSpace().getNombre().toLowerCase(Locale.ROOT);
         if (nombre.startsWith("e -")) {
             escritoriosPorPiso.put(pisoActual, escritoriosPorPiso.get(pisoActual) + 1);
@@ -470,10 +464,10 @@ public void cargarMatrizConEspacios() {
         int cs = esp.getColSpan();
         if (filaInicio < r + rs && filaInicio + rowSpan > r &&
             colInicio < c + cs && colInicio + colSpan > c) {
-            return false; // hay superposición
+            return false; 
         }
     }
-    return true; // está libre
+    return true; 
 }
     
     private void configurarMovimientoPorClic() {
@@ -500,13 +494,11 @@ public void cargarMatrizConEspacios() {
                                espacioSeleccionado.getColSpan(), espacioSeleccionado.getRowSpan());
             }
 
-            // 🔸 Siempre limpiar los bordes amarillos al terminar
             limpiarCuadrosDisponibles();
 
             espacioSeleccionado = null;
             event.consume();
         } else {
-            // 🔸 Si no hay espacio seleccionado, también limpiar los cuadros
             limpiarCuadrosDisponibles();
         }
     });
@@ -519,7 +511,6 @@ private void actualizarCapacidadTotalDelPiso() {
     int capacidadTotal = escritorios * 1 + salas * 4 + areas * 2;
     LabelCapacidadTotal.setText("Capacidad total: " + capacidadTotal);
 
-    // Si deseas guardar en la BD:
     spacesService.actualizarCapacidadCoworkingSpace(pisoActual, capacidadTotal);
 }
 
@@ -533,20 +524,17 @@ private void restaurarPosicionOriginal(StackPane stack, SpaceVisual espacio) {
 }
 
 private void resaltarTemporal(StackPane celda) {
-    // Guarda el estilo original
     String estiloOriginal = celda.getStyle();
 
-    // Aplica borde amarillo
     celda.setStyle("-fx-border-color: yellow; -fx-border-width: 3; -fx-border-radius: 5;");
 
-    // Programar volver al estilo original luego de 1.5 segundos
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
         @Override
         public void run() {
             javafx.application.Platform.runLater(() -> celda.setStyle(estiloOriginal));
         }
-    }, 1500); // 1.5 segundos
+    }, 1500); 
 }
    
 
@@ -587,7 +575,7 @@ private boolean validarNombreDisponible(String nombre) {
     try {
         TypedQuery<Spaces> q = em.createNamedQuery("Spaces.findByName", Spaces.class);
         q.setParameter("name", nombre.toUpperCase());
-        return q.getResultList().isEmpty(); // true = disponible
+        return q.getResultList().isEmpty(); 
     } catch (Exception e) {
         e.printStackTrace();
         return false;
@@ -611,13 +599,12 @@ private boolean validarNombreDisponible(String nombre) {
                                    col < c + cs && col + colSpan > c;
                 System.out.println("Probando posicion fila: " + row + " columna: " + col + " para span " + rowSpan + "x" + colSpan);
                 if (seCruzan) {
-                    System.out.println("🚫 Se cruza con: " + esp.getSpace().getNombre() + " en fila: " + r + " col: " + c);
+                    System.out.println("Se cruza con: " + esp.getSpace().getNombre() + " en fila: " + r + " col: " + c);
                     ocupado = true;
                     break;
                 }
             }
             if (!ocupado) {
-                // 🔁 Generar nombre único si ya existe
                 String base = nombre + " P" + pisoActual;
                 String nombreFinal = base;
                 int sufijo = 1;
@@ -637,11 +624,10 @@ private boolean validarNombreDisponible(String nombre) {
                 Respuesta r = spacesService.guardarSpace(nuevo);
                 if (!r.getEstado()) {
                     reproducirSonido("BadReservaciones.wav");
-                    System.out.println("❌ Error al guardar: " + r.getMensaje());
+                    System.out.println("Error al guardar: " + r.getMensaje());
                     return null;
                 }
 
-                // 🔁 Forzar recarga en NewReservationController si está activo
                 NewReservationController controller = Utilities.getNewReservationControllerIfActive();
                 if (controller != null) {
                     controller.forzarRecargaEspacios();
@@ -651,22 +637,22 @@ private boolean validarNombreDisponible(String nombre) {
                         .getSpace(((SpacesDto) r.getResultado("Space")).getId())
                         .getResultado("Space");
 
-                System.out.println("✅ Espacio agregado: " + nombreFinal + " en fila: " + row + ", col: " + col);
+                System.out.println("Espacio agregado: " + nombreFinal + " en fila: " + row + ", col: " + col);
                 return new SpaceVisual(actualizado, row, col, rowSpan, colSpan);
             }
         }
     }
-    System.out.println("❌ No se encontró ninguna posición libre para " + nombre + " (" + rowSpan + "x" + colSpan + ")");
+    System.out.println("No se encontró ninguna posición libre para " + nombre + " (" + rowSpan + "x" + colSpan + ")");
     return null;
 }
 private void imprimirGrillaActual() {
     String[][] grilla = new String[4][4];
     for (int i = 0; i < 4; i++) {
-        Arrays.fill(grilla[i], " . "); // puntos representan espacios vacíos
+        Arrays.fill(grilla[i], " . "); 
     }
 
     for (SpaceVisual esp : espaciosAgregados) {
-        String etiqueta = esp.getSpace().getNombre().substring(0, 1).toUpperCase(); // S, E, L, A
+        String etiqueta = esp.getSpace().getNombre().substring(0, 1).toUpperCase(); 
         for (int i = 0; i < esp.getRowSpan(); i++) {
             for (int j = 0; j < esp.getColSpan(); j++) {
                 int r = esp.getRow() + i;
@@ -676,7 +662,7 @@ private void imprimirGrillaActual() {
         }
     }
 
-    System.out.println("📐 Estado actual del grid:");
+    System.out.println("Estado actual del grid:");
     for (int r = 0; r < 4; r++) {
         for (int c = 0; c < 4; c++) {
             System.out.print(grilla[r][c]);
@@ -744,7 +730,6 @@ private void onAgregarAreasComunes() {
             return;
         }
 
-        // Paso 3: Eliminar solo los del piso actual
         Respuesta resp = spacesService.eliminarEspaciosPorPiso(pisoActual);
         if (resp.isSuccess()) {
             escritoriosPorPiso.put(pisoActual, 0);
@@ -779,13 +764,12 @@ private void editarEspacio(SpaceVisual espacio) {
     Optional<String> result = dialog.showAndWait();
     result.ifPresent(nombreNuevo -> {
         if (!nombreNuevo.trim().isEmpty()) {
-            // Actualizar el nombre en la base de datos
             SpacesDto dto = espacio.getSpace();
             dto.setNombre(nombreNuevo.trim());
 
             Respuesta respuesta = spacesService.guardarSpace(dto);
             if (respuesta.isSuccess()) {
-                cargarMatrizConEspacios(); // Recargar la vista con el nuevo nombre
+                cargarMatrizConEspacios(); 
             } else {
                 reproducirSonido("BadReservaciones.wav");
                 Alert error = new Alert(Alert.AlertType.ERROR);

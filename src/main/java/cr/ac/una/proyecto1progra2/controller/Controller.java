@@ -26,9 +26,6 @@ public abstract class Controller {
         this.stage = stage;
     }
 
-    /**
-     * Permite que al presionar Enter, se simule un Tabulador (para pasar de campo en campo)
-     */
     public void sendTabEvent(KeyEvent event) {
         event.consume();
         KeyEvent tabEvent = new KeyEvent(
@@ -38,8 +35,5 @@ public abstract class Controller {
         ((Control) event.getSource()).fireEvent(tabEvent);
     }
 
-    /**
-     * Método que debe implementar cada controlador para inicializar su lógica
-     */
     public abstract void initialize();
 }

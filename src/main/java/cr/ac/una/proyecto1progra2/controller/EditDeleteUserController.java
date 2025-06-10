@@ -58,7 +58,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    // Cargar usuarios una sola vez
     Respuesta resp = usuariosService.listarUsuarios();
     if (resp.getEstado()) {
         usuariosOriginal = (List<UsuariosDto>) resp.getResultado("Usuarios");
@@ -67,7 +66,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
         mostrarMensaje("Error al cargar usuarios: " + resp.getMensaje());
     }
 
-    // Configurar columnas
     colId.setCellValueFactory(new PropertyValueFactory<>("id"));
     colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
     colApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
@@ -75,7 +73,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
     colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
     colRole.setCellValueFactory(new PropertyValueFactory<>("rolId"));
 
-    // Celda personalizada para mostrar A/I con color
     colEstado.setCellFactory(column -> new TableCell<UsuariosDto, String>() {
         @Override
         protected void updateItem(String item, boolean empty) {
@@ -88,7 +85,7 @@ public class EditDeleteUserController extends Controller implements Initializabl
             }
 
             UsuariosDto usuario = getTableRow().getItem();
-            boolean estadoActivo = usuario.getEstado(); // true = A, false = I
+            boolean estadoActivo = usuario.getEstado(); 
 
             javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(10, 10);
             rect.setArcWidth(3);
@@ -101,7 +98,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
         }
     });
 
-    // Listener de selección en la tabla
     tblUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
         usuarioSeleccionado = newVal;
         boolean habilitar = usuarioSeleccionado != null;
@@ -126,7 +122,6 @@ public class EditDeleteUserController extends Controller implements Initializabl
     
    @Override
 public void initialize() {
-    // Método requerido por la clase base 'Controller'
 }
 
 
@@ -181,7 +176,7 @@ private void onActionBtnBuscar(javafx.event.Event event) {
     }
 
     private void mostrarMensaje(String mensaje) {
-        System.out.println(mensaje); // Puedes cambiarlo por diálogo si lo deseas
+        System.out.println(mensaje); 
     }
 
     @FXML
