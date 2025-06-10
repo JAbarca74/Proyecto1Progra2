@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 
 
 public class InvoiceController extends Controller implements Initializable {
@@ -495,12 +496,7 @@ private double calculateHours() {
     FadeTransition fade = new FadeTransition(Duration.millis(300), mainContainer);
     fade.setToValue(0);
     fade.setOnFinished(e -> {
-        if (getStage() != null) {
-            getStage().close(); 
-            FlowController.getInstance().goView("NewReservation");
-        }
-        // ← Cargar la vista de reservas después de cerrar
-       
+        FlowController.getInstance().goView("NewReservation");
     });
     fade.play();
 }
