@@ -346,7 +346,7 @@ if (guardado) {
     reproducirSonido("intro-sound-bell-269297-_1_.wav");
     List<CoworkingSpaces> espacioIndividual = Arrays.asList(coworking); // NUEVO
     mostrarFactura(); // NUEVO
-    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada correctamente!");
+   
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
         else {
