@@ -133,6 +133,15 @@
                                                 <Insets top="13.0" />
                                             </VBox.margin>
                                         </Button>
+                                        
+                                        <Button fx:id="BtnEliminarSeleccionado"
+                                        text="Eliminar seleccionado"
+                                        onAction="#onEliminarSeleccionado">
+                                    <VBox.margin>
+                                        <Insets top="13.0"/>
+                                    </VBox.margin>
+                                </Button>
+
 
                                         <VBox alignment="CENTER_LEFT" prefHeight="214.0" prefWidth="573.0" styleClass="panel-blanco-sombra">
                                             <children>

@@ -3,6 +3,7 @@ package cr.ac.una.proyecto1progra2.controller;
 import cr.ac.una.proyecto1progra2.DTO.ReservationViewDto;
 import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
 import cr.ac.una.proyecto1progra2.model.Spaces;
+import cr.ac.una.proyecto1progra2.service.ReservationsService;
 import cr.ac.una.proyecto1progra2.service.SpacesService;
 import cr.ac.una.proyecto1progra2.util.Respuesta;
 import cr.ac.una.proyecto1progra2.util.SpaceVisual;
@@ -60,6 +61,8 @@ public class EditFloorAdminController extends Controller implements Initializabl
     @FXML private GridPane gridMatrix;
     @FXML
     private ScrollPane scrollPane;
+    @FXML private Button BtnEliminarSeleccionado;
+
     @FXML private Label LabelCapacidadTotal;
     private Rectangle celdaResaltada;
     
@@ -862,6 +865,63 @@ private void animarIngreso(StackPane celda) {
 
     new ParallelTransition(fadeIn, scaleIn).play();
 }
+
+    
+    @FXML
+private void onEliminarSeleccionado() {
+    // 1) ¿Hay algo seleccionado?
+    if (espacioSeleccionado == null || stackSeleccionado == null) {
+        Utilities.mostrarMensaje(
+            "Sin selección",
+            "Primero selecciona un espacio en la cuadrícula."
+        );
+        return;
+    }
+
+    // 2) Confirmación
+    Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+    alerta.setTitle("Confirmación");
+    alerta.setHeaderText("¿Eliminar el espacio «" 
+                         + espacioSeleccionado.getSpace().getNombre() + "»?");
+    alerta.setContentText("Esta acción no se puede deshacer.");
+    Optional<ButtonType> r = alerta.showAndWait();
+    if (r.isEmpty() || r.get() != ButtonType.OK) return;
+
+    // 3) Verificar reservas activas (opcional pero coherente con ‘BorrarTodo’)
+    ReservationsService rs = new ReservationsService();
+    List<ReservationViewDto> reservas = rs.listarPorFiltros(
+        null, null, "P" + espacioSeleccionado.getSpace().getFloor());
+    if (!reservas.isEmpty()) {
+        Utilities.mostrarMensaje(
+            "No permitido",
+            "No puedes borrar este espacio porque tiene reservas activas."
+        );
+        return;
+    }
+
+    // 4) Eliminar en BD
+    Respuesta resp = spacesService.eliminarSpace(
+            espacioSeleccionado.getSpace().getId());   // ← método ya existente en la mayoría de tus servicios
+    if (!resp.isSuccess()) {
+        reproducirSonido("BadReservaciones.wav");
+        Utilities.mostrarMensaje("Error", resp.getMensaje());
+        return;
+    }
+
+    // 5) Actualizar UI y contadores
+    gridMatrix.getChildren().remove(stackSeleccionado);
+    espaciosAgregados.remove(espacioSeleccionado);
+
+    cargarMatrizConEspacios();          // ya recalcula contadores y capacidad
+    reproducirSonido("mech-keyboard-02-102918.wav");
+
+    espacioSeleccionado = null;
+    stackSeleccionado   = null;
+}
+
+
+
+
     @Override
     public void initialize() {
       
