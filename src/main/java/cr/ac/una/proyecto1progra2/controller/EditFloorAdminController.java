@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -548,6 +549,7 @@ private void resaltarTemporal(StackPane celda) {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+         mostrarTextoFlotante("+1 Escritorios agregado", 300, 50);
            animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
@@ -565,6 +567,7 @@ private void resaltarTemporal(StackPane celda) {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+         mostrarTextoFlotante("+1 Salas agregado", 300, 50);
            animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
@@ -683,6 +686,7 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+         mostrarTextoFlotante("+1 Areas Comunes agregado", 300, 50);
            animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
@@ -700,11 +704,30 @@ private void onAgregarAreasComunes() {
         espaciosAgregados.add(nuevo);
         StackPane celda = crearCeldaEspacio(nuevo);
         gridMatrix.add(celda, nuevo.getColumn(), nuevo.getRow(), nuevo.getColSpan(), nuevo.getRowSpan());
+        mostrarTextoFlotante("+1 Espacio Libre agregado", 300, 50);
            animarIngreso(celda); // ✅ aquí se aplica la animación
         resaltarTemporal(celda);
         actualizarCapacidadTotalDelPiso();
         reproducirSonido("mech-keyboard-02-102918.wav");
     }
+}
+   private void mostrarTextoFlotante(String texto, double x, double y) {
+    Text msg = new Text(texto);
+    msg.setFill(Color.LIME);
+    msg.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+    msg.setTranslateX(x);
+    msg.setTranslateY(y);
+    rootPane.getChildren().add(msg);
+
+     TranslateTransition arriba = new TranslateTransition(Duration.millis(1000), msg);
+    arriba.setByY(-50);
+    FadeTransition fade = new FadeTransition(Duration.millis(1000), msg);
+    fade.setFromValue(1.0);
+    fade.setToValue(0);
+
+    ParallelTransition anim = new ParallelTransition(arriba, fade);
+    anim.setOnFinished(e -> rootPane.getChildren().remove(msg));
+    anim.play();
 }
 private void animarEliminacion(Node nodo) {
     FadeTransition fadeOut = new FadeTransition(Duration.millis(300), nodo);
