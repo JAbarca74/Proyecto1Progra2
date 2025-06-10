@@ -14,16 +14,21 @@ public class ReservationViewDto {
     private Integer   floor;
 
     public ReservationViewDto(Reservations r) {
-        this.id              = r.getId();
-        this.userName        = r.getUserId().getUsername();
-        this.spaceName       = r.getCoworkingSpaceId().getName();
-        this.reservationDate = r.getReservationDate();
-        this.startTime       = r.getStartTime();
-        this.endTime         = r.getEndTime();
-         this.floor           = r.getCoworkingSpaceId()
-                                 .getSpaceId()
-                                 .getFloor();
-    }
+    this.id          = r.getId();
+    this.spaceName   = r.getCoworkingSpaceId()
+                          .getSpaceId()
+                          .getName();      // ahora viene de TB_SPACES
+    this.userName    = r.getUserId().getUsername();
+    this.reservationDate = r.getReservationDate();
+    this.startTime   = r.getStartTime();
+    this.endTime     = r.getEndTime();
+     this.floor         = r.getCoworkingSpaceId()
+                             .getSpaceId()
+                             .getFloor();
+    
+    
+}
+
 
     public Long getId()               { return id; }
     public String getUserName()       { return userName; }
