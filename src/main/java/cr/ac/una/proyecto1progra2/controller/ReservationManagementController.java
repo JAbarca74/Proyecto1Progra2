@@ -25,11 +25,9 @@ import java.util.ResourceBundle;
 
 public class ReservationManagementController extends Controller implements Initializable {
 
-    // Calendario
     @FXML private Label lblMonthYear;
     @FXML private GridPane calendarGrid;
 
-    // Filtros / tabla
     @FXML private ComboBox<UsuariosDto> comboUsuarios;
     @FXML private ComboBox<String> comboPiso;
     @FXML private TableView<ReservationViewDto> tablaReservas;
@@ -49,11 +47,10 @@ public class ReservationManagementController extends Controller implements Initi
     private final ObservableList<String>              pisos    = FXCollections.observableArrayList("P0","P1","P2","P3");
 
     private YearMonth currentYearMonth;
-    private List<ReservationViewDto> allReservas;  // cache completo
+    private List<ReservationViewDto> allReservas; 
 
     @Override
     public void initialize(URL loc, ResourceBundle rb) {
-        // Inicializar columnas de la tabla
         colUsuario.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getUserName()));
         colEspacio.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getSpaceName()));
         colPiso   .setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getPiso()));
@@ -68,7 +65,7 @@ public class ReservationManagementController extends Controller implements Initi
                     ReservationViewDto dto = getTableView().getItems().get(getIndex());
                     if (reservationsService.eliminarReserva(dto.getId())) {
                         reservas.remove(dto);
-                        drawCalendar(); // calendario en tiempo real
+                        drawCalendar(); 
                     } else {
                         new Alert(Alert.AlertType.ERROR, "No se pudo eliminar").showAndWait();
                     }
@@ -81,7 +78,6 @@ public class ReservationManagementController extends Controller implements Initi
         });
         tablaReservas.setItems(reservas);
 
-        // Inicializar comboUsuarios
         comboUsuarios.setConverter(new StringConverter<UsuariosDto>() {
             @Override public String toString(UsuariosDto u){ return u!=null?u.getUsername():""; }
             @Override public UsuariosDto fromString(String s){ return null; }
@@ -93,15 +89,12 @@ public class ReservationManagementController extends Controller implements Initi
             }
         });
 
-        // Inicializar comboPiso
         comboPiso.setItems(pisos);
 
-        // Cargar datos
         cargarUsuarios();
         allReservas = reservationsService.listarTodasView();
         reservas.setAll(allReservas);
 
-        // Configurar calendario
         currentYearMonth = YearMonth.now();
         drawCalendar();
     }
@@ -109,27 +102,21 @@ public class ReservationManagementController extends Controller implements Initi
     private void cargarUsuarios(){
         Respuesta r = usuariosService.listarUsuarios();
         if(r.isSuccess()){
-            //noinspection unchecked
             usuarios.setAll((List<UsuariosDto>)r.getResultado("Usuarios"));
             comboUsuarios.setItems(usuarios);
         }
     }
 
-    // -------------------- calendario --------------------
 
     private void drawCalendar() {
-    // 1) recarga todas las reservas (esto parece pendiente, asegurate de que allReservas esté actualizado)
-
-    // 3) pintar mes/año
     lblMonthYear.setText(currentYearMonth.getMonth().name() + " " + currentYearMonth.getYear());
 
-    // 4) limpiar días viejos
     calendarGrid.getChildren().removeIf(node ->
         GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0
     );
 
     LocalDate first = currentYearMonth.atDay(1);
-    int offset = (first.getDayOfWeek().getValue() + 6) % 7; // lunes=0
+    int offset = (first.getDayOfWeek().getValue() + 6) % 7; 
     int days = currentYearMonth.lengthOfMonth();
 
     for (int d = 1; d <= days; d++) {
@@ -140,14 +127,11 @@ public class ReservationManagementController extends Controller implements Initi
         Button b = new Button(String.valueOf(d));
         b.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        // colorear si hay reservas ese día, validando null
         boolean has = allReservas.stream()
                         .anyMatch(r -> r.getReservationDate() != null && r.getReservationDate().equals(date));
         if (has) {
             b.setStyle("-fx-background-color:#90ee90;");
         }
-
-        // al click, filtrar por fecha
         b.setOnAction(evt -> {
             reservas.setAll(
                 reservationsService.listarPorFiltros(
@@ -171,7 +155,6 @@ public class ReservationManagementController extends Controller implements Initi
         drawCalendar();
     }
 
-    // -------------------- filtros y recarga tabla --------------------
 
     @FXML private void onBuscar(ActionEvent ev) {
         reservas.setAll(

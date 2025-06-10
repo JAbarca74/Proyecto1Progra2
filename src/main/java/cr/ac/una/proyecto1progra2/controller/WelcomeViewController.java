@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 
 public class WelcomeViewController extends Controller implements Initializable {
 
-    /* ──────────── FXML ──────────── */
     @FXML private ImageView imgAvatar;
     @FXML private Label     lblReservasHoy;
     @FXML private Label     lblEspacios;
@@ -33,19 +32,16 @@ public class WelcomeViewController extends Controller implements Initializable {
     @FXML private Label     lblWeather;
     @FXML private javafx.scene.control.ListView<String> lstNews;
 
-    /* ──────────── Servicios ──────────── */
     private final ReservationsService reservationsService = new ReservationsService();
     private final SpacesService       spacesService       = new SpacesService();
     private final UsuariosService     usuariosService     = new UsuariosService();
 
-    private Timeline refresher;   // refresca métricas
-    private Timeline ticker;      // rota titulares
+    private Timeline refresher;   
+    private Timeline ticker;     
 
-    /* ──────────── init ──────────── */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        /* Avatar opcional */
         try {
             imgAvatar.setImage(new Image(
                 getClass()
@@ -53,59 +49,48 @@ public class WelcomeViewController extends Controller implements Initializable {
                     .toExternalForm()));
         } catch (Exception ignore) {}
 
-        /* Refresco de métricas cada 30 s */
         refresher = new Timeline(
             new KeyFrame(Duration.ZERO, e -> actualizarMetricas()),
             new KeyFrame(Duration.seconds(30)));
         refresher.setCycleCount(Timeline.INDEFINITE);
         refresher.play();
 
-        /* Primera carga + panel de clima/noticias */
         actualizarMetricas();
         initFakeNewsAndWeather();
     }
 
-    /* ──────────── Métricas dashboard ──────────── */
     private void actualizarMetricas() {
 
-        /* 1) Reservas de hoy */
         long hoyCount = reservationsService.listarTodasView().stream()
                            .filter(r -> r.getReservationDate()!=null
                                     && r.getReservationDate().isEqual(LocalDate.now()))
                            .count();
 
-        /* 2) Espacios totales */
         Respuesta respSpaces = spacesService.listarSpaces();
         int totalEspacios = respSpaces.isSuccess()
                 ? ((List<?>) respSpaces.getResultado("Spaces")).size() : 0;
 
-        /* 3) Usuarios totales */
         Respuesta respUsers = usuariosService.listarUsuarios();
         int totalUsuarios = respUsers.isSuccess()
                 ? ((List<?>) respUsers.getResultado("Usuarios")).size() : 0;
 
-        /* 4) Ocupación % */
         String ocupTxt = totalEspacios == 0
                 ? "0 %"
                 : String.format("%.0f %%", (hoyCount * 100.0) / totalEspacios);
 
-        /* Pintar en UI */
         lblReservasHoy.setText(String.valueOf(hoyCount));
         lblEspacios.setText(String.valueOf(totalEspacios));
         lblUsuarios.setText(String.valueOf(totalUsuarios));
         lblOcupacion.setText(ocupTxt);
 
-        /* Tiempo de última actualización */
         lblLastUpdate.setText(
             LocalDateTime.now().format(
                 DateTimeFormatter.ofPattern("d 'de' MMMM yyyy, HH:mm:ss"))
             + "  |  Última actualización");
     }
 
-    /* ──────────── Noticias + Clima ficticios ──────────── */
     private void initFakeNewsAndWeather() {
 
-        /* Clima simulado */
         lblWeather.setText("Pérez Zeledón · 23 °C · Parcial nublado");
         try {
             imgWeatherIcon.setImage(new Image(
@@ -113,9 +98,8 @@ public class WelcomeViewController extends Controller implements Initializable {
                  "/cr/ac/una/proyecto1progra2/resources/weather_partly.png").toExternalForm()));
         } catch (Exception ignore) {}
 
-        /* Lista de 20 noticias/intereses */
         lstNews.getItems().setAll(
-            "FlexSpace P.Z. inaugura terraza verde ☘️",
+            "FlexSpace P.Z. inaugura terraza verde ☘",
             "Nueva zona 'Focus Pods' para llamadas silenciosas 📞",
             "FlexSpace en el top-5 coworkings de Costa Rica 🏆",
             "Café de especialidad gratis los viernes ☕",
@@ -137,7 +121,6 @@ public class WelcomeViewController extends Controller implements Initializable {
             "Se habilita app móvil para reservas instantáneas 📱"
         );
 
-        /* Animación tipo ticker: rota cada 4 s */
         ticker = new Timeline(new KeyFrame(Duration.seconds(4), e -> {
             if (!lstNews.getItems().isEmpty()) {
                 String first = lstNews.getItems().remove(0);
@@ -147,7 +130,6 @@ public class WelcomeViewController extends Controller implements Initializable {
         ticker.setCycleCount(Timeline.INDEFINITE);
         ticker.play();
 
-        /* Celda personalizada para estilo “tarjeta mini” */
         lstNews.setCellFactory(lv -> new javafx.scene.control.ListCell<>() {
             @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -160,6 +142,5 @@ public class WelcomeViewController extends Controller implements Initializable {
         });
     }
 
-    /* (no usado, pero requerido por abstract Controller) */
     @Override public void initialize() {}
 }

@@ -73,7 +73,6 @@ public class MiniGameController implements Initializable {
     }
 
     private void startGame() {
-    // 1) Reiniciar estado
     snake.clear();
     gameArea.getChildren().clear();
     direction = Direction.RIGHT;
@@ -81,14 +80,9 @@ public class MiniGameController implements Initializable {
     score = 0;
     updateScore();
 
-    // 2) Ocultar los paneles de Game Over
     gameOverContainer.setVisible(false);
     gameOverLabel.setVisible(false);
 
-    // 3) NO QUITAR la clase "lit" del trofeo: así, una vez iluminado,
-    //    permanecerá encendido durante toda la sesión para este usuario.
-
-    // 4) Crear la cabeza y el cuerpo inicial de la serpiente
     Rectangle head = createRectangle(3 * UNIT_SIZE, 0, "snake-body");
     snake.add(head);
     gameArea.getChildren().add(head);
@@ -98,10 +92,8 @@ public class MiniGameController implements Initializable {
         gameArea.getChildren().add(body);
     }
 
-    // 5) Colocar la primera comida
     spawnFood();
 
-    // 6) Arrancar el bucle de animación
     gameLoop = new AnimationTimer() {
         @Override
         public void handle(long now) {
@@ -109,7 +101,6 @@ public class MiniGameController implements Initializable {
                 if (running) {
                     move();
                     checkCollision();
-                    // La lógica de comer está dentro de move()
                 }
                 lastUpdate = now;
             }
@@ -144,7 +135,6 @@ public class MiniGameController implements Initializable {
             gameArea.getChildren().remove(food);
             Sound.playEatPoint();
 
-            // ilumina rayo
             lightningIcon.getStyleClass().add("lit");
             PauseTransition flash = new PauseTransition(Duration.millis(200));
             flash.setOnFinished(e -> lightningIcon.getStyleClass().remove("lit"));
@@ -202,7 +192,6 @@ public class MiniGameController implements Initializable {
         }
         if (!running) return;
 
-        // ilumina control
         consoleControl.getStyleClass().add("lit-control");
         PauseTransition t = new PauseTransition(Duration.millis(100));
         t.setOnFinished(e -> consoleControl.getStyleClass().remove("lit-control"));
@@ -226,12 +215,10 @@ public class MiniGameController implements Initializable {
         Label finalScore = (Label) gameOverContainer.getChildren().get(2);
         finalScore.setText("PUNTOS: " + score);
 
-        // ilumina trofeo al superar 150
         if (score >= 150) {
             trophyIcon.getStyleClass().add("lit");
         }
 
-        // decide descuento
         int discount = score >= 150 ? 30 : (score >= 100 ? 15 : 0);
         if (discount > 0 && !UserManager.hasDiscountCode()) {
             String raw = DiscountManager.generateCode(12);

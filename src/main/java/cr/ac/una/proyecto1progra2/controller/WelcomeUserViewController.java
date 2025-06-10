@@ -15,13 +15,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-/**
- * Pantalla de bienvenida para usuarios regulares.
- * No realiza llamadas a servicios — todo es contenido estático o simulado.
- */
 public class WelcomeUserViewController extends Controller implements Initializable {
 
-    /* ──────────── FXML ──────────── */
     @FXML private ImageView              imgAvatar;
     @FXML private Label                  lblTip;
     @FXML private Label                  lblEvento;
@@ -29,22 +24,18 @@ public class WelcomeUserViewController extends Controller implements Initializab
     @FXML private ListView<String>       lstAvisos;
     @FXML private Label                  lblLastUpdate;
 
-    /* ──────────── Utilidades internas ──────────── */
-    private Timeline ticker;   // rota los avisos cada 4 s
-
-    /* ──────────── Ciclo de vida ──────────── */
+    private Timeline ticker;   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        /* Avatar opcional (ignorar si no existe el recurso) */
         try {
             imgAvatar.setImage(new Image(
                 getClass().getResource(
                     "/cr/ac/una/proyecto1progra2/resources/user_avatar.png")
                 .toExternalForm()));
-        } catch (Exception ignore) { /* avatar es opcional */ }
+        } catch (Exception ignore) { }
 
-        /* Poblamos lista de avisos */
         lstAvisos.getItems().setAll(
             "Recuerda mantener tu estación limpia ✨",
             "Configura el modo silencio en llamadas 📵",
@@ -58,7 +49,6 @@ public class WelcomeUserViewController extends Controller implements Initializab
             "Se inaugura la terraza verde este mes 🌱"
         );
 
-        /* Rotación automática de avisos (ticker) */
         ticker = new Timeline(new KeyFrame(Duration.seconds(4), e -> {
             if (!lstAvisos.getItems().isEmpty()) {
                 String first = lstAvisos.getItems().remove(0);
@@ -68,7 +58,6 @@ public class WelcomeUserViewController extends Controller implements Initializab
         ticker.setCycleCount(Timeline.INDEFINITE);
         ticker.play();
 
-        /* Marca de tiempo */
         lblLastUpdate.setText(
             LocalDateTime.now().format(
                 DateTimeFormatter.ofPattern("d 'de' MMMM yyyy, HH:mm:ss"))

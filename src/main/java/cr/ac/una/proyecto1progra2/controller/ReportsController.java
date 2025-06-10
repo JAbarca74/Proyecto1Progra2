@@ -49,7 +49,7 @@ public class ReportsController extends Controller implements Initializable {
     }
 
     @Override
-    public void initialize() { /* no usado */ }
+    public void initialize() {  }
 
     private void cargarTablaEspacios() {
         Map<String, Long> datos = obtenerReservasPorEspacio();

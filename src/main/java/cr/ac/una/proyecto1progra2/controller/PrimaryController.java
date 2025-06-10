@@ -61,19 +61,17 @@ public void initialize() {
 
         UsuariosDto usuarioDto = (UsuariosDto) respuesta.getResultado("Usuario");
 
-        // Verificar si el usuario está activo
         if (!usuarioDto.getEstado()) {
             mostrarError("El usuario está inactivo. Contacte al administrador.");
             return;
         }
 
-        // ✅ Guardar el usuario logueado para el resto del sistema
         UserManager.setCurrentUser(usuarioDto);
 
         Long rolId = usuarioDto.getRolId();
         if (rolId != null) {
-            FlowController.getInstance().goMain();  // Ir a la ventana principal
-            getStage().close();                     // Cierra la ventana actual
+            FlowController.getInstance().goMain(); 
+            getStage().close();                    
         } else {
             mostrarError("No se pudo determinar el rol del usuario.");
         }

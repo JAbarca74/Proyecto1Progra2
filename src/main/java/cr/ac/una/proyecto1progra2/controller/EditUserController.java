@@ -24,7 +24,7 @@ public class EditUserController extends Controller {
 private boolean activo = true;
     @Override
     public void initialize() {
-        // vacío
+       
     }
 
     public void setUsuario(UsuariosDto u) {

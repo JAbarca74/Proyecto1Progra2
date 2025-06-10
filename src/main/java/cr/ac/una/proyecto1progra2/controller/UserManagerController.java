@@ -31,14 +31,12 @@ public class UserManagerController extends Controller {
 
     @Override
     public void initialize() {
-        // 1) Configuro columnas de la tabla
         colId.    setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
         colRol.   setCellValueFactory(new PropertyValueFactory<>("rolId"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
-        // 2) Cargo roles desde la base de datos
         Respuesta rr = rolesService.listarRoles();
         if (rr.getEstado()) {
             @SuppressWarnings("unchecked")
@@ -48,17 +46,14 @@ public class UserManagerController extends Controller {
             mostrarError(rr.getMensaje());
         }
 
-        // 3) Cargo la lista de usuarios
         cargarTabla();
 
-        // 4) Listener para selección de fila
         tblUsuarios.getSelectionModel()
                    .selectedItemProperty()
                    .addListener((obs, oldU, newU) -> {
             if (newU != null) {
                 txtNombre.setText(newU.getNombre());
                 txtCorreo.setText(newU.getCorreo());
-                // Selecciono el RolesDto cuyo ID coincide
                 for (RolesDto r : cbRol.getItems()) {
                     if (r.getId().equals(newU.getRolId())) {
                         cbRol.setValue(r);

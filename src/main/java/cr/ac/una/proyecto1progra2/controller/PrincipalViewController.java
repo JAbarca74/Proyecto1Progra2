@@ -38,29 +38,26 @@ public class PrincipalViewController extends Controller implements Initializable
    @Override
 public void initialize(URL url, ResourceBundle rb) {
 
-    if (UserManager.isAdmin()) {              // ① ADMIN
+    if (UserManager.isAdmin()) {             
         VBoxMenuAdmin.setVisible(true);
         VBoxMenuUsuario.setVisible(false);
 
         Platform.runLater(() -> {
             FlowController.getInstance().limpiarLoader("WelcomeView");
-            FlowController.getInstance().goView("WelcomeView");  // dashboard admin
+            FlowController.getInstance().goView("WelcomeView"); 
         });
 
-    } else {                                  // ② USUARIO
+    } else {                                 
         VBoxMenuUsuario.setVisible(true);
         VBoxMenuAdmin.setVisible(false);
 
         Platform.runLater(() -> {
             FlowController.getInstance().limpiarLoader("WelcomeUserView");
-            FlowController.getInstance().goView("WelcomeUserView");  // NUEVA carátula
+            FlowController.getInstance().goView("WelcomeUserView"); 
         });
     }
 }
 
-    
-    
-    /* ───── Botón “Inicio / Home” para ambos perfiles ───── */
 @FXML
 private void onActionBtnHome(ActionEvent event) {
 
@@ -153,7 +150,6 @@ private void onActionBtnHome(ActionEvent event) {
 
     @Override
     public void initialize() {
-        // No usado
     }
 
     private void mostrarAlerta(String mensaje) {

@@ -49,7 +49,6 @@ private ToggleGroup rolGroup;
         String nombre          = txtName.getText().trim();
         String apellido        = txtLastName.getText().trim();
 
-        // Validaciones de campos
         invalido |= marcarInvalido(txtUsername, username.isEmpty());
         invalido |= marcarInvalido(txtName, nombre.isEmpty() || !nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"));
         invalido |= marcarInvalido(txtLastName, apellido.isEmpty() || !apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"));
@@ -62,19 +61,12 @@ private ToggleGroup rolGroup;
             return;
         }
 
-        // --- VALIDACIÓN DE SELECCIÓN DE ROL (opcional) ---
         if (rolGroup.getSelectedToggle() == null) {
             mostrarAlerta("Por favor seleccioná Tipo: Usuario o Administrador.");
             return;
         }
-        // ---------------------------------------------------
-
-        // --- DETERMINAR EL rolId SEGÚN EL RADIO BUTTON SELECCIONADO ---
         Long rolId = rbAdmin.isSelected() ? 1L : 2L;
-        // (1L = administrador, 2L = usuario; ajustá a tus IDs reales)
-        // ----------------------------------------------------------------
-
-        // Construcción del DTO
+        
         UsuariosDto dto = new UsuariosDto();
         dto.setUsername(username);
         dto.setCorreo(email);
@@ -82,8 +74,7 @@ private ToggleGroup rolGroup;
         dto.setNombre(nombre);
         dto.setApellido(apellido);
         dto.setRolId(rolId);
-
-        // Guardar en la base de datos
+        
         Respuesta resp = usuariosService.guardarUsuario(dto);
         if (!resp.getEstado()) {
             mostrarAlerta("Error al guardar: " + resp.getMensaje());
@@ -101,7 +92,7 @@ private ToggleGroup rolGroup;
         txtName.clear();
         txtLastName.clear();
         limpiarEstilos();
-        // Reiniciar selector a Usuario
+        
         rbUsuario.setSelected(true);
     }
 
@@ -137,7 +128,6 @@ private ToggleGroup rolGroup;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1) Deshabilitar botón Crear hasta que todos los campos estén llenos
         btnCrearCuenta.disableProperty().bind(
             txtUsername.textProperty().isEmpty()
           .or(txtEmail.textProperty().isEmpty())
@@ -147,10 +137,9 @@ private ToggleGroup rolGroup;
           .or(txtLastName.textProperty().isEmpty())
         );
         
-        // 2) Configurar el ToggleGroup para los RadioButtons de rol
         rolGroup = new ToggleGroup();
         rbUsuario.setToggleGroup(rolGroup);
         rbAdmin.setToggleGroup(rolGroup);
-        rbUsuario.setSelected(true); // Por defecto "Usuario"
+        rbUsuario.setSelected(true); 
     }
 }

@@ -51,10 +51,8 @@ public void forzarRecargaEspacios() {
 
     @Override
 public void initialize(URL url, ResourceBundle resourceBundle) {
-    // 1) Fecha por defecto: hoy
     DatePickerDIasDIasReservaciones.setValue(LocalDate.now());
 
-    // 2) Horarios cada 30 minutos desde 07:00 hasta 21:00
     LocalTime t = LocalTime.of(7, 0);
     while (!t.isAfter(LocalTime.of(21, 0))) {
         ComboBoxHoraIncio1.getItems().add(t);
@@ -62,15 +60,12 @@ public void initialize(URL url, ResourceBundle resourceBundle) {
         t = t.plusMinutes(30);
     }
 
-    // 3) Valores iniciales: 08:00 → 08:00, fin al siguiente slot → 08:30
     ComboBoxHoraIncio1.setValue(LocalTime.of(8, 0));
     int idx = ComboBoxHoraIncio1.getItems().indexOf(ComboBoxHoraIncio1.getValue());
     if (idx >= 0 && idx < ComboBoxHoraFin1.getItems().size() - 1) {
         ComboBoxHoraFin1.setValue(ComboBoxHoraFin1.getItems().get(idx + 1));
     }
 
-    // 4) Listeners para recargar y ajustar fin automáticamente
-    // O cuando se selecciona el DatePicker:
 configurarColoresCalendario();
     DatePickerDIasDIasReservaciones.valueProperty().addListener((obs, o, n) -> buscarEspacios());
     ComboBoxHoraFin1.valueProperty().addListener((obs, o, n) -> buscarEspacios());
@@ -85,12 +80,10 @@ configurarColoresCalendario();
         buscarEspacios();
     });
 
-    // 5) Piso y su listener
     ComboBoxPiso.getItems().setAll("Piso 0", "Piso 1", "Piso 2", "Piso 3");
     ComboBoxPiso.getSelectionModel().selectFirst();
     ComboBoxPiso.valueProperty().addListener((obs, o, n) -> buscarEspacios());
 
-    // 6) Carga inicial
     buscarEspacios();
     
 }
@@ -131,14 +124,14 @@ private void cargarContadoresPorPiso(int piso) {
     LocalDate fecha = DatePickerDIasDIasReservaciones.getValue();
     LocalTime horaInicio = ComboBoxHoraIncio1.getValue();
     LocalTime horaFin = ComboBoxHoraFin1.getValue();
-    pisoActual = obtenerPisoSeleccionado(); // 🔸 asegurarse de actualizar el piso
+    pisoActual = obtenerPisoSeleccionado(); 
 
     if (fecha == null || horaInicio == null || horaFin == null || !horaInicio.isBefore(horaFin)) {
         Utilities.showAlert(Alert.AlertType.WARNING, "Datos inválidos", "Ingrese fecha y horas válidas.");
         return;
     }
 
-    cargarContadoresPorPiso(pisoActual); // 🔸 mostrar cantidades
+    cargarContadoresPorPiso(pisoActual);
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 
 }
@@ -170,7 +163,6 @@ private void guardarReserva() {
 
     List<CoworkingSpaces> coworkingSpaces = spacesService.obtenerCoworkingSpacesPorSpaceIds(espaciosEnPiso);
 
-    // 🛑 Validación extra: ¿hay espacios sin coworking asociado?
     if (coworkingSpaces.size() != espaciosEnPiso.size()) {
     List<Long> idsCoworking = coworkingSpaces.stream()
             .map(cs -> cs.getSpaceId().getId())
@@ -179,7 +171,7 @@ private void guardarReserva() {
             .filter(id -> !idsCoworking.contains(id))
             .toList();
 
-    System.out.println("❌ Espacios sin CoworkingSpace:");
+    System.out.println("Espacios sin CoworkingSpace:");
     idsFaltantes.forEach(id -> System.out.println(" - Space ID sin asociar: " + id));
 
     Utilities.showAlert(Alert.AlertType.ERROR,
@@ -251,17 +243,16 @@ private void configurarColoresCalendario() {
             double ocupacion = calcularPorcentajeOcupacion(date);
 
             if (ocupacion >= 0.8) {
-                setStyle("-fx-background-color: #ffcccc;"); // rojo
+                setStyle("-fx-background-color: #ffcccc;"); 
             } else if (ocupacion >= 0.4) {
-                setStyle("-fx-background-color: #fff0b3;"); // amarillo
+                setStyle("-fx-background-color: #fff0b3;"); 
             } else {
-                setStyle("-fx-background-color: #ccffcc;"); // verde
+                setStyle("-fx-background-color: #ccffcc;"); 
             }
         }
     });
 }
 
-// Paso 2: Crear el método auxiliar que calcula la ocupación
 private double calcularPorcentajeOcupacion(LocalDate fecha) {
     int totalEspacios = (int) spacesService.obtenerEspaciosConPosicion().stream()
             .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
@@ -279,11 +270,6 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
     if (totalEspacios == 0) return 0.0;
     return (double) ocupadosEnPiso / totalEspacios;
 }
-
-// Paso 3: Llamar este método cada vez que se cambie de piso o se abra el calendario
-// Por ejemplo, dentro de buscarEspacios()
-// colorearCalendario();
-
 
   private StackPane crearCeldaEspacio(SpaceVisual espacio, boolean estaOcupado) {
     StackPane stack = new StackPane();
@@ -311,7 +297,6 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
     text.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
     stack.getChildren().addAll(rect, text);
 
-    // Evento al hacer clic en la celda
     stack.setOnMouseClicked(event -> {
         if (estaOcupado) {
             reproducirSonido("correct-cbt.wav");
@@ -329,7 +314,6 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
             return;
         }
 
-        // Obtener el coworking correctamente desde la base
         CoworkingSpaces coworking = spacesService.obtenerCoworkingSpacePorSpaceId(espacio.getSpace().getId());
 
         if (coworking == null) {

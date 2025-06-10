@@ -738,10 +738,9 @@ private void onBorrarTodo() {
             return;
         }
 
-        // Paso 3: Eliminar solo los del piso actual en la base de datos
         Respuesta resp = spacesService.eliminarEspaciosPorPiso(pisoActual);
         if (resp.isSuccess()) {
-            // Reiniciar contadores
+            
             escritoriosPorPiso.put(pisoActual, 0);
             salasPorPiso.put(pisoActual, 0);
             areasPorPiso.put(pisoActual, 0);
@@ -753,18 +752,16 @@ private void onBorrarTodo() {
             LabelCantAreasComunes.setText("0");
             LabelCantEspaciosLibres.setText("0");
 
-            // Paso 4: Animar la eliminación visual
             for (Node nodo : new ArrayList<>(gridMatrix.getChildren())) {
                 animarEliminacion(nodo);
             }
 
-            // Paso 5: Recargar después de la animación
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     javafx.application.Platform.runLater(() -> cargarMatrizConEspacios());
                 }
-            }, 350); // tiempo suficiente para la animación
+            }, 350); 
 
         } else {
             reproducirSonido("BadReservaciones.wav");
