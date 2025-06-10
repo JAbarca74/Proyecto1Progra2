@@ -44,9 +44,7 @@ public class InvoiceController extends Controller implements Initializable {
     @FXML private VBox mainContainer;
     @FXML private StackPane headerContainer;
     @FXML private VBox detailsContainer;
-    @FXML private HBox footerContainer;
-    @FXML private Button btnPrint;
-    @FXML private Button btnSave;
+    @FXML private HBox footerContainer;  
     @FXML private Button btnClose;
     
     private LocalDate fechaReserva;
@@ -100,8 +98,7 @@ public class InvoiceController extends Controller implements Initializable {
     }
     
     private void setupButtonStyles() {
-        styleButton(btnPrint, "#28a745", "#218838");
-        styleButton(btnSave, "#007bff", "#0056b3");
+       
         styleButton(btnClose, "#6c757d", "#545b62");
     }
     
@@ -310,7 +307,7 @@ public class InvoiceController extends Controller implements Initializable {
     
     private Text createTableHeaderText(String text, double width) {
         Text headerText = new Text(text);
-        headerText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        headerText.setFont(Font.font("Arial  ", FontWeight.BOLD, 12));
         headerText.setFill(Color.WHITE);
         
         Region spacer = new Region();
@@ -331,13 +328,13 @@ public class InvoiceController extends Controller implements Initializable {
         // Datos del espacio (simulados ya que no tienes la estructura completa)
         String espacioNombre = "Espacio " + espacio.getId();
       
-        double horas = calculateHours();
+       
         
         
         Text[] cells = {
             createTableCellText(espacioNombre, 200),
        
-            createTableCellText(String.format("%.1f", horas), 100),
+        
           
         };
         
@@ -400,7 +397,7 @@ public class InvoiceController extends Controller implements Initializable {
     }
     
     private void animateButtons() {
-        Button[] buttons = {btnPrint, btnSave, btnClose};
+        Button[] buttons = { btnClose};
         
         for (int i = 0; i < buttons.length; i++) {
             Button btn = buttons[i];
@@ -476,21 +473,10 @@ private double calculateHours() {
         });
     }
     
-    // Event handlers para botones
-    @FXML
-    private void handlePrint() {
-        playSuccessSound();
-        // Implementar lógica de impresión
-        Utilities.showAlert(Alert.AlertType.INFORMATION, "Imprimir", "Funcionalidad de impresión en desarrollo");
-    }
+ 
+
     
-    @FXML
-    private void handleSave() {
-        playSuccessSound();
-        // Implementar lógica de guardado
-        Utilities.showAlert(Alert.AlertType.INFORMATION, "Guardar", "Factura guardada exitosamente");
-    }
-    
+   
     @FXML
   private void handleClose() {
     FadeTransition fade = new FadeTransition(Duration.millis(300), mainContainer);

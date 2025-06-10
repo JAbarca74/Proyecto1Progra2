@@ -22,12 +22,6 @@
                   <VBox fx:id="detailsContainer" spacing="0.0" />
                   <HBox fx:id="footerContainer" alignment="CENTER" spacing="20.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 0 0 15 15;">
                      <children>
-                        <Button fx:id="btnPrint" mnemonicParsing="false" onAction="#handlePrint" text="🖨️ Imprimir">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="💾 Guardar" />
                         <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="❌ Cerrar" />
                      </children>
                      <padding>
