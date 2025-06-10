@@ -869,7 +869,7 @@ private void animarIngreso(StackPane celda) {
     
     @FXML
 private void onEliminarSeleccionado() {
-    // 1) ¿Hay algo seleccionado?
+  
     if (espacioSeleccionado == null || stackSeleccionado == null) {
         Utilities.mostrarMensaje(
             "Sin selección",
@@ -878,7 +878,7 @@ private void onEliminarSeleccionado() {
         return;
     }
 
-    // 2) Confirmación
+
     Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
     alerta.setTitle("Confirmación");
     alerta.setHeaderText("¿Eliminar el espacio «" 
@@ -887,7 +887,7 @@ private void onEliminarSeleccionado() {
     Optional<ButtonType> r = alerta.showAndWait();
     if (r.isEmpty() || r.get() != ButtonType.OK) return;
 
-    // 3) Verificar reservas activas (opcional pero coherente con ‘BorrarTodo’)
+    
     ReservationsService rs = new ReservationsService();
     List<ReservationViewDto> reservas = rs.listarPorFiltros(
         null, null, "P" + espacioSeleccionado.getSpace().getFloor());
@@ -899,20 +899,20 @@ private void onEliminarSeleccionado() {
         return;
     }
 
-    // 4) Eliminar en BD
+  
     Respuesta resp = spacesService.eliminarSpace(
-            espacioSeleccionado.getSpace().getId());   // ← método ya existente en la mayoría de tus servicios
+            espacioSeleccionado.getSpace().getId());  
     if (!resp.isSuccess()) {
         reproducirSonido("BadReservaciones.wav");
         Utilities.mostrarMensaje("Error", resp.getMensaje());
         return;
     }
 
-    // 5) Actualizar UI y contadores
+    
     gridMatrix.getChildren().remove(stackSeleccionado);
     espaciosAgregados.remove(espacioSeleccionado);
 
-    cargarMatrizConEspacios();          // ya recalcula contadores y capacidad
+    cargarMatrizConEspacios();         
     reproducirSonido("mech-keyboard-02-102918.wav");
 
     espacioSeleccionado = null;
