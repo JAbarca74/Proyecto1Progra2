@@ -1,6 +1,5 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.controller.MiniGameController;
 import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.UserManager;
 import java.io.IOException;
@@ -31,6 +30,7 @@ public class PrincipalViewController extends Controller implements Initializable
     @FXML private Button btnStatistics;
     @FXML private Button btnSalir1;
     @FXML private Button btnMiniJuego;
+    @FXML private Button btnBtnHome;
 
     @FXML private VBox VBoxMenuAdmin;
     @FXML private VBox VBoxMenuUsuario;
@@ -50,6 +50,14 @@ public class PrincipalViewController extends Controller implements Initializable
         }
     }
 
+    
+    
+    @FXML
+    private void onActionBtnHome(ActionEvent event) {
+        FlowController.getInstance().limpiarLoader("WelcomeView");
+        FlowController.getInstance().goView("WelcomeView");
+    }
+    
     @FXML
     private void onActionBtnEditarUsuario(ActionEvent event) {
         FlowController.getInstance().limpiarLoader("EditDeleteUser");
