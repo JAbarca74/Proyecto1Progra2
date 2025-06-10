@@ -30,7 +30,7 @@ public class PrimaryController extends Controller {
 public void initialize() {
     javafx.application.Platform.runLater(() -> {
         getStage().setMinWidth(1000);
-        getStage().setMinHeight(700);
+        getStage().setMinHeight(750);
     });
 
     txtUsuario.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());

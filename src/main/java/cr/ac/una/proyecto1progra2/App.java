@@ -10,7 +10,7 @@ public class App extends Application {
         FlowController.getInstance().initializeFlow(stage, null);
 
         stage.setMinWidth(1000);
-        stage.setMinHeight(700);
+        stage.setMinHeight(750);
 
         FlowController.getInstance().goViewInWindow("primary");
     }
