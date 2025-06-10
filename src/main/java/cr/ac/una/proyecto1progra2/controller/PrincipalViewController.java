@@ -35,28 +35,43 @@ public class PrincipalViewController extends Controller implements Initializable
     @FXML private VBox VBoxMenuAdmin;
     @FXML private VBox VBoxMenuUsuario;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        if (UserManager.isAdmin()) {
-            VBoxMenuAdmin.setVisible(true);
-            VBoxMenuUsuario.setVisible(false);
-            Platform.runLater(() -> {
-                FlowController.getInstance().limpiarLoader("WelcomeView");
-                FlowController.getInstance().goView("WelcomeView");
-            });
-        } else if (UserManager.isRegularUser()) {
-            VBoxMenuUsuario.setVisible(true);
-            VBoxMenuAdmin.setVisible(false);
-        }
+   @Override
+public void initialize(URL url, ResourceBundle rb) {
+
+    if (UserManager.isAdmin()) {              // ① ADMIN
+        VBoxMenuAdmin.setVisible(true);
+        VBoxMenuUsuario.setVisible(false);
+
+        Platform.runLater(() -> {
+            FlowController.getInstance().limpiarLoader("WelcomeView");
+            FlowController.getInstance().goView("WelcomeView");  // dashboard admin
+        });
+
+    } else {                                  // ② USUARIO
+        VBoxMenuUsuario.setVisible(true);
+        VBoxMenuAdmin.setVisible(false);
+
+        Platform.runLater(() -> {
+            FlowController.getInstance().limpiarLoader("WelcomeUserView");
+            FlowController.getInstance().goView("WelcomeUserView");  // NUEVA carátula
+        });
     }
+}
 
     
     
-    @FXML
-    private void onActionBtnHome(ActionEvent event) {
+    /* ───── Botón “Inicio / Home” para ambos perfiles ───── */
+@FXML
+private void onActionBtnHome(ActionEvent event) {
+
+    if (UserManager.isAdmin()) {
         FlowController.getInstance().limpiarLoader("WelcomeView");
         FlowController.getInstance().goView("WelcomeView");
+    } else {
+        FlowController.getInstance().limpiarLoader("WelcomeUserView");
+        FlowController.getInstance().goView("WelcomeUserView");
     }
+}
     
     @FXML
     private void onActionBtnEditarUsuario(ActionEvent event) {

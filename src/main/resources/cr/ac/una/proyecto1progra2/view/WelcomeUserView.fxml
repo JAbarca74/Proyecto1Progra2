@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Pantalla de bienvenida para USUARIOS (no administrador).
+  Usa la misma hoja de estilos “welcome-alt.css” del dashboard de admin,
+  de modo que hereda la misma paleta de colores y tipografía.
+-->
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.proyecto1progra2.controller.WelcomeUserViewController"
+            stylesheets="@welcome-alt.css">
+
+    <!-- ───────── ENCABEZADO ───────── -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="header-pane">
+            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+            <!-- Avatar del usuario (opcional) -->
+            <ImageView fx:id="imgAvatar" fitWidth="50" fitHeight="50"
+                       preserveRatio="true" styleClass="avatar"/>
+
+            <!-- Saludo -->
+            <VBox spacing="5">
+                <Label styleClass="header-title"    text="¡Hola, Bienvenido a FlexSpace!"/>
+                <Label styleClass="header-subtitle" text="Disfruta tu jornada de trabajo"/>
+            </VBox>
+        </HBox>
+    </top>
+
+    <!-- ───────── CONTENIDO PRINCIPAL ───────── -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="25">
+
+            <!-- Tarjetas rápidas con información de interés -->
+            <FlowPane alignment="TOP_CENTER" hgap="20" vgap="20">
+                <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+                <!-- Tip del día -->
+                <StackPane styleClass="card-alt">
+                    <VBox alignment="CENTER" spacing="8">
+                        <Label fx:id="lblTip"          styleClass="metric-value-alt"
+                               text="Reserva tu espacio con antelación"/>
+                        <Label styleClass="metric-label-alt" text="Tip del día"/>
+                    </VBox>
+                </StackPane>
+
+                <!-- Próximo evento -->
+                <StackPane styleClass="card-alt">
+                    <VBox alignment="CENTER" spacing="8">
+                        <Label fx:id="lblEvento"       styleClass="metric-value-alt"
+                               text="Yoga al atardecer – Mié 6 p.m."/>
+                        <Label styleClass="metric-label-alt" text="Próximo evento"/>
+                    </VBox>
+                </StackPane>
+
+                <!-- Beneficio destacado -->
+                <StackPane styleClass="card-alt">
+                    <VBox alignment="CENTER" spacing="8">
+                        <Label fx:id="lblBeneficio"    styleClass="metric-value-alt"
+                               text="Café de especialidad gratis los viernes"/>
+                        <Label styleClass="metric-label-alt" text="Beneficio destacado"/>
+                    </VBox>
+                </StackPane>
+            </FlowPane>
+
+            <!-- Lista rotativa de tips/avisos -->
+            <ListView fx:id="lstAvisos" prefHeight="140" focusTraversable="false"
+                      mouseTransparent="true" styleClass="news-list"/>
+        </VBox>
+    </center>
+
+    <!-- ───────── PIE DE PÁGINA ───────── -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding><Insets top="10" bottom="10" left="20" right="20"/></padding>
+            <Label fx:id="lblLastUpdate" styleClass="last-update-alt" text="–"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

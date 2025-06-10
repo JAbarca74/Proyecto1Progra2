@@ -20,7 +20,7 @@
     </center>
 
     <left>
-        <AnchorPane prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="621.0" prefWidth="244.0" BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Menú de usuario -->
@@ -35,6 +35,18 @@
                             <VBox.margin><Insets bottom="8" top="8" /></VBox.margin>
                         </Text>
                         <Line endX="100" startX="0" />
+                        <!-- Botón HOME para el usuario -->
+<Button onAction="#onActionBtnHome" prefWidth="160" styleClass="boton-menu" text="Inicio">
+    <graphic>
+        <ImageView fitHeight="25" fitWidth="71" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../controller/Images/icons8-home-48.png" />
+            </image>
+        </ImageView>
+    </graphic>
+    <VBox.margin><Insets top="10" /></VBox.margin>
+</Button>
+
                         <Button fx:id="btnReservar" onAction="#onActionBtnReservar" prefWidth="160" styleClass="boton-menu" text="Reservaciones">
                             <VBox.margin><Insets top="30" /></VBox.margin>
                      <graphic>
@@ -80,7 +92,7 @@
                             <VBox.margin><Insets bottom="10.0" top="8.0" /></VBox.margin>
                         </Text>
                         <Line endX="100" startX="0" />
-                  <Button fx:id="BtnHome" mnemonicParsing="false" onAction="#onActionBtnHome" prefHeight="43.0" prefWidth="44.0" styleClass="boton-menu">
+                  <Button fx:id="BtnHome" mnemonicParsing="false" onAction="#onActionBtnHome" prefHeight="43.0" prefWidth="200.0" styleClass="boton-menu" text="Inicio">
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -93,7 +105,7 @@
                      </VBox.margin>
                   </Button>
 
-                        <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefWidth="180" styleClass="boton-menu" text="Editar Piso">
+                        <Button fx:id="BtnEditarPiso" onAction="#onActionBtnEditarPiso" prefHeight="44.0" prefWidth="200.0" styleClass="boton-menu" text="Editar Piso">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="26" fitWidth="33" pickOnBounds="true" preserveRatio="true">
@@ -102,8 +114,8 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefWidth="180" styleClass="boton-menu" text="Editar Usuario">
-                            <VBox.margin><Insets top="10" /></VBox.margin>
+                        <Button fx:id="btnEditarUsuario" onAction="#onActionBtnEditarUsuario" prefHeight="40.0" prefWidth="200.0" styleClass="boton-menu" text="Editar Usuario">
+                            <VBox.margin><Insets top="10.0" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="22" fitWidth="25" pickOnBounds="true" preserveRatio="true">
                                     <image><Image url="@../controller/Images/icons8-account-settings-32.png" /></image>
@@ -111,7 +123,7 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefWidth="180" styleClass="boton-menu" text="Agregar Cuenta">
+                        <Button fx:id="btnRegisterAdminAccount" onAction="#onRegisterAdminAccount" prefHeight="40.0" prefWidth="200.0" styleClass="boton-menu" text="Agregar Cuenta">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="28" fitWidth="22" pickOnBounds="true" preserveRatio="true">
@@ -120,7 +132,7 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefWidth="180" styleClass="boton-menu" text="Gestión de reservas">
+                        <Button fx:id="btnGestionReservas" onAction="#onGestionReservas" prefHeight="36.0" prefWidth="200.0" styleClass="boton-menu" text="Gestión de reservas">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="18" fitWidth="18" pickOnBounds="true" preserveRatio="true">
@@ -129,7 +141,7 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="btnStatistics" onAction="#onStatistics" prefWidth="180" styleClass="boton-menu" text="Estadísticas">
+                        <Button fx:id="btnStatistics" onAction="#onStatistics" prefHeight="38.0" prefWidth="200.0" styleClass="boton-menu" text="Estadísticas">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true">
@@ -138,7 +150,7 @@
                             </graphic>
                         </Button>
 
-                        <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefWidth="180" styleClass="boton-menu" text="Mini Juego">
+                        <Button fx:id="btnMiniJuego" onAction="#onActionMiniJuego" prefHeight="38.0" prefWidth="200.0" styleClass="boton-menu" text="Mini Juego">
                             <VBox.margin><Insets top="10" /></VBox.margin>
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="32" pickOnBounds="true" preserveRatio="true">
