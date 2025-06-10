@@ -7,10 +7,12 @@ import cr.ac.una.proyecto1progra2.util.Respuesta;
 import cr.ac.una.proyecto1progra2.util.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class PrimaryController extends Controller {
 
@@ -90,6 +92,7 @@ private void onActionBtnAcercaDe(ActionEvent event) {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+    
 
     @FXML
     private void onActionBtnRegistrarUsuario(ActionEvent event) {

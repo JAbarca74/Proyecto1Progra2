@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.*;
 import javafx.scene.layout.HBox;
 
-public class MiniGameController implements Initializable {
+public class MiniGameController extends Controller implements Initializable {
 
     @FXML private AnchorPane root;
     @FXML private Label scoreLabel;
@@ -46,26 +46,26 @@ public class MiniGameController implements Initializable {
     private int score;
     private AnimationTimer gameLoop;
     private long lastUpdate;
-    private Stage stage;
+
     private Random random = new Random();
+
+    
 
     private enum Direction { UP, DOWN, LEFT, RIGHT }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        MusicManager.pauseBackgroundMusic();
-        MusicManager.playEffect("gaming.mp3", true);
-
-        gameArea = new AnchorPane();
-        gameArea.setPrefSize(WIDTH, HEIGHT);
-        gameArea.getStyleClass().addAll("snake-game-area", "snake-grid-overlay");
-        gameArea.setLayoutX(50);
-        gameArea.setLayoutY(220);
-        root.getChildren().add(gameArea);
-
-        root.setFocusTraversable(true);
-        root.setOnKeyPressed(this::handleKeyPress);
-        startGame();
+       MusicManager.pauseBackgroundMusic();
+    MusicManager.playEffect("gaming.mp3", true);
+    gameArea = new AnchorPane();
+    gameArea.setPrefSize(WIDTH, HEIGHT);
+    gameArea.getStyleClass().addAll("snake-game-area", "snake-grid-overlay");
+    gameArea.setLayoutX(50);
+    gameArea.setLayoutY(220);
+    root.getChildren().add(gameArea);
+    root.setFocusTraversable(true);
+    root.setOnKeyPressed(this::handleKeyPress);
+    startGame();
     }
 
     public void setStage(Stage stage) {
@@ -250,14 +250,17 @@ public class MiniGameController implements Initializable {
         startGame();
         root.requestFocus();
     }
-    @FXML private void onActionCerrarMiniJuego() {
-        if (stage == null && closeButton != null) {
-            stage = (Stage) closeButton.getScene().getWindow();
+    @FXML private void onActionCerrarMiniJuego() { if (gameLoop != null) gameLoop.stop(); // Detiene el loop del juego
+    MusicManager.stopEffect();             // Detiene el efecto de sonido                      
+          if (getStage() != null) {
+            getStage().close();
         }
-        if (stage != null) {
-            MusicManager.stopEffect();
-            MusicManager.resumeBackgroundMusic();
-            stage.close();
-        }
+    
     }
+    @Override
+    public void initialize() {
+        
+    }
+
+    
 }

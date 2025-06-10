@@ -129,36 +129,17 @@ private void onMisReservas(ActionEvent ev) {
     FlowController.getInstance().goView("MisReservasView");
 }
 
-    @FXML
-    private void onActionMiniJuego(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/cr/ac/una/proyecto1progra2/view/MiniGame.fxml")
-            );
-            Parent miniRoot = loader.load();
-
-            Stage miniStage = new Stage();
-            Stage owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            miniStage.initOwner(owner);
-            miniStage.initModality(Modality.APPLICATION_MODAL);
-            miniStage.setTitle("Mini Juego");
-            miniStage.setScene(new Scene(miniRoot));
-
-            MiniGameController ctrl = loader.getController();
-            ctrl.setStage(miniStage);
-
-            miniStage.showAndWait();
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            mostrarAlerta("No se pudo cargar el mini-juego:\n" + ex.getMessage());
-        }
-    }
+    
 
     @Override
     public void initialize() {
     }
-
+    @FXML
+private void onActionMiniJuego(ActionEvent event) {
+     FlowController.getInstance().limpiarLoader("MiniGame");
+    Stage owner = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    FlowController.getInstance().goViewInWindowModal("MiniGame", owner, false);
+}
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
