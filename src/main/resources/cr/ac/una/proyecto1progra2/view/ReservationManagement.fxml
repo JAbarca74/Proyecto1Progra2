@@ -78,7 +78,13 @@
                     <TableColumn fx:id="colInicio" prefWidth="80" text="Inicio" />
                     <TableColumn fx:id="colFin" prefWidth="80" text="Fin" />
                     <TableColumn fx:id="colEstado" prefWidth="80" text="Estado" />
-                    <TableColumn fx:id="colAcciones" prefWidth="100" text="Acciones" />
+                    <TableColumn fx:id="colAcciones"
+             minWidth="140"
+             prefWidth="140"
+             maxWidth="140"
+             resizable="false"
+             text="Acciones"/>
+
                 </columns>
                 <VBox.margin><Insets bottom="30" right="40" /></VBox.margin>
             </TableView>
