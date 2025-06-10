@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.proyecto1progra2.controller.InvoiceController">
+   <content>
+      <VBox alignment="CENTER" prefHeight="800.0" prefWidth="700.0" style="-fx-background-color: #f0f2f5;">
+         <children>
+            <VBox fx:id="mainContainer" maxWidth="650.0" minHeight="600.0" prefWidth="650.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);">
+               <children>
+                  <!-- Header Container -->
+                  <StackPane fx:id="headerContainer" prefHeight="120.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </StackPane>
+                  
+                  <!-- Main Details Container -->
+                  <VBox fx:id="detailsContainer" spacing="0.0">
+                     <!-- El contenido se genera dinámicamente en el controlador -->
+                  </VBox>
+                  
+                  <!-- Footer Buttons -->
+                  <HBox fx:id="footerContainer" alignment="CENTER" spacing="20.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 0 0 15 15;">
+                     <children>
+                        <Button fx:id="btnPrint" mnemonicParsing="false" onAction="#handlePrint" text="🖨️ Imprimir">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="💾 Guardar" />
+                        <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="❌ Cerrar" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </content>
+</ScrollPane>

@@ -4,6 +4,7 @@ import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.service.ReservationsService;
 import cr.ac.una.proyecto1progra2.service.SpacesService;
+import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.SpaceVisual;
 import cr.ac.una.proyecto1progra2.util.UserManager;
 import cr.ac.una.proyecto1progra2.util.Utilities;
@@ -27,6 +28,13 @@ import javafx.scene.Node;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import java.util.Arrays;
 
 public class NewReservationController extends Controller implements Initializable {
     @FXML private DatePicker DatePickerDIasDIasReservaciones;
@@ -164,28 +172,29 @@ private void guardarReserva() {
     List<CoworkingSpaces> coworkingSpaces = spacesService.obtenerCoworkingSpacesPorSpaceIds(espaciosEnPiso);
 
     if (coworkingSpaces.size() != espaciosEnPiso.size()) {
-    List<Long> idsCoworking = coworkingSpaces.stream()
-            .map(cs -> cs.getSpaceId().getId())
-            .toList();
-    List<Long> idsFaltantes = espaciosEnPiso.stream()
-            .filter(id -> !idsCoworking.contains(id))
-            .toList();
+        List<Long> idsCoworking = coworkingSpaces.stream()
+                .map(cs -> cs.getSpaceId().getId())
+                .toList();
+        List<Long> idsFaltantes = espaciosEnPiso.stream()
+                .filter(id -> !idsCoworking.contains(id))
+                .toList();
 
-    System.out.println("Espacios sin CoworkingSpace:");
-    idsFaltantes.forEach(id -> System.out.println(" - Space ID sin asociar: " + id));
+        System.out.println("Espacios sin CoworkingSpace:");
+        idsFaltantes.forEach(id -> System.out.println(" - Space ID sin asociar: " + id));
 
-    Utilities.showAlert(Alert.AlertType.ERROR,
-        "Error en espacios",
-        "Uno o más espacios del piso no tienen un CoworkingSpace asociado. No se puede completar la reserva.");
-    return;
-}
+        Utilities.showAlert(Alert.AlertType.ERROR,
+                "Error en espacios",
+                "Uno o más espacios del piso no tienen un CoworkingSpace asociado. No se puede completar la reserva.");
+        return;
+    }
 
     for (CoworkingSpaces cs : coworkingSpaces) {
         reservationsService.guardarReserva(userId, cs.getId(), fecha, horaInicio, horaFin);
     }
 
-   reproducirSonido("intro-sound-bell-269297-_1_.wav");
-Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "\u00a1Reserva registrada para el piso completo!");
+    reproducirSonido("intro-sound-bell-269297-_1_.wav");
+    mostrarFactura(); // NUEVO
+    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada para el piso completo!");
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
     private void cargarMatrizDeEspaciosDisponibles() {
@@ -333,12 +342,14 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
         }
 
         boolean guardado = reservationsService.guardarReserva(userId, coworking.getId(), fecha, horaInicio, horaFin);
-
-        if (guardado) {
-            reproducirSonido("intro-sound-bell-269297-_1_.wav");
-            Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada correctamente!");
-            cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
-        } else {
+if (guardado) {
+    reproducirSonido("intro-sound-bell-269297-_1_.wav");
+    List<CoworkingSpaces> espacioIndividual = Arrays.asList(coworking); // NUEVO
+    mostrarFactura(); // NUEVO
+    Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada correctamente!");
+    cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
+}
+        else {
             reproducirSonido("correct-cbt.wav");
             Utilities.showAlert(Alert.AlertType.ERROR, "Error inesperado", "No se pudo registrar la reserva. Intente nuevamente.");
         }
@@ -346,7 +357,26 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
 
     return stack;
 }
-
+private void mostrarFactura() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/proyecto1progra2/view/Invoice.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+    } catch (Exception e) {
+        e.printStackTrace();
+         Utilities.showAlert(Alert.AlertType.WARNING, "conflicto", "no se puedo abrir la factura.");
+    }
+}
+@Override
+public Stage getStage() {
+    try {
+        return (Stage) gridMatrix.getScene().getWindow();
+    } catch (Exception e) {
+        return null;
+    }
+}
     @Override
     public void initialize() {
     }
