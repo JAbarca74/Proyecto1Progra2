@@ -157,34 +157,25 @@ private void guardarReserva() {
     Long userId = UserManager.getCurrentUser().getId();
 
     List<Long> espaciosEnPiso = spacesService.obtenerEspaciosConPosicion().stream()
-            .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
-            .map(e -> e.getSpace().getId())
-            .toList();
+        .filter(e -> e.getSpace().getNombre().contains("P" + pisoActual))
+        .map(e -> e.getSpace().getId())
+        .toList();
 
     boolean ocupado = espaciosEnPiso.stream().anyMatch(id ->
-            !reservationsService.buscarReservasTraslapadas(id, fecha, horaInicio, horaFin).isEmpty());
+        !reservationsService.buscarReservasTraslapadas(id, fecha, horaInicio, horaFin).isEmpty());
 
     if (ocupado) {
         Utilities.showAlert(Alert.AlertType.WARNING, "Piso ocupado", "Ya existe una reserva en este piso y horario.");
         return;
     }
 
-    List<CoworkingSpaces> coworkingSpaces = spacesService.obtenerCoworkingSpacesPorSpaceIds(espaciosEnPiso);
+    List<CoworkingSpaces> coworkingSpaces = spacesService.obtenerCoworkingSpacesPorSpaceIds(espaciosEnPiso); // ✅ ACÁ
 
     if (coworkingSpaces.size() != espaciosEnPiso.size()) {
-        List<Long> idsCoworking = coworkingSpaces.stream()
-                .map(cs -> cs.getSpaceId().getId())
-                .toList();
-        List<Long> idsFaltantes = espaciosEnPiso.stream()
-                .filter(id -> !idsCoworking.contains(id))
-                .toList();
-
-        System.out.println("Espacios sin CoworkingSpace:");
+        List<Long> idsCoworking = coworkingSpaces.stream().map(cs -> cs.getSpaceId().getId()).toList();
+        List<Long> idsFaltantes = espaciosEnPiso.stream().filter(id -> !idsCoworking.contains(id)).toList();
         idsFaltantes.forEach(id -> System.out.println(" - Space ID sin asociar: " + id));
-
-        Utilities.showAlert(Alert.AlertType.ERROR,
-                "Error en espacios",
-                "Uno o más espacios del piso no tienen un CoworkingSpace asociado. No se puede completar la reserva.");
+        Utilities.showAlert(Alert.AlertType.ERROR, "Error en espacios", "Uno o más espacios no tienen CoworkingSpace.");
         return;
     }
 
@@ -193,7 +184,10 @@ private void guardarReserva() {
     }
 
     reproducirSonido("intro-sound-bell-269297-_1_.wav");
-    mostrarFactura(); // NUEVO
+
+    // ✅ USAMOS coworkingSpaces AQUÍ
+    mostrarFactura(fecha, horaInicio, horaFin, coworkingSpaces);
+
     Utilities.showAlert(Alert.AlertType.INFORMATION, "Reserva completada", "¡Reserva registrada para el piso completo!");
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
@@ -345,7 +339,7 @@ private double calcularPorcentajeOcupacion(LocalDate fecha) {
 if (guardado) {
     reproducirSonido("intro-sound-bell-269297-_1_.wav");
     List<CoworkingSpaces> espacioIndividual = Arrays.asList(coworking); // NUEVO
-    mostrarFactura(); // NUEVO
+    mostrarFactura(fecha, horaInicio, horaFin, espacioIndividual);
    
     cargarMatrizDeEspaciosDisponibles(fecha, horaInicio, horaFin);
 }
@@ -357,17 +351,17 @@ if (guardado) {
 
     return stack;
 }
-private void mostrarFactura() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/proyecto1progra2/view/Invoice.fxml"));
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
-    } catch (Exception e) {
-        e.printStackTrace();
-         Utilities.showAlert(Alert.AlertType.WARNING, "conflicto", "no se puedo abrir la factura.");
+private void mostrarFactura(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, List<CoworkingSpaces> espaciosReservados) {
+    if (espaciosReservados == null || espaciosReservados.isEmpty()) {
+        Utilities.showAlert(Alert.AlertType.ERROR, "Error", "No hay espacios reservados para mostrar.");
+        return;
     }
+
+    FlowController.getInstance().limpiarLoader("Invoice");
+    FlowController.getInstance().goView("Invoice");
+
+    InvoiceController controller = (InvoiceController) FlowController.getInstance().getController("Invoice");
+    controller.setReservationData(fecha, horaInicio, horaFin, pisoActual, espaciosReservados);
 }
 @Override
 public Stage getStage() {

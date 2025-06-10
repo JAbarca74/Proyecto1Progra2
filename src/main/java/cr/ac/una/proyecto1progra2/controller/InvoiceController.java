@@ -4,6 +4,7 @@ import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
 import cr.ac.una.proyecto1progra2.model.CoworkingSpaces;
 import cr.ac.una.proyecto1progra2.service.ReservationsService;
 import cr.ac.una.proyecto1progra2.service.SpacesService;
+import cr.ac.una.proyecto1progra2.util.FlowController;
 import cr.ac.una.proyecto1progra2.util.UserManager;
 import cr.ac.una.proyecto1progra2.util.Utilities;
 import javafx.animation.*;
@@ -65,17 +66,23 @@ public class InvoiceController extends Controller implements Initializable {
         startAnimations();
     }
     
-    public void setReservationData(LocalDate fecha, LocalTime inicio, LocalTime fin, 
-                                 int piso, List<CoworkingSpaces> espacios) {
-        this.fechaReserva = fecha;
-        this.horaInicio = inicio;
-        this.horaFin = fin;
-        this.pisoReservado = piso;
-        this.espaciosReservados = espacios;
-        this.numeroFactura = generateInvoiceNumber();
-        calculateTotal();
-        updateInvoiceContent();
-    }
+   public void setReservationData(LocalDate fecha, LocalTime inicio, LocalTime fin, 
+                               int piso, List<CoworkingSpaces> espacios) {
+    this.fechaReserva = fecha;
+    this.horaInicio = inicio;
+    this.horaFin = fin;
+    this.pisoReservado = piso;
+    this.espaciosReservados = espacios;
+    this.numeroFactura = generateInvoiceNumber();
+
+
+    // Crear y mostrar la factura con los datos ya cargados
+    Platform.runLater(() -> {
+        detailsContainer.getChildren().clear();
+        createInvoiceLayout();
+        startAnimations();
+    });
+}
     
     private void setupInitialState() {
         mainContainer.setOpacity(0);
@@ -130,7 +137,7 @@ public class InvoiceController extends Controller implements Initializable {
         createCompanyInfo();
         createInvoiceDetails();
         createItemsTable();
-        createTotalsSection();
+
         createFooterInfo();
     }
     
@@ -186,7 +193,7 @@ public class InvoiceController extends Controller implements Initializable {
         
         VBox companyDetails = new VBox(3);
         Text companyName = createStyledText("FlexSpace Coworking", 22, FontWeight.BOLD, "#2c3e50");
-        Text companyAddress = createStyledText("San Ramón, Alajuela, Costa Rica", 12, FontWeight.NORMAL, "#6c757d");
+        Text companyAddress = createStyledText("Perez Zeledon, San Jose, Costa Rica", 12, FontWeight.NORMAL, "#6c757d");
         Text companyContact = createStyledText("Tel: +506 2445-5000 | Email: info@flexspace.cr", 12, FontWeight.NORMAL, "#6c757d");
         
         companyDetails.getChildren().addAll(companyName, companyAddress, companyContact);
@@ -272,10 +279,10 @@ public class InvoiceController extends Controller implements Initializable {
         );
         
         Text[] headers = {
-            createTableHeaderText("ESPACIO", 200),
-            createTableHeaderText("TIPO", 150),
-            createTableHeaderText("HORAS", 100),
-            createTableHeaderText("PRECIO", 100)
+            createTableHeaderText("ESPACIO  ", 200),
+            
+            
+    
         };
         
         tableHeader.getChildren().addAll(headers);
@@ -322,15 +329,15 @@ public class InvoiceController extends Controller implements Initializable {
         
         // Datos del espacio (simulados ya que no tienes la estructura completa)
         String espacioNombre = "Espacio " + espacio.getId();
-        String tipoEspacio = determineSpaceType(espacioNombre);
+      
         double horas = calculateHours();
-        double precio = calculateSpacePrice(tipoEspacio, horas);
+        
         
         Text[] cells = {
             createTableCellText(espacioNombre, 200),
-            createTableCellText(tipoEspacio, 150),
+       
             createTableCellText(String.format("%.1f", horas), 100),
-            createTableCellText(String.format("₡%.2f", precio), 100)
+          
         };
         
         row.getChildren().addAll(cells);
@@ -358,55 +365,8 @@ public class InvoiceController extends Controller implements Initializable {
         return cellText;
     }
     
-    private void createTotalsSection() {
-        VBox totalsContainer = new VBox(8);
-        totalsContainer.setPadding(new Insets(20, 30, 20, 30));
-        totalsContainer.setAlignment(Pos.CENTER_RIGHT);
-        
-        // Crear fondo para totales
-        Rectangle totalsBg = new Rectangle(300, 120);
-        totalsBg.setFill(Color.web("#f8f9fa"));
-        totalsBg.setStroke(Color.web("#dee2e6"));
-        totalsBg.setStrokeWidth(1);
-        totalsBg.setArcWidth(8);
-        totalsBg.setArcHeight(8);
-        
-        VBox totalsContent = new VBox(5);
-        totalsContent.setPadding(new Insets(15));
-        totalsContent.setAlignment(Pos.CENTER_RIGHT);
-        
-        double subtotal = totalAmount;
-        double tax = subtotal * 0.13; // IVA 13%
-        double total = subtotal + tax;
-        
-        totalsContent.getChildren().addAll(
-            createTotalRow("Subtotal:", subtotal, false),
-            createTotalRow("IVA (13%):", tax, false),
-            new Line(0, 0, 250, 0) {{ setStroke(Color.web("#dee2e6")); }},
-            createTotalRow("TOTAL:", total, true)
-        );
-        
-        StackPane totalsStack = new StackPane(totalsBg, totalsContent);
-        totalsContainer.getChildren().add(totalsStack);
-        detailsContainer.getChildren().add(totalsContainer);
-    }
     
-    private HBox createTotalRow(String label, double amount, boolean isTotal) {
-        HBox row = new HBox(20);
-        row.setAlignment(Pos.CENTER_RIGHT);
-        
-        Text labelText = createStyledText(label, isTotal ? 14 : 12, 
-                                        isTotal ? FontWeight.BOLD : FontWeight.NORMAL, 
-                                        isTotal ? "#2c3e50" : "#6c757d");
-        
-        Text amountText = createStyledText(String.format("₡%.2f", amount), 
-                                         isTotal ? 16 : 12,
-                                         FontWeight.BOLD, 
-                                         isTotal ? "#28a745" : "#495057");
-        
-        row.getChildren().addAll(labelText, amountText);
-        return row;
-    }
+    
     
     private void createFooterInfo() {
         VBox footerBox = new VBox(10);
@@ -480,15 +440,7 @@ public class InvoiceController extends Controller implements Initializable {
         return "FAC-" + String.format("%06d", ThreadLocalRandom.current().nextInt(1, 999999));
     }
     
-    private void calculateTotal() {
-        if (espaciosReservados == null) {
-            totalAmount = 0;
-            return;
-        }
-        
-        double hours = calculateHours();
-        totalAmount = espaciosReservados.size() * 5000 * hours; // ₡5000 por espacio por hora
-    }
+    
     
 private double calculateHours() {
     if (horaInicio == null || horaFin == null) return 1.0;
@@ -539,16 +491,19 @@ private double calculateHours() {
     }
     
     @FXML
-    private void handleClose() {
-        FadeTransition fade = new FadeTransition(Duration.millis(300), mainContainer);
-        fade.setToValue(0);
-        fade.setOnFinished(e -> {
-            if (getStage() != null) {
-                getStage().close();
-            }
-        });
-        fade.play();
-    }
+  private void handleClose() {
+    FadeTransition fade = new FadeTransition(Duration.millis(300), mainContainer);
+    fade.setToValue(0);
+    fade.setOnFinished(e -> {
+        if (getStage() != null) {
+            getStage().close(); 
+            FlowController.getInstance().goView("NewReservation");
+        }
+        // ← Cargar la vista de reservas después de cerrar
+       
+    });
+    fade.play();
+}
     
     private void playSuccessSound() {
         try {
