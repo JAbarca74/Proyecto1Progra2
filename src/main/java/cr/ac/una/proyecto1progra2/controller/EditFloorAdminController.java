@@ -32,9 +32,14 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -51,7 +56,9 @@ public class EditFloorAdminController extends Controller implements Initializabl
     @FXML private ComboBox<String> ComboBoxPiso;
     @FXML private TextField TexFieldAgregarPrecio;
     @FXML private GridPane gridMatrix;
-    @FXML private Label LabelCapacidadTotal;@FXML private StackPane rootPane;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML private Label LabelCapacidadTotal;
     private Rectangle celdaResaltada;
     
     private StackPane stackSeleccionado = null;
@@ -71,6 +78,19 @@ private static final double CELL_HEIGHT = 70;
     private Map<Integer, Integer> areasPorPiso = new HashMap<>();
     private Map<Integer, Integer> libresPorPiso = new HashMap<>();
 private final List<Rectangle> celdasResaltadas = new ArrayList<>();
+    @FXML
+    private Button BtnAgregarEscritorios;
+    @FXML
+    private Button BtnAgregarSalas;
+    @FXML
+    private Button BtnAgregarAreasComunes;
+    @FXML
+    private Button BtnAgregarEspaciosLibres;
+    @FXML
+    private Button BtnBorrarTodo;
+    @FXML
+     private AnchorPane rootPane;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gridMatrix.getStyleClass().add("grid-background");
@@ -95,7 +115,9 @@ gridMatrix.setVgap(20); // separación vertical entre celdas
         cargarMatrizConEspacios(); 
         activarClickFueraParaCancelarSeleccion();
         
-        
+        javafx.application.Platform.runLater(() -> {
+    if (scrollPane != null) scrollPane.setVvalue(0); // inicia arriba
+});
     }
     private boolean intersecta(int r1, int c1, int rs1, int cs1, int r2, int c2, int rs2, int cs2) {
     return r1 < r2 + rs2 && r1 + rs1 > r2 && c1 < c2 + cs2 && c1 + cs1 > c2;
