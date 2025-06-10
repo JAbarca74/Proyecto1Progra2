@@ -250,7 +250,7 @@ public class MiniGameController implements Initializable {
                 Label l1 = new Label("Obtienes un " + discount + "% de descuento.");
                 Label c  = new Label(code);
                 c.setStyle("-fx-font-weight:bold; -fx-font-size:16px; -fx-text-fill:#e76f51;");
-                Label l3 = new Label("No lo pierdas. Canjéalo una sola vez al cancelar.");
+                Label l3 = new Label("No lo pierdas. Canjéalo una sola vez al cancelar en el local.");
                 VBox vb = new VBox(10, l1, c, l3);
                 vb.setPadding(new Insets(10));
                 alert.getDialogPane().setContent(vb);

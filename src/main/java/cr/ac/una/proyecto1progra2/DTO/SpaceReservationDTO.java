@@ -1,4 +1,4 @@
-package cr.ac.una.proyecto1progra2.dto;
+package cr.ac.una.proyecto1progra2.DTO;
 
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;

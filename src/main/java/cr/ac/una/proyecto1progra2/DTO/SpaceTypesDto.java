@@ -13,24 +13,19 @@ public class SpaceTypesDto {
 
     public SpaceTypesDto() {}
 
-    /** Mapea desde la entidad */
     public SpaceTypesDto(SpaceTypes e) {
         setId(e.getId());
         setTypeName(e.getTypeName());
        
     }
 
-    // id
     public Long getId() { return id.get(); }
     public void setId(Long id) { this.id.set(id != null ? id : 0L); }
     public SimpleLongProperty idProperty() { return id; }
 
-    // typeName
     public String getTypeName() { return typeName.get(); }
     public void setTypeName(String name) { this.typeName.set(name); }
     public SimpleStringProperty typeNameProperty() { return typeName; }
-
-    
 
     public boolean isModificado() { return modificado; }
     public void setModificado(boolean m) { this.modificado = m; }

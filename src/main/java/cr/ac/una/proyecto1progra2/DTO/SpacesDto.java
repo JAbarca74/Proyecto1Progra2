@@ -24,11 +24,10 @@ public class SpacesDto {
         this.columnIndex = space.getColumnIndex();
         this.rowSpan = space.getRowSpan();
         this.colSpan = space.getColSpan();
-        this.coworkingSpace = space.getCoworkingSpace(); // asignar si está presente
+        this.coworkingSpace = space.getCoworkingSpace(); 
         this.floor      = space.getFloor(); 
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -53,12 +52,12 @@ public class SpacesDto {
         this.capacidad = capacidad;
     }
     
-    private Integer floor;                // 2.1  Nuevo campo
+    private Integer floor;            
 
-public Integer getFloor() {           // 2.2  Getter y
+public Integer getFloor() {          
     return floor;
 }
-public void setFloor(Integer floor) { //       Setter
+public void setFloor(Integer floor) { 
     this.floor = floor;
 }
 
@@ -102,7 +101,6 @@ public void setFloor(Integer floor) { //       Setter
         this.coworkingSpace = coworkingSpace;
     }
 
-    // Atajos para GridPane
     public void setRow(int row) {
         this.rowIndex = row;
     }

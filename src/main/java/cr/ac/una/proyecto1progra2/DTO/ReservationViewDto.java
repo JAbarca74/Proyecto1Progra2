@@ -32,12 +32,10 @@ public class ReservationViewDto {
     public LocalTime getStartTime()   { return startTime; }
     public LocalTime getEndTime()     { return endTime; }
 
-    /** Extrae “P0”–“P3” del nombre del CoworkingSpace */
     public String getPiso() {
       return floor!=null ? "P"+floor : "";
     }
 
-    /** Estado estático (si no manejas cancelación) */
     public String getEstado() {
         return "Activa";
     }

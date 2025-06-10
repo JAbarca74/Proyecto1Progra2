@@ -25,7 +25,6 @@ public class CoworkingSpacesDto {
         this.estado = new SimpleObjectProperty<>(true);
     }
 
-    // 🚀 Este constructor ahora sí FUNCIONA (arreglado)
     public CoworkingSpacesDto(CoworkingSpaces coworkingSpace) {
         this();
         this.id.set(coworkingSpace.getId() != null ? coworkingSpace.getId().toString() : null);
@@ -103,8 +102,6 @@ public class CoworkingSpacesDto {
     public void setModificado(Boolean modificado) {
         this.modificado = modificado;
     }
-
-
 
     @Override
     public String toString() {

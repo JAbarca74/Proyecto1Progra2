@@ -1,4 +1,3 @@
-// --- DTO: ReservationsDto.java ---
 package cr.ac.una.proyecto1progra2.DTO;
 
 import cr.ac.una.proyecto1progra2.model.Reservations;

@@ -1,6 +1,6 @@
 package cr.ac.una.proyecto1progra2.controller;
 
-import cr.ac.una.proyecto1progra2.dto.SpaceReservationDTO;
+import cr.ac.una.proyecto1progra2.DTO.SpaceReservationDTO;
 import cr.ac.una.proyecto1progra2.util.JPAUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

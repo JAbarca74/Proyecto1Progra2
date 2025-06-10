@@ -33,6 +33,6 @@ public class RolesDto {
 
     @Override
     public String toString() {
-        return nombre.get();  // para que ChoiceBox muestre el nombre
+        return nombre.get(); 
     }
 }
