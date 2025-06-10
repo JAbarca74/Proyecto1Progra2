@@ -73,8 +73,8 @@ public class ReservationManagementController extends Controller implements Initi
 
     {
         // Estilos
-        btnEditar.getStyleClass().add("boton-editar");
-        btnEliminar.getStyleClass().add("boton-cerrar-sesion");
+        btnEditar.getStyleClass().add("boton-pequeno");
+        btnEliminar.getStyleClass().add("boton-pequeni");
 
         // Acción ELIMINAR (igual que antes)
         btnEliminar.setOnAction(e -> {
@@ -257,7 +257,7 @@ cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
 });
 }
 
-/** Genera horas de 07:00 a 21:00 en intervalos de 30 minutos */
+
 private ObservableList<LocalTime> generarHoras() {
     ObservableList<LocalTime> horas = FXCollections.observableArrayList();
     LocalTime t = LocalTime.of(7, 0);

@@ -60,7 +60,7 @@
 
         <!-- Filtros + Tabla -->
         <VBox prefHeight="493.0" prefWidth="623.0" spacing="10" HBox.hgrow="ALWAYS">
-            <HBox spacing="10">
+            <HBox spacing="10" styleClass="calendar-pane">
                 <Label text="Usuario:" />
                 <ComboBox fx:id="comboUsuarios" prefWidth="150" />
                 <Label text="Piso:" />
@@ -69,7 +69,7 @@
                 <Button onAction="#onLimpiar" text="Limpiar" />
                 <VBox.margin><Insets top="35" /></VBox.margin>
             </HBox>
-            <TableView fx:id="tablaReservas" prefHeight="510" prefWidth="592" styleClass="calendar-cell" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tablaReservas" prefHeight="510" prefWidth="592" styleClass="calendar-pane" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colUsuario" prefWidth="120" text="Usuario" />
                     <TableColumn fx:id="colEspacio" prefWidth="120" text="Espacio" />

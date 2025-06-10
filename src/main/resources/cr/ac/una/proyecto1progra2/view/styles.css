@@ -427,3 +427,26 @@
     -fx-background-color: transparent;
 }
 
+/* ============================= */
+/*    BOTÓN PEQUEÑO (small)     */
+/* ============================= */
+.boton-pequeno {
+    -fx-font-size: 12px;           /* tamaño de letra más pequeño */
+    -fx-padding: 4px 8px;          /* menos padding vertical y horizontal */
+    -fx-min-width: 0;              /* que no imponga un ancho mínimo */
+    -fx-min-height: 0;             /* que no imponga un alto mínimo */
+    -fx-background-radius: 4;      /* esquinas suaves */
+    -fx-border-radius: 4;
+}
+
+.btn-pequeni{
+  -fx-font-size: 12px;           /* tamaño de letra más pequeño */
+    -fx-padding: 4px 8px;          /* menos padding vertical y horizontal */
+    -fx-min-width: 0;              /* que no imponga un ancho mínimo */
+    -fx-min-height: 0;             /* que no imponga un alto mínimo */
+    -fx-background-radius: 4;      /* esquinas suaves */
+    -fx-border-radius: 4;
+  -fx-background-color: #e74c3c; /* rojo intenso estilo moderno */
+  -fx-text-fill: white; /* texto blanco para contraste */
+  
+}
