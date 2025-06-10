@@ -1,4 +1,3 @@
-// --- ENTITY: Reservations.java ---
 package cr.ac.una.proyecto1progra2.model;
 
 import javax.persistence.*;
@@ -40,8 +39,7 @@ public class Reservations implements Serializable {
     @Version
     @Column(name = "VERSION")
     private Long version;
-
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

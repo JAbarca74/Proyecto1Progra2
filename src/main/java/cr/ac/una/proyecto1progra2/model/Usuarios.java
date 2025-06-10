@@ -1,6 +1,3 @@
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// 1) Entidad JPA: Usuarios.java
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 package cr.ac.una.proyecto1progra2.model;
 
 import cr.ac.una.proyecto1progra2.DTO.UsuariosDto;
@@ -39,7 +36,7 @@ public class Usuarios implements Serializable {
     private BigInteger roleId;
 
     @Column(name = "IS_ACTIVE", nullable = false, length = 1)
-    private String isActive;  // 'A' / 'I'
+    private String isActive;  
 
     @Column(name = "NOMBRE")
     private String nombre;
@@ -59,7 +56,6 @@ public class Usuarios implements Serializable {
 
     public Usuarios() {}
 
-    /** Copia todos los datos desde el DTO */
     public void actualizar(UsuariosDto dto) {
         this.username          = dto.getUsername();
         this.password          = dto.getContraseña();
@@ -73,7 +69,6 @@ public class Usuarios implements Serializable {
         this.version           = dto.getVersion();
     }
 
-    // getters & setters...
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

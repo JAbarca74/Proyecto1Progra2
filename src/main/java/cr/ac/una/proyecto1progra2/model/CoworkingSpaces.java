@@ -74,7 +74,6 @@ private Long version;
         this.name = coworkingSpacesDto.getNombre();
         this.capacity = coworkingSpacesDto.getCapacidad();
      
-        // Nota: spaceId y typeId deben actualizarse en el Service si quieres cambiar las relaciones
     }
 
     public Long getId() {
