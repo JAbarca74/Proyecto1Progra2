@@ -23,6 +23,9 @@ import javafx.animation.PauseTransition;
 import java.net.URL;
 import java.util.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 
 public class MiniGameController extends Controller implements Initializable {
 
@@ -66,11 +69,20 @@ public class MiniGameController extends Controller implements Initializable {
     root.setFocusTraversable(true);
     root.setOnKeyPressed(this::handleKeyPress);
     startGame();
+    Platform.runLater(()-> root.requestFocus());
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    @Override
+public void setStage(Stage stage) {
+    super.setStage(stage);
+    if (stage != null) {
+        
+        stage.addEventHandler(WindowEvent.WINDOW_SHOWN, e -> root.requestFocus());
+        
+        stage.addEventHandler(WindowEvent.WINDOW_HIDDEN, e -> MusicManager.stopEffect());
     }
+}
+
 
     private void startGame() {
     snake.clear();
@@ -257,6 +269,9 @@ public class MiniGameController extends Controller implements Initializable {
         }
     
     }
+    
+    
+
     @Override
     public void initialize() {
         

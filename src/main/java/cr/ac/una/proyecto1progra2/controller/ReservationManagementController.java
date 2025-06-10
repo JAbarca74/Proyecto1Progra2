@@ -15,13 +15,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.util.StringConverter;
 import javafx.geometry.Insets;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import java.time.LocalTime;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.util.StringConverter;
+import java.time.temporal.ChronoUnit;
+
 
 
 import java.net.URL;
@@ -131,6 +134,25 @@ public class ReservationManagementController extends Controller implements Initi
         }
     }
 
+    private ObservableList<LocalTime> horasValidas(LocalDate dia) {
+    ObservableList<LocalTime> lista = FXCollections.observableArrayList();
+    LocalTime inicio = LocalTime.of(7, 0);
+    LocalTime fin    = LocalTime.of(21, 0);
+
+    
+    if (dia != null && dia.equals(LocalDate.now())) {
+        LocalTime ahora = LocalTime.now()
+            .plusMinutes(30 - (LocalTime.now().getMinute() % 30))
+            .truncatedTo(ChronoUnit.MINUTES);
+        if (ahora.isAfter(inicio)) inicio = ahora;
+    }
+
+    for (LocalTime t = inicio; !t.isAfter(fin); t = t.plusMinutes(30)) {
+        lista.add(t);
+    }
+    return lista;
+}
+
 
     private void drawCalendar() {
     lblMonthYear.setText(currentYearMonth.getMonth().name() + " " + currentYearMonth.getYear());
@@ -175,36 +197,50 @@ public class ReservationManagementController extends Controller implements Initi
 
 
 private void showEditDialog(ReservationViewDto dto) {
-    
+ 
     DatePicker dp = new DatePicker(dto.getReservationDate());
-    ComboBox<LocalTime> cbInicio = new ComboBox<>(generarHoras());
-    ComboBox<LocalTime> cbFin    = new ComboBox<>(generarHoras());
+    dp.setDayCellFactory(picker -> new DateCell() {
+        @Override
+        public void updateItem(LocalDate date, boolean empty) {
+            super.updateItem(date, empty);
+            if (!empty && date.isBefore(LocalDate.now())) {
+                setDisable(true);
+                setStyle("-fx-background-color:#eee;");
+            }
+        }
+    });
 
+  
+    ComboBox<LocalTime> cbInicio = new ComboBox<>();
+    ComboBox<LocalTime> cbFin    = new ComboBox<>();
+
+    cbInicio.setItems(horasValidas(dp.getValue()));
+    cbFin   .setItems(horasValidas(dp.getValue()));
     cbInicio.setValue(dto.getStartTime());
     cbFin   .setValue(dto.getEndTime());
+
     
-    
-cbInicio.valueProperty().addListener((obs, oldTime, newTime) -> {
-    if (newTime != null) {
-        LocalTime siguiente = newTime.plusMinutes(30);
-        
-        if (cbFin.getItems().contains(siguiente)) {
-            cbFin.setValue(siguiente);
+    dp.valueProperty().addListener((obs, oldD, newD) -> {
+        cbInicio.setItems(horasValidas(newD));
+        cbFin   .setItems(horasValidas(newD));
+        cbInicio.getSelectionModel().clearSelection();
+        cbFin   .getSelectionModel().clearSelection();
+    });
+
+ 
+    cbInicio.valueProperty().addListener((obs, oT, nT) -> {
+        if (nT != null) {
+            LocalTime s = nT.plusMinutes(30);
+            if (cbFin.getItems().contains(s)) cbFin.setValue(s);
         }
-    }
-});
+    });
+    cbFin.valueProperty().addListener((obs, oF, nF) -> {
+        LocalTime ini = cbInicio.getValue();
+        if (nF != null && (ini == null || nF.isBefore(ini.plusMinutes(30)))) {
+            cbFin.setValue(ini.plusMinutes(30));
+        }
+    });
 
-
-cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
-    LocalTime inicio = cbInicio.getValue();
-    if (newVal != null && (inicio == null || newVal.isBefore(inicio.plusMinutes(30)))) {
-        
-        cbFin.setValue(inicio.plusMinutes(30));
-    }
-});
-
-
-    
   
     Dialog<ButtonType> dialog = new Dialog<>();
     dialog.setTitle("Editar Reserva");
@@ -212,50 +248,41 @@ cbFin.valueProperty().addListener((obs, oldVal, newVal) -> {
 
     GridPane grid = new GridPane();
     grid.setHgap(10); grid.setVgap(10); grid.setPadding(new Insets(20));
-    grid.add(new Label("Fecha:"), 0, 0);
-    grid.add(dp, 1, 0);
-    grid.add(new Label("Inicio:"), 0, 1);
-    grid.add(cbInicio, 1, 1);
-    grid.add(new Label("Fin:"), 0, 2);
-    grid.add(cbFin,    1, 2);
-
+    grid.add(new Label("Fecha:"),  0, 0); grid.add(dp,       1, 0);
+    grid.add(new Label("Inicio:"), 0, 1); grid.add(cbInicio, 1, 1);
+    grid.add(new Label("Fin:"),    0, 2); grid.add(cbFin,    1, 2);
     dialog.getDialogPane().setContent(grid);
 
-  
     dialog.showAndWait().ifPresent(res -> {
-    if (res == ButtonType.OK) {
-        LocalDate newDate  = dp.getValue();
-        LocalTime newStart = cbInicio.getValue();
-        LocalTime newEnd   = cbFin   .getValue();
-
-        
-        if (reservationsService.hayColision(dto.getId(), newDate, newStart, newEnd)) {
-            new Alert(Alert.AlertType.WARNING,
-                "Ya existe otra reserva ese día/hora").showAndWait();
-            return;  
+        if (res == ButtonType.OK) {
+            LocalDate d = dp.getValue();
+            LocalTime i = cbInicio.getValue();
+            LocalTime f = cbFin   .getValue();
+            if (reservationsService.hayColision(dto.getId(), d, i, f)) {
+                new Alert(Alert.AlertType.WARNING,
+                    "Ya existe otra reserva ese día/hora")
+                .showAndWait();
+                return;
+            }
+            boolean ok = reservationsService.actualizarReserva(
+                dto.getId(), d, i, f);
+            if (ok) {
+                reservas.setAll(
+                    reservationsService.listarPorFiltros(
+                        null,
+                        comboUsuarios.getValue()!=null? comboUsuarios.getValue().getId():null,
+                        comboPiso   .getValue()!=null? comboPiso.getValue()           :""
+                    )
+                );
+                drawCalendar();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "No se pudo actualizar")
+                .showAndWait();
+            }
         }
-
-        
-        boolean ok = reservationsService.actualizarReserva(
-                        dto.getId(), newDate, newStart, newEnd);
-        if (ok) {
-    
-    allReservas = reservationsService.listarPorFiltros(
-        null,
-        comboUsuarios.getValue() != null ? comboUsuarios.getValue().getId() : null,
-        comboPiso.getValue()      != null ? comboPiso.getValue()       : ""
-    );
-    reservas.setAll(allReservas);
-
-    
-    drawCalendar();
-} else {
-    new Alert(Alert.AlertType.ERROR, "No se pudo actualizar").showAndWait();
+    });
 }
 
-    }
-});
-}
 
 
 private ObservableList<LocalTime> generarHoras() {
