@@ -1,5 +1,6 @@
 package cr.ac.una.proyecto1progra2.controller;
 
+import cr.ac.una.proyecto1progra2.DTO.ReservationViewDto;
 import cr.ac.una.proyecto1progra2.DTO.SpacesDto;
 import cr.ac.una.proyecto1progra2.model.Spaces;
 import cr.ac.una.proyecto1progra2.service.SpacesService;
@@ -741,6 +742,24 @@ private void animarEliminacion(Node nodo) {
 }
     @FXML
 private void onBorrarTodo() {
+    
+    
+    cr.ac.una.proyecto1progra2.service.ReservationsService rs = 
+        new cr.ac.una.proyecto1progra2.service.ReservationsService();
+    List<cr.ac.una.proyecto1progra2.DTO.ReservationViewDto> resPiso =
+        rs.listarPorFiltros(
+            null,                               // sin fecha
+            null,                               // sin usuario
+            "P" + pisoActual                    // piso en formato "P0", "P1", …
+        );
+    if (!resPiso.isEmpty()) {
+        Utilities.mostrarMensaje(
+            "No permitido",
+            "No puedes borrar espacios de este piso porque hay reservas activas."
+        );
+        return;
+    }
+
     
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("Confirmación");

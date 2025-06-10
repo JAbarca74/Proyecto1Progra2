@@ -65,8 +65,8 @@
                 <ComboBox fx:id="comboUsuarios" prefWidth="150" />
                 <Label text="Piso:" />
                 <ComboBox fx:id="comboPiso" prefWidth="80" />
-                <Button onAction="#onBuscar" text="Buscar" />
-                <Button onAction="#onLimpiar" text="Limpiar" />
+                <Button onAction="#onBuscar" styleClass="boton-pequeno" text="Buscar" />
+                <Button onAction="#onLimpiar" styleClass="boton-pequeno" text="Limpiar" />
                 <VBox.margin><Insets top="35" /></VBox.margin>
             </HBox>
             <TableView fx:id="tablaReservas" prefHeight="510" prefWidth="592" styleClass="calendar-pane" VBox.vgrow="ALWAYS">
@@ -78,12 +78,7 @@
                     <TableColumn fx:id="colInicio" prefWidth="80" text="Inicio" />
                     <TableColumn fx:id="colFin" prefWidth="80" text="Fin" />
                     <TableColumn fx:id="colEstado" prefWidth="80" text="Estado" />
-                    <TableColumn fx:id="colAcciones"
-             minWidth="140"
-             prefWidth="140"
-             maxWidth="140"
-             resizable="false"
-             text="Acciones"/>
+                    <TableColumn fx:id="colAcciones" maxWidth="140" minWidth="140" prefWidth="140" resizable="false" text="Acciones" />
 
                 </columns>
                 <VBox.margin><Insets bottom="30" right="40" /></VBox.margin>
